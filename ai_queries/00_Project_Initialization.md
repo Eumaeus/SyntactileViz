@@ -66,7 +66,7 @@ Thanks for looking at this!
 Conversation started: <https://x.com/i/grok/share/2ba4182220de40b4b360289e86ade262>
 
 
-I have Repository:
+I have made a Repository:
 
 ~~~
 
@@ -153,6 +153,8 @@ generate_comparison_report(cex_student, cex_teacher;
 ~~~
 
 That produces a ready-to-print (or email) PDF with everything above.
+
+So… Beautiful summary… thanks! Everything is in place and checked-in at <https://github.com/Eumaeus/SyntactileViz>
 
 
 
