@@ -156,5 +156,7 @@ That produces a ready-to-print (or email) PDF with everything above.
 
 So… Beautiful summary… thanks! Everything is in place and checked-in at <https://github.com/Eumaeus/SyntactileViz>
 
+Conversation at: <https://x.com/i/grok/share/8f0459eaf43044a1adddbde80fbff97a>
+
 
 
