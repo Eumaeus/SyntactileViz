@@ -123,15 +123,12 @@ function classify_and_parse_citedata!(data_lines, sentence_id_ref, sentence_text
             isempty(dl) && continue
             parts = split(dl, "#")
             if length(parts) >= 4
-                # We don't want the property header line
-                if (parts[1] != "unitId")
-                    push!(verbal_units, VerbalUnit(
-                        parts[1],
-                        parts[2],
-                        parts[3],
-                        parse(Int, parts[4])
-                    ))
-                end
+                push!(verbal_units, VerbalUnit(
+                    parts[1],
+                    parts[2],
+                    parts[3],
+                    parse(Int, parts[4])
+                ))
             end
         end
     elseif length(data_lines) == 1 && occursin("#", data_lines[1]) && count(c -> c == '#', data_lines[1]) == 1
