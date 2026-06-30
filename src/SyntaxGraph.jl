@@ -144,8 +144,7 @@ function pretty_print(g::SyntaxGraph; show_vu::Bool = true, max_depth::Int = 20)
     _print_node(g, "root", 0, visited; show_vu=show_vu, max_depth=max_depth)
 end
 
-function _print_node(g::SyntaxGraph, node_id::String, depth::Int, visited::Set{String};
-                     show_vu::Bool, max_depth::Int)
+function _print_node(g::SyntaxGraph, node_id::String, depth::Int, visited::Set{String}; show_vu::Bool, max_depth::Int)
 
     if depth > max_depth
         println("  "^depth, "... (max depth reached)")
@@ -191,9 +190,9 @@ function _print_node(g::SyntaxGraph, node_id::String, depth::Int, visited::Set{S
         printstyled(indent * "  └── ", edge.label, " ← ", color=:cyan)
 
         if source_id in visited
-            printstyled("[already shown]\n", color=:light_black)
+            printstyled(indent * e"[already shown]\n", color=:light_black)
         else
-            println()
+            # println()
             _print_node(g, source_id, depth + 1, visited; show_vu=show_vu, max_depth=max_depth)
         end
     end
