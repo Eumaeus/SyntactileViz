@@ -190,7 +190,7 @@ function _print_node(g::SyntaxGraph, node_id::String, depth::Int, visited::Set{S
         printstyled(indent * "  └── ", edge.label, " ← ", color=:cyan)
 
         if source_id in visited
-            printstyled(indent * e"[already shown]\n", color=:light_black)
+            printstyled(indent * "[already shown]\n", color=:light_black)
         else
             # println()
             _print_node(g, source_id, depth + 1, visited; show_vu=show_vu, max_depth=max_depth)
