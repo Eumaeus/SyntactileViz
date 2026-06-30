@@ -222,3 +222,19 @@ Perfect. Thank you! You are great to help me through these initializtion hurdles
 
 The output of the script is clean and correct!
 
+---
+
+Conversation at: <https://x.com/i/grok/share/c0a4800f50694dabadd2976fd7c1f9e2>
+
+
+In the longer term, of course, I would love everything you suggest.
+
+For the immediate next steps, I think **Text-based pretty printer** and **Better support for multiple Verbal Units** should be the priority.
+
+After that, visualizations and evaluation/comparison would be next.
+
+Including morphology as an option would ideally follow that.
+
+
+
+
