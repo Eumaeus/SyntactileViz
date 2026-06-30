@@ -1,9 +1,14 @@
-
 name = "SyntactileViz"
 uuid = "7a31ebc7-e5f0-4d97-940e-aa3fdd0bc38d"
-authors = ["Christopher Blackwell"]
 version = "0.1.0"
+authors = ["Christopher Blackwell"]
 
 [deps]
+CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
+GraphMakie = "1ecd5474-83a3-4783-bb4f-06765db800d2"
+NetworkLayout = "46757867-2c16-5918-afeb-47bfcb05e46a"
 
-
+[compat]
+CairoMakie = "0.15.12"
+GraphMakie = "0.6.3"
+NetworkLayout = "0.4.10"
