@@ -177,3 +177,26 @@ in expression starting at /Users/cblackwell/Dropbox/CITE/grok/SyntactileViz/scri
 ~~~
 
 Everythings is pushed to the repo.
+
+
+---
+
+> If you want to stop using include() and use normal using, we can turn this into a proper small Julia package by adding one file:src/SyntactileViz.jl (the main module that includes both parsers)
+
+> Would you like me to give you that version too? It’s a bit more “grown up” but makes the project feel more professional.
+
+Yes, please!
+
+And while you are looking, we are running the script, but getting this error:
+
+~~~
+SyntactileViz git:(main) ✗ julia --project=. scripts/01_Test_SyntaxGraph.jl
+=== Testing SyntaxGraph ===
+
+--- analysis_HQ1.7-corect.cex ---
+ERROR: LoadError: UndefVarError: `summary` not defined in `Main`
+Hint: It looks like two or more modules export different bindings with this name, resulting in ambiguity. Try explicitly importing it from a particular module, or qualifying the name with the module it should come from.
+Hint: a global variable of this name also exists in Base.
+~~~
+
+Everything is pushed. Thanks!
