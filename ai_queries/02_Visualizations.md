@@ -133,3 +133,17 @@ I will rely on your advice as to the best libraries.
 
 But first, of course, we can start in the SyntactileViz Julia library with `Visualization.jl`
 
+---
+
+Conversation at: <https://x.com/i/grok/share/4ffd89d329674ce89b2eb0f9604c0511>
+
+Your proposal looks perfect.
+
+Let's start with:
+
+> Write the code to add the packages, update the main module, and create a solid first version of Visualization.jl using Makie/GraphMakie?
+
+I will almost certainly want TikZ eventually, but first-things-first. With a Pluto-friendly interface, I can look at my examples and sort out a lot of issues before adding a second library.
+
+Let's do it!
+
