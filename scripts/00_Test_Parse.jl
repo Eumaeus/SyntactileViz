@@ -12,3 +12,4 @@ println(length(a.relations))    # 13 or so
 
 a2 = parse_cex("data/samples/analysis_Ellipsis_Option3.cex")
 println("Ellipsis tokens present:", any(t -> startswith(t.id, "urn:cite2:fuTeaching:syntax.ellipsis"), a2.tokens))
+

@@ -91,7 +91,7 @@ The function `setindex!` exists, but no method is defined for this combination o
 Stacktrace:
  [1] parse_citedata_block!(header::SubString{String}, data_lines::Vector{String}, sentence_urn_ref::String, sentence_text_ref::String, tokens::Vector{Token}, verbal_units::Vector{VerbalUnit})
    @ Main.CEXParser ~/Dropbox/CITE/grok/SyntactileViz/src/CEXParser.jl:145
- [2] parse_cex(path::String)
+ [2] prse_cex(path::String)
    @ Main.CEXParser ~/Dropbox/CITE/grok/SyntactileViz/src/CEXParser.jl:104
  [3] top-level scope
    @ ~/Dropbox/CITE/grok/SyntactileViz/scripts/00_Test_Parse.jl:8
@@ -104,3 +104,49 @@ Stacktrace:
 in expression starting at /Users/cblackwell/Dropbox/CITE/grok/SyntactileViz/scripts/00_Test_Parse.jl:8
 ➜  SyntactileViz git:(main) ✗ 
 ~~~
+
+---
+
+The current code is pushed to the repo.
+
+The script now runs without error, but we seem to be off-by-one:
+
+~~~
+ SyntactileViz git:(main) ✗ julia --project=. scripts/00_Test_Parse.jl
+  Activating project at `~/Dropbox/CITE/grok/SyntactileViz`
+13
+1
+12
+Ellipsis tokens present:true
+➜  SyntactileViz git:(main) ✗ 
+~~~
+
+---
+
+Perfect! Thank you!!!
+
+I think that building `SyntaxGraph.jl` is the logical next step.
+
+Before we get too far into this… There is another file in the `data` directory, `Viz/data/samples/editorial_index_HQ.tsv`. This comes from the <> project, and is a morphological-lexical parsing aligned to CTS-URNs, for the files `analysis_HQ…` in `data/examples`. 
+
+One of my guiding principles for this model of "Super Simple Syntax" is never to say anthing twice, and never to forget that a syntax analysis is neither a translation nor a complete exegesis of the text.
+
+If, for example, a verb takes a dative noun as its object, instead of an accusative noun, we do not need to create a special syntax edge "Dative Object of Verb"; all we need to do is say "Direct Object" in the syntax-graph, and "This noun is Dative" in its morphology. Likewise, a dative noun, or a prepositional phrase, or an adverb, can all be "adverbial" in the syntax. The fact that the thing labeled "adverbial" is a prepositional phrase, an adverb, or a dative noun will speak for itself.
+
+I *do not yet have a clear idea how to roll morphology into the mix with syntax.* But I have pulled out morphology/lexicography for the specific tokens analyzed in the syntax graphs in `/data/samples` so we will have something to work with later.
+
+I would welcome insights in how best to do this.
+
+*But for now*, I'd love to see your thoughts on `SyntaxGraph.jl`. Please remember that I am a babe in the woods when it comes to graph theory!
+
+---
+
+Conversation at: <https://x.com/i/grok/share/7e26c80c83f4426eb2234df85686fa91>
+
+Wonderful. This is a very clear outline. Thank you!
+
+If the sample of Julia code is short of a full text of `src/SyntaxGraph.jl`, I would like that at this point. And a little test script to run against the examples.
+
+Everything is in the repo to this point.
+
+
