@@ -244,3 +244,6 @@ end
 
 end # module Visualization
 ~~~
+
+I've pushed everything onto the repo at <https://github.com/Eumaeus/SyntactileViz>, including the modified Manifest.toml and Project.toml.
+
