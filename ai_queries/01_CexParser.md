@@ -175,3 +175,5 @@ Stacktrace:
 in expression starting at /Users/cblackwell/Dropbox/CITE/grok/SyntactileViz/scripts/01_Test_SyntaxGraph.jl:1
 ➜  SyntactileViz git:(main) ✗ 
 ~~~
+
+Everythings is pushed to the repo.
