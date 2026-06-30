@@ -285,4 +285,111 @@ end # module SyntactileViz
 
 It is also in the repo.
 
+---
+
+With the new code, I see:
+
+~~~
+➜  SyntactileViz git:(main) julia --color=yes --project=. scripts/02_Demo_SyntaxGraph.jl
+Precompiling SyntactileViz finished.
+  1 dependency successfully precompiled in 1 seconds
+=== DEMO: SyntaxGraph Features ===
+
+>>> Pretty Print (simple sentence)
+Syntax Tree — ἐν ταῖς ἀγοραῖς τὰς τῶν ἀνθρώπων ψυχὰς ὁ Ὅμηρος τοῖς βιβλίοις παιδεύει .
+======================================================================
+ERROR: LoadError: MethodError: no method matching printstyled(::String, ::String; color::Symbol, force::Bool)
+This method does not support all of the given keyword arguments (and may not support any).
+
+Closest candidates are:
+  printstyled(::Any...; bold, italic, underline, blink, reverse, hidden, color) got unsupported keyword argument "force"
+   @ Base util.jl:143
+  printstyled(::Base.AnnotatedIOBuffer, ::Any...; kwargs...)
+   @ Base strings/annotated_io.jl:260
+  printstyled(::IO, ::Any...; bold, italic, underline, blink, reverse, hidden, color) got unsupported keyword argument "force"
+   @ Base util.jl:141
+
+Stacktrace:
+ [1] kwerr(::@NamedTuple{color::Symbol, force::Bool}, ::Function, ::String, ::String)
+   @ Base ./error.jl:175
+ [2] _print_node_recursive(g::SyntactileViz.SyntaxGraph.SyntaxGraph, node_id::String, depth::Int64, visited::Set{String}; show_vu::Bool, max_depth::Int64)
+   @ SyntactileViz.SyntaxGraph ~/Dropbox/CITE/grok/SyntactileViz/src/SyntaxGraph.jl:180
+ [3] pretty_print(g::SyntactileViz.SyntaxGraph.SyntaxGraph; show_vu::Bool, max_depth::Int64)
+   @ SyntactileViz.SyntaxGraph ~/Dropbox/CITE/grok/SyntactileViz/src/SyntaxGraph.jl:144
+ [4] top-level scope
+   @ ~/Dropbox/CITE/grok/SyntactileViz/scripts/02_Demo_SyntaxGraph.jl:14
+ [5] include(mod::Module, _path::String)
+   @ Base ./Base.jl:306
+ [6] exec_options(opts::Base.JLOptions)
+   @ Base ./client.jl:317
+ [7] _start()
+   @ Base ./client.jl:550
+in expression starting at /Users/cblackwell/Dropbox/CITE/grok/SyntactileViz/scripts/02_Demo_SyntaxGraph.jl:14
+~~~
+
+I should mention that in the previous runs, I wasn't seeing a (plain-text) graphical representation of a tree.
+
+
+---
+
+Thanks for this! The script runs without errors.
+
+It looks like I'm on Julia 1.12.6
+
+~~~
+➜  SyntactileViz git:(main) ✗ julia --version
+julia version 1.12.6
+~~~
+
+The terminal output of the script looks like this:
+
+~~~
+➜  SyntactileViz git:(main) julia --color=yes --project=. scripts/02_Demo_SyntaxGraph.jl
+Precompiling SyntactileViz finished.
+  1 dependency successfully precompiled in 1 seconds
+=== DEMO: SyntaxGraph Features ===
+
+>>> Pretty Print (simple sentence)
+Syntax Tree — ἐν ταῖς ἀγοραῖς τὰς τῶν ἀνθρώπων ψυχὰς ὁ Ὅμηρος τοῖς βιβλίοις παιδεύει .
+======================================================================
+ROOT (root)
+
+>>> Pretty Print with Verbal Units + Colors (ellipsis example)
+Syntax Tree — καὶ κελεύσας τοὺς ὄχλους ἀνακλιθῆναι ἐπὶ τοῦ χόρτου , λαβὼν τοὺς πέντε ἄρτους καὶ τοὺς δύο ἰχθύας , ἀναβλέψας εἰς τὸν οὐρανὸν εὐλόγησεν καὶ κλάσας ἔδωκεν τοῖς μαθηταῖς τοὺς ἄρτους οἱ δὲ μαθηταὶ τοῖς ὄχλοις .
+======================================================================
+ROOT (root)
+
+>>> Subgraph for VU8 (the clause with the ellipsis)
+SyntaxGraph
+  Analysis:      urn:cite2:analyzer:analysis:2025-06-13-171a0d5a-e266-4077-9300-91d7540a8a19
+  Sentence:      καὶ κελεύσας τοὺς ὄχλους ἀνακλιθῆναι ἐπὶ τοῦ χόρτου , λαβὼν τοὺς πέντε ἄρτους καὶ τοὺς δύο ἰχθύας , ἀναβλέψας εἰς τὸν οὐρανὸν εὐλόγησεν καὶ κλάσας ἔδωκεν τοῖς μαθηταῖς τοὺς ἄρτους οἱ δὲ μαθηταὶ τοῖς ὄχλοις .
+  Nodes:         7
+  Edges:         6
+  Verbal Units:  1
+Nodes in VU8 subgraph: 7
+
+>>> Verbal Units sorted by level:
+  VU1: level 1 — Independent Clause
+  VU6: level 1 — Independent Clause
+  VU8: level 1 — Independent Clause
+  VU7: level 2 — Circumstantial Participle
+  VU4: level 2 — Circumstantial Participle
+  VU5: level 2 — Circumstantial Participle
+  VU3: level 2 — Circumstantial Participle
+
+>>> Primary verbal unit for a participle that belongs to two VUs:
+  Node: κελεύσας
+  Primary VU: VU1
+
+=== Demo complete ===
+➜  SyntactileViz git:(main) ✗ 
+~~~
+
+---
+
+And that looks perfect. Thank you!
+
+Okay… I need to do my job and read through all this code you've given me, and experiment with it. Then I'll be better informed when asking for help with the next steps.
+
+This is very exciting progress, and I am grateful.
 
