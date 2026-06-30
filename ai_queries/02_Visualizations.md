@@ -392,3 +392,16 @@ Beautiful! This is amazing!
 
 By all means, let's add edge-labels!
 
+---
+
+Conversation at: <https://x.com/i/grok/share/41b73f3da76945c8b0157381bff97351>
+
+And that looks great, too!
+
+Trying it on the ellipsis example, I got a complex error of many lines, the heart of which seemed to be `find_font_for_char(glyph::Char, font::FreeTypeAbstraction.FTFont)`.
+
+I was using '【⋯】' as placeholder-text for ellipsis-tokens, because it looks cool and distinctive.
+
+I replaces that with "{ ellipsis }" and got a good graph.
+
+
