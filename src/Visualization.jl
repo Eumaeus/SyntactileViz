@@ -1,6 +1,7 @@
 module Visualization
 
 using ..SyntaxGraph
+
 using CairoMakie
 using GraphMakie
 using Graphs
@@ -11,12 +12,11 @@ export draw_syntax_tree, save_syntax_tree
 """
     syntaxgraph_to_digraph(g::SyntaxGraph)
 
-Converts a SyntaxGraph into a Graphs.jl DiGraph + node labels.
-The direction follows the stored edges (dependent → head).
+Converts our SyntaxGraph into a Graphs.jl DiGraph for plotting.
 """
 function syntaxgraph_to_digraph(g::SyntaxGraph)
     node_ids = collect(keys(g.nodes))
-    sort!(node_ids)  # for reproducibility
+    sort!(node_ids)
     id_to_idx = Dict(id => i for (i, id) in enumerate(node_ids))
 
     digraph = SimpleDiGraph(length(node_ids))
@@ -27,30 +27,30 @@ function syntaxgraph_to_digraph(g::SyntaxGraph)
         end
     end
 
-    labels = [get(g.nodes, id, SyntaxNode(id, id, String[])).text for id in node_ids]
-    return digraph, labels, node_ids
+    labels = [g.nodes[id].text for id in node_ids]
+    return digraph, labels
 end
 
 """
-    draw_syntax_tree(g::SyntaxGraph; title = nothing, kwargs...)
+    draw_syntax_tree(g::SyntaxGraph; title=nothing, kwargs...)
 
-Draws a syntax tree using a hierarchical (Buchheim) layout.
-Returns a Makie `Figure` (displays nicely in Pluto).
+Creates a visual syntax tree using a hierarchical (Buchheim) layout.
+Returns a Makie `Figure`.
 """
 function draw_syntax_tree(g::SyntaxGraph; title = nothing, kwargs...)
-    digraph, labels, _ = syntaxgraph_to_digraph(g)
+    digraph, labels = syntaxgraph_to_digraph(g)
 
-    fig = Figure(size = (900, 700))
+    fig = Figure(size = (1000, 750))
     ax = Axis(fig[1, 1]; title = something(title, g.sentence_text))
 
     graphplot!(ax, digraph;
-        layout = Buchheim(),
+        layout = NetworkLayout.Stress(),          # ← Changed from Buchheim
         nlabels = labels,
         nlabels_align = (:center, :center),
-        node_size = 25,
+        node_size = 30,
         node_color = :lightblue,
-        edge_color = :gray,
-        arrow_size = 12,
+        edge_color = :gray60,
+        arrow_size = 15,
         kwargs...
     )
 
@@ -60,24 +60,15 @@ function draw_syntax_tree(g::SyntaxGraph; title = nothing, kwargs...)
 end
 
 """
-    save_syntax_tree(g::SyntaxGraph, path::String; format = :pdf, title = nothing)
+    save_syntax_tree(g::SyntaxGraph, path::String; format=:pdf, title=nothing)
 
-Saves a syntax tree visualization to disk.
+Saves the syntax tree visualization to a file.
 Supported formats: `:pdf`, `:png`, `:svg`.
 """
-function save_syntax_tree(g::SyntaxGraph, path::String; format = :pdf, title = nothing)
+function save_syntax_tree(g::SyntaxGraph, path::String; 
+                          format::Symbol = :pdf, title = nothing)
     fig = draw_syntax_tree(g; title = title)
-
-    if format == :pdf
-        save(path, fig; backend = CairoMakie)
-    elseif format == :png
-        save(path, fig; backend = CairoMakie)
-    elseif format == :svg
-        save(path, fig; backend = CairoMakie)
-    else
-        error("Unsupported format: $format. Use :pdf, :png, or :svg")
-    end
-
+    save(path, fig)
     return path
 end
 

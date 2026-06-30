@@ -247,3 +247,148 @@ end # module Visualization
 
 I've pushed everything onto the repo at <https://github.com/Eumaeus/SyntactileViz>, including the modified Manifest.toml and Project.toml.
 
+---
+
+Conversation at: <https://x.com/i/grok/share/5ec1471c83cc46d8ba546055c32d1f82>
+
+Progress! I had to `] add Graphs`.
+
+The commands went along to this point:
+
+~~~
+julia> draw_syntax_tree(g)                    # should show in REPL/Pluto
+ERROR: UndefVarError: `add_edge!` not defined in `SyntactileViz.Visualization`
+Suggestion: check for spelling errors or missing imports.
+Hint: a global variable of this name also exists in Graphs.SimpleGraphs.
+    - Also exported by Graphs.
+Stacktrace:
+ [1] syntaxgraph_to_digraph(g::SyntactileViz.SyntaxGraph.SyntaxGraph)
+   @ SyntactileViz.Visualization ~/Dropbox/CITE/grok/SyntactileViz/src/Visualization.jl:26
+ [2] draw_syntax_tree(g::SyntactileViz.SyntaxGraph.SyntaxGraph; title::Nothing, kwargs::@Kwargs{})
+   @ SyntactileViz.Visualization ~/Dropbox/CITE/grok/SyntactileViz/src/Visualization.jl:41
+ [3] draw_syntax_tree(g::SyntactileViz.SyntaxGraph.SyntaxGraph)
+   @ SyntactileViz.Visualization ~/Dropbox/CITE/grok/SyntactileViz/src/Visualization.jl:40
+ [4] top-level scope
+   @ REPL[6]:1
+~~~
+
+Thanks, as always, for your patient help!
+
+---
+
+Okay, this time we get the error below. I think the important line is:
+
+  `Due to ERROR: ArgumentError: Buchheim assumption broken, this is not a rooted tree: Node 5 has multiple parent nodes!`
+
+~~~
+
+julia> save_syntax_tree(g, "my_first_tree.pdf")
+ERROR: Failed to resolve arg1:
+[ComputeEdge] arg1 = compute_identity((edge_paths, ), changed, cached)
+  @ /Users/cblackwell/.julia/packages/ComputePipeline/E2l50/src/ComputePipeline.jl:743
+[ComputeEdge] edge_paths = (::MapFunctionWrapper(#99))((init_edge_paths, arrow_pos, arrow_shift, ), changed, cached)
+  @ unknown method location
+[ComputeEdge] init_edge_paths = (::MapFunctionWrapper(#91))((node_pos, selfedge_size, selfedge_direction, selfedge_width, curve_distance_usage, curve_distance, graph, ), changed, cached)
+  @ unknown method location
+[ComputeEdge] node_pos = (::MapFunctionWrapper(#65))((layout, graph, ), changed, cached)
+  @ unknown method location
+  with edge inputs:
+    layout = NetworkLayout.Buchheim{Float64, Float64}(Float64[])
+    graph = Graphs.SimpleGraphs.SimpleDiGraph{Int64}(12, [Int64[], [5], [4], [5], [1], [7], [2], [11], [10], [11], [5], [13], [5]], [[5], [7], Int64[], [3], [2, 4, 11, 13], Int64[], [6], Int64[], Int64[], [9], [8, 10], Int64[], [12]])
+Triggered by update of:
+  arg1 or layout
+Due to ERROR: ArgumentError: Buchheim assumption broken, this is not a rooted tree: Node 5 has multiple parent nodes!
+Stacktrace:
+  [1] assert_rooted_tree(adj_list::Vector{Vector{Int64}})
+    @ NetworkLayout ~/.julia/packages/NetworkLayout/7SWkz/src/buchheim.jl:283
+  [2] layout(para::NetworkLayout.Buchheim{Float64, Float64}, adj_list::Vector{Vector{Int64}})
+    @ NetworkLayout ~/.julia/packages/NetworkLayout/7SWkz/src/buchheim.jl:72
+  [3] layout(para::NetworkLayout.Buchheim{Float64, Float64}, adj_matrix::SparseArrays.SparseMatrixCSC{Int64, Int64})
+    @ NetworkLayout ~/.julia/packages/NetworkLayout/7SWkz/src/buchheim.jl:68
+  [4] layout
+    @ ~/.julia/packages/NetworkLayout/7SWkz/ext/NetworkLayoutGraphsExt.jl:12 [inlined]
+  [5] AbstractLayout
+    @ ~/.julia/packages/NetworkLayout/7SWkz/src/NetworkLayout.jl:39 [inlined]
+  [6] (::GraphMakie.var"#65#66")(layout::NetworkLayout.Buchheim{…}, graph::Graphs.SimpleGraphs.SimpleDiGraph{…})
+    @ GraphMakie ~/.julia/packages/GraphMakie/wXc9u/src/recipes.jl:222
+  [7] (::ComputePipeline.MapFunctionWrapper{…})(inputs::@NamedTuple{…}, changed::Any, cached::Any)
+    @ ComputePipeline ~/.julia/packages/ComputePipeline/E2l50/src/ComputePipeline.jl:1014
+  [8] ComputePipeline.TypedEdge(edge::ComputePipeline.ComputeEdge{…}, f::ComputePipeline.MapFunctionWrapper{…}, inputs::@NamedTuple{…})
+    @ ComputePipeline ~/.julia/packages/ComputePipeline/E2l50/src/ComputePipeline.jl:126
+  [9] ComputePipeline.TypedEdge(edge::ComputePipeline.ComputeEdge{ComputePipeline.ComputeGraph})
+    @ ComputePipeline ~/.julia/packages/ComputePipeline/E2l50/src/ComputePipeline.jl:120
+ [10] (::ComputePipeline.var"#resolve!##4#resolve!##5"{ComputePipeline.ComputeEdge{ComputePipeline.ComputeGraph}})()
+    @ ComputePipeline ~/.julia/packages/ComputePipeline/E2l50/src/ComputePipeline.jl:670
+ [11] lock(f::ComputePipeline.var"#resolve!##4#resolve!##5"{ComputePipeline.ComputeEdge{…}}, l::ReentrantLock)
+    @ Base ./lock.jl:335
+ [12] resolve!(edge::ComputePipeline.ComputeEdge{ComputePipeline.ComputeGraph})
+    @ ComputePipeline ~/.julia/packages/ComputePipeline/E2l50/src/ComputePipeline.jl:665
+ [13] _resolve!(computed::ComputePipeline.Computed)
+    @ ComputePipeline ~/.julia/packages/ComputePipeline/E2l50/src/ComputePipeline.jl:658
+ [14] foreach
+    @ ./abstractarray.jl:3188 [inlined]
+ [15] (::ComputePipeline.var"#resolve!##4#resolve!##5"{ComputePipeline.ComputeEdge{ComputePipeline.ComputeGraph}})()
+    @ ComputePipeline ~/.julia/packages/ComputePipeline/E2l50/src/ComputePipeline.jl:667
+--- the above 5 lines are repeated 2 more times ---
+ [26] lock(f::ComputePipeline.var"#resolve!##4#resolve!##5"{ComputePipeline.ComputeEdge{…}}, l::ReentrantLock)
+    @ Base ./lock.jl:335
+ [27] resolve!(edge::ComputePipeline.ComputeEdge{ComputePipeline.ComputeGraph})
+    @ ComputePipeline ~/.julia/packages/ComputePipeline/E2l50/src/ComputePipeline.jl:665
+ [28] _resolve!(computed::ComputePipeline.Computed)
+    @ ComputePipeline ~/.julia/packages/ComputePipeline/E2l50/src/ComputePipeline.jl:658
+ [29] resolve!(computed::ComputePipeline.Computed)
+    @ ComputePipeline ~/.julia/packages/ComputePipeline/E2l50/src/ComputePipeline.jl:650
+ [30] getindex
+    @ ~/.julia/packages/ComputePipeline/E2l50/src/ComputePipeline.jl:563 [inlined]
+ [31] #_register_expand_arguments!##0
+    @ ~/.julia/packages/Makie/f3UeU/src/compute-plots.jl:399 [inlined]
+ [32] iterate
+    @ ./generator.jl:48 [inlined]
+ [33] _collect(c::Vector{…}, itr::Base.Generator{…}, ::Base.EltypeUnknown, isz::Base.HasShape{…})
+    @ Base ./array.jl:810
+ [34] collect_similar
+    @ ./array.jl:732 [inlined]
+ [35] map
+    @ ./abstractarray.jl:3372 [inlined]
+ [36] _register_expand_arguments!(::Type{…}, attr::ComputePipeline.ComputeGraph, inputs::Vector{…}, is_merged::Bool)
+    @ Makie ~/.julia/packages/Makie/f3UeU/src/compute-plots.jl:399
+ [37] _register_expand_arguments!
+    @ ~/.julia/packages/Makie/f3UeU/src/compute-plots.jl:395 [inlined]
+ [38] register_arguments!
+    @ ~/.julia/packages/Makie/f3UeU/src/compute-plots.jl:373 [inlined]
+ [39] (Makie.Plot{GraphMakie.edgeplot})(user_args::Tuple{ComputePipeline.Computed}, user_attributes::Dict{Symbol, Any})
+    @ Makie ~/.julia/packages/Makie/f3UeU/src/compute-plots.jl:769
+ [40] _create_plot!(F::Function, attributes::Dict{…}, scene::Makie.Plot{…}, args::ComputePipeline.Computed)
+    @ Makie ~/.julia/packages/Makie/f3UeU/src/figureplotting.jl:552
+ [41] edgeplot!(::Makie.Plot{…}, ::Vararg{…}; kw::@Kwargs{…})
+    @ GraphMakie ~/.julia/packages/Makie/f3UeU/src/recipes.jl:550
+ [42] plot!(gp::Makie.Plot{GraphMakie.graphplot, Tuple{Graphs.SimpleGraphs.SimpleDiGraph{Int64}}})
+    @ GraphMakie ~/.julia/packages/GraphMakie/wXc9u/src/recipes.jl:357
+ [43] connect_plot!(parent::Makie.Scene, plot::Makie.Plot{GraphMakie.graphplot, Tuple{Graphs.SimpleGraphs.SimpleDiGraph{…}}})
+    @ Makie ~/.julia/packages/Makie/f3UeU/src/compute-plots.jl:843
+ [44] plot!
+    @ ~/.julia/packages/Makie/f3UeU/src/interfaces.jl:211 [inlined]
+ [45] plot!(ax::Makie.Axis, plot::Makie.Plot{GraphMakie.graphplot, Tuple{Graphs.SimpleGraphs.SimpleDiGraph{Int64}}})
+    @ Makie ~/.julia/packages/Makie/f3UeU/src/figureplotting.jl:573
+ [46] _create_plot!(::Function, ::Dict{Symbol, Any}, ::Makie.Axis, ::Graphs.SimpleGraphs.SimpleDiGraph{Int64})
+    @ Makie ~/.julia/packages/Makie/f3UeU/src/figureplotting.jl:543
+ [47] graphplot!(::Makie.Axis, ::Vararg{…}; kw::@Kwargs{…})
+    @ GraphMakie ~/.julia/packages/Makie/f3UeU/src/recipes.jl:190
+ [48] draw_syntax_tree(g::SyntactileViz.SyntaxGraph.SyntaxGraph; title::Nothing, kwargs::@Kwargs{})
+    @ SyntactileViz.Visualization ~/Dropbox/CITE/grok/SyntactileViz/src/Visualization.jl:46
+ [49] draw_syntax_tree
+    @ ~/Dropbox/CITE/grok/SyntactileViz/src/Visualization.jl:40 [inlined]
+ [50] #save_syntax_tree#4
+    @ ~/Dropbox/CITE/grok/SyntactileViz/src/Visualization.jl:70 [inlined]
+ [51] save_syntax_tree(g::SyntactileViz.SyntaxGraph.SyntaxGraph, path::String)
+    @ SyntactileViz.Visualization ~/Dropbox/CITE/grok/SyntactileViz/src/Visualization.jl:68
+Some type information was truncated. Use `show(err)` to see complete types.
+
+julia> 
+
+~~~
+
+Beautiful! This is amazing!
+
+By all means, let's add edge-labels!
+
