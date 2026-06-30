@@ -200,3 +200,25 @@ Hint: a global variable of this name also exists in Base.
 ~~~
 
 Everything is pushed. Thanks!
+
+---
+
+This is always a hassle with a new Julia project! Here's the latest error…
+
+~~~
+➜  SyntactileViz git:(main) ✗ julia --project=. scripts/01_Test_SyntaxGraph.jl
+ERROR: LoadError: ArgumentError: Package SyntactileViz not found in current path.
+- Run `import Pkg; Pkg.add("SyntactileViz")` to install the SyntactileViz package.
+~~~
+
+---
+
+Perfect. Thank you! You are great to help me through these initializtion hurdles with Julia EVERY SINGLE TIME!
+
+
+`julia -e 'using UUIDs; println(uuid4())'` yields:
+
+	e64ffdf2-8ebc-4015-8dc5-79a3a5145c99
+
+The output of the script is clean and correct!
+

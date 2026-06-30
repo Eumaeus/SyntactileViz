@@ -1,0 +1,9 @@
+
+name = "SyntactileViz"
+uuid = "7a31ebc7-e5f0-4d97-940e-aa3fdd0bc38d"
+authors = ["Christopher Blackwell"]
+version = "0.1.0"
+
+[deps]
+
+
