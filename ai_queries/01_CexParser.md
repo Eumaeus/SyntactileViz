@@ -78,3 +78,29 @@ Important notes: Each `#!` block after `#!citelibrary` begins with either `#!cit
 
 Since I've changed things up, let's start over with `CEXParser.jl`. You had a great data-structure defined for further work with this graphed data, and we can now work on parsing those CEX files into that structure.
 
+---
+
+Conversation started at: <https://x.com/i/grok/share/d0548be6815d4afab5c04c9889029560>
+
+Another `Substring` Julia error, I'm afraid:
+
+~~~
+Activating project at `~/Dropbox/CITE/grok/SyntactileViz`
+ERROR: LoadError: MethodError: no method matching setindex!(::String, ::SubString{String})
+The function `setindex!` exists, but no method is defined for this combination of argument types.
+Stacktrace:
+ [1] parse_citedata_block!(header::SubString{String}, data_lines::Vector{String}, sentence_urn_ref::String, sentence_text_ref::String, tokens::Vector{Token}, verbal_units::Vector{VerbalUnit})
+   @ Main.CEXParser ~/Dropbox/CITE/grok/SyntactileViz/src/CEXParser.jl:145
+ [2] parse_cex(path::String)
+   @ Main.CEXParser ~/Dropbox/CITE/grok/SyntactileViz/src/CEXParser.jl:104
+ [3] top-level scope
+   @ ~/Dropbox/CITE/grok/SyntactileViz/scripts/00_Test_Parse.jl:8
+ [4] include(mod::Module, _path::String)
+   @ Base ./Base.jl:306
+ [5] exec_options(opts::Base.JLOptions)
+   @ Base ./client.jl:317
+ [6] _start()
+   @ Base ./client.jl:550
+in expression starting at /Users/cblackwell/Dropbox/CITE/grok/SyntactileViz/scripts/00_Test_Parse.jl:8
+➜  SyntactileViz git:(main) ✗ 
+~~~

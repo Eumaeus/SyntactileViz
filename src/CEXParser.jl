@@ -2,20 +2,12 @@ module CEXParser
 
 export Token, VerbalUnit, SyntacticRelation, Analysis, parse_cex
 
-"""
-    Token(id, text, vu_ids)
-
-Represents one analyzed token.
-"""
 struct Token
     id::String
     text::String
     vu_ids::Vector{String}
 end
 
-"""
-    VerbalUnit(id, syntactic_type, semantic_type, level)
-"""
 struct VerbalUnit
     id::String
     syntactic_type::String
@@ -23,41 +15,39 @@ struct VerbalUnit
     level::Int
 end
 
-"""
-    SyntacticRelation(source, target, relation)
-"""
 struct SyntacticRelation
     source::String
     target::String
     relation::String
 end
 
-"""
-    Analysis(...)
-
-Complete parsed analysis from a .cex file.
-"""
 struct Analysis
-    cite_urn::String
-    sentence_id::String
+    library_name::String
+    analysis_urn::String
+    passage_urn::String
+    editor::String
+    date::String
+    sentence_urn::String
     sentence_text::String
     tokens::Vector{Token}
     verbal_units::Vector{VerbalUnit}
     relations::Vector{SyntacticRelation}
 end
 
-"""
-    parse_cex(path::String) -> Analysis
-
-Parse a Syntactile .cex file into structured Julia objects.
-Works on the current sample files (Iliad and teacher examples).
-"""
 function parse_cex(path::String)::Analysis
     lines = readlines(path)
 
-    cite_urn = ""
-    sentence_id = ""
+    # === Metadata ===
+    library_name = ""
+    analysis_urn = ""
+    passage_urn = ""
+    editor = ""
+    date = ""
+
+    # === Sentence info (will be set when we see the sentence block) ===
+    sentence_urn = ""
     sentence_text = ""
+
     tokens = Token[]
     verbal_units = VerbalUnit[]
     relations = SyntacticRelation[]
@@ -68,86 +58,129 @@ function parse_cex(path::String)::Analysis
 
         if startswith(line, "#!citelibrary")
             i += 1
-            while i <= length(lines) && !startswith(strip(lines[i]), "#!")
+            while i <= length(lines)
                 l = strip(lines[i])
-                if startswith(l, "urn:cite2:")
-                    cite_urn = l
+                if startswith(l, "#!") 
+                    break 
+                end
+                if occursin("#", l)
+                    k, v = split(l, "#", limit=2)
+                    k = strip(k)
+                    v = strip(v)
+                    if     k == "name"   library_name = v
+                    elseif k == "urn"    analysis_urn = v
+                    elseif k == "text"   passage_urn = v
+                    elseif k == "editor" editor = v
+                    elseif k == "date"   date = v
+                    end
                 end
                 i += 1
             end
             continue
 
         elseif startswith(line, "#!citedata")
-            # Collect all data lines for this block
-            data_lines = String[]
             i += 1
-            while i <= length(lines) && !startswith(strip(lines[i]), "#!")
-                push!(data_lines, strip(lines[i]))
+            if i > length(lines) 
+                break 
+            end
+            header = strip(lines[i])
+            i += 1
+
+            data_lines = String[]
+            while i <= length(lines)
+                l = strip(lines[i])
+                if startswith(l, "#!") 
+                    break 
+                end
+                if !isempty(l) 
+                    push!(data_lines, l) 
+                end
                 i += 1
             end
 
-            if !isempty(data_lines)
-                classify_and_parse_citedata!(data_lines, sentence_id, sentence_text, tokens, verbal_units)
+            # Handle sentence block directly here (only one exists)
+            if occursin("sentence", header) && occursin("ctsurn", header)
+                if !isempty(data_lines)
+                    parts = split(data_lines[1], "#", limit=3)
+                    if length(parts) >= 2
+                        sentence_urn = strip(parts[2])
+                    end
+                    if length(parts) >= 3
+                        sentence_text = strip(parts[3])
+                    end
+                end
+            else
+                parse_citedata_block!(header, data_lines, tokens, verbal_units)
             end
-            continue
 
         elseif startswith(line, "#!citerelations")
             i += 1
-            while i <= length(lines) && !startswith(strip(lines[i]), "#!")
-                dl = strip(lines[i])
-                if !isempty(dl) && occursin("#", dl)
-                    parts = split(dl, "#"; limit=3)
+            while i <= length(lines)
+                l = strip(lines[i])
+                if startswith(l, "#!") 
+                    break 
+                end
+                if !isempty(l) && occursin("#", l)
+                    parts = split(l, "#", limit=3)
                     if length(parts) == 3
-                        push!(relations, SyntacticRelation(parts[1], parts[2], parts[3]))
+                        src = strip(parts[1])
+                        tgt = strip(parts[2])
+                        rel = strip(parts[3])
+                        if src != "source"   # skip repeated headers
+                            push!(relations, SyntacticRelation(src, tgt, rel))
+                        end
                     end
                 end
                 i += 1
             end
-            continue
+
         else
             i += 1
         end
     end
 
-    return Analysis(cite_urn, sentence_id, sentence_text, tokens, verbal_units, relations)
+    return Analysis(
+        library_name,
+        analysis_urn,
+        passage_urn,
+        editor,
+        date,
+        sentence_urn,
+        sentence_text,
+        tokens,
+        verbal_units,
+        relations
+    )
 end
 
-# Internal helper to classify the different kinds of #!citedata blocks
-function classify_and_parse_citedata!(data_lines, sentence_id_ref, sentence_text_ref, tokens, verbal_units)
-    # Heuristics based on content patterns we see in the samples
-    joined = join(data_lines, "\n")
+function parse_citedata_block!(header::AbstractString, data_lines::Vector{String},
+                               tokens::Vector{Token}, verbal_units::Vector{VerbalUnit})
 
-    if occursin("VU", joined) && occursin("#", joined)
-        # Verbal units block
+    if occursin("tokenId", header)
         for dl in data_lines
-            isempty(dl) && continue
+            parts = split(dl, "#")
+            if length(parts) >= 2
+                tid   = strip(parts[1])
+                ttext = strip(parts[2])
+                vus = if length(parts) >= 3
+                    filter(!isempty, split(strip(parts[3]), r"[,;]"))
+                else
+                    String[]
+                end
+                push!(tokens, Token(tid, ttext, vus))
+            end
+        end
+
+    elseif occursin("unitId", header)
+        for dl in data_lines
             parts = split(dl, "#")
             if length(parts) >= 4
                 push!(verbal_units, VerbalUnit(
-                    parts[1],
-                    parts[2],
-                    parts[3],
-                    parse(Int, parts[4])
+                    strip(parts[1]),
+                    strip(parts[2]),
+                    strip(parts[3]),
+                    parse(Int, strip(parts[4]))
                 ))
-            end
-        end
-    elseif length(data_lines) == 1 && occursin("#", data_lines[1]) && count(c -> c == '#', data_lines[1]) == 1
-        # Sentence block: id#full text
-        parts = split(data_lines[1], "#"; limit=2)
-        if length(parts) == 2
-            sentence_id_ref[] = parts[1]          # mutate via Ref if needed, but we'll handle below
-            sentence_text_ref[] = parts[2]
-        end
-    else
-        # Token block: id#text#VUx or similar
-        for dl in data_lines
-            isempty(dl) && continue
-            parts = split(dl, "#")
-            if length(parts) >= 2
-                tid = parts[1]
-                ttext = parts[2]
-                vus = length(parts) >= 3 ? split(parts[3], r"[,;]") : String[]
-                push!(tokens, Token(tid, ttext, vus))
             end
         end
     end
