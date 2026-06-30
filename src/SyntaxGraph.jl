@@ -134,7 +134,7 @@ function get_subgraph_for_vu(g::SyntaxGraph, vu_id::String)
 end
 
 # ============================================
-# Pretty Printer with Colors + Multi-Parent Handling
+# Pretty Printer with Forced Colors + Multi-Parent Handling
 # ============================================
 
 function pretty_print(g::SyntaxGraph; show_vu::Bool = true, max_depth::Int = 20)
@@ -147,37 +147,38 @@ end
 function _print_node_recursive(g::SyntaxGraph, node_id::String, depth::Int, visited::Set{String};
                                show_vu::Bool, max_depth::Int)
     if depth > max_depth
-        println("  "^depth, "... (max depth reached)")
+        printstyled("  "^depth, "... (max depth reached)\n", color=:light_black, force=true)
         return
     end
 
     node = get_node(g, node_id)
     if node === nothing
-        printstyled("  "^depth, "[MISSING: $node_id]\n", color=:red)
+        printstyled("  "^depth, "[MISSING: $node_id]\n", color=:red, force=true)
         return
     end
 
     # Color coding
     if node_id == "root"
-        color = :light_black
+        color = :blue
     elseif startswith(node_id, "urn:cite2:fuTeaching:syntax.ellipsis")
         color = :yellow
     else
-        color = :normal
+        color = :default
     end
 
     vu_str = ""
     if show_vu && !isempty(node.verbal_unit_ids)
         primary = get_primary_verbal_unit(g, node_id)
-        vu_str = " [" * join(node.verbal_unit_ids, ",") * "]"
-        if primary !== nothing && length(node.verbal_unit_ids) > 1
+        if length(node.verbal_unit_ids) == 1
+            vu_str = " [" * node.verbal_unit_ids[1] * "]"
+        else
             vu_str = " [primary=$primary]"
         end
     end
 
     indent = "  "^depth
-    printstyled(indent, node.text, color=color)
-    printstyled(" (", node_id, ")", color=:light_black)
+    printstyled(indent, node.text, color=color, force=true)
+    printstyled(" (", node_id, ")", color=:light_black, force=true)
     println(vu_str)
 
     push!(visited, node_id)
@@ -185,11 +186,10 @@ function _print_node_recursive(g::SyntaxGraph, node_id::String, depth::Int, visi
     for edge in outgoing(g, node_id)
         target_id = edge.target
 
-        # Show relation
-        printstyled(indent * "  └── ", edge.label, " → ", color=:cyan)
+        printstyled(indent * "  └── ", edge.label, " → ", color=:cyan, force=true)
 
         if target_id in visited
-            printstyled("[already shown above]\n", color=:light_black)
+            printstyled("[already shown]\n", color=:light_black, force=true)
         else
             println()
             _print_node_recursive(g, target_id, depth + 1, visited; show_vu=show_vu, max_depth=max_depth)

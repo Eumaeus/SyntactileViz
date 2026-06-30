@@ -249,7 +249,40 @@ Everything is checked in.
 
 I am not seeing colored output. This might have to do with my MacOS terminal? I'm also using `zsh` as my shell. I *do* see colors in the command-prompt, if that is informative.
 
+---
 
+Thanks!
 
+Using `julia --color=yes --project=. scripts/02_Demo_SyntaxGraph.jl` did not reveal colors in output, except `ROOT (root)`, which is in blue-grey.
+
+I see colors in the terminal prompt and in `vim`.
+
+Below is the full contents of `Viz/src/SyntactileViz.jl`
+
+~~~
+module SyntactileViz
+
+# Include the submodules
+include("CEXParser.jl")
+include("SyntaxGraph.jl")
+
+# Bring everything into this namespace
+using .CEXParser
+using .SyntaxGraph
+
+# Re-export the most useful names so users can do `using SyntactileViz`
+export parse_cex, Analysis, Token, VerbalUnit, SyntacticRelation
+export SyntaxNode, SyntaxEdge, SyntaxGraph
+export build_syntax_graph
+export get_node, get_root, outgoing, incoming, children_of
+export get_tokens_in_vu, get_verbal_units_of_node
+export print_graph_summary
+export pretty_print, get_subgraph_for_vu, get_verbal_units_sorted
+export get_primary_verbal_unit
+
+end # module SyntactileViz
+~~~
+
+It is also in the repo.
 
 
