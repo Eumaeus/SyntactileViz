@@ -149,4 +149,29 @@ If the sample of Julia code is short of a full text of `src/SyntaxGraph.jl`, I w
 
 Everything is in the repo to this point.
 
+---
 
+Typical startup hitches with a Julia project:
+
+~~~
+SyntactileViz git:(main) ✗ julia --project=. scripts/01_Test_SyntaxGraph.jl
+ERROR: LoadError: ArgumentError: Package CEXParser not found in current path.
+- Run `import Pkg; Pkg.add("CEXParser")` to install the CEXParser package.
+Stacktrace:
+ [1] macro expansion
+   @ ./loading.jl:2405 [inlined]
+ [2] macro expansion
+   @ ./lock.jl:376 [inlined]
+ [3] __require(into::Module, mod::Symbol)
+   @ Base ./loading.jl:2388
+ [4] require(into::Module, mod::Symbol)
+   @ Base ./loading.jl:2364
+ [5] include(mod::Module, _path::String)
+   @ Base ./Base.jl:306
+ [6] exec_options(opts::Base.JLOptions)
+   @ Base ./client.jl:317
+ [7] _start()
+   @ Base ./client.jl:550
+in expression starting at /Users/cblackwell/Dropbox/CITE/grok/SyntactileViz/scripts/01_Test_SyntaxGraph.jl:1
+➜  SyntactileViz git:(main) ✗ 
+~~~
