@@ -131,5 +131,5 @@ As I mentioned earlier, I have a pretty complete (I think) MacTeX installation, 
 
 I will rely on your advice as to the best libraries.
 
-But first, of course, we can start in the SyntactileViz Julia library with `Visual`
+But first, of course, we can start in the SyntactileViz Julia library with `Visualization.jl`
 
