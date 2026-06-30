@@ -235,6 +235,21 @@ After that, visualizations and evaluation/comparison would be next.
 
 Including morphology as an option would ideally follow that.
 
+---
+
+Yes, please, to all three: refine for nodes with multiple parents and color-coding (I'd love to see how to do that); subgraphs for VUs (!!!); and a demonstration script.
+
+At that point, I will need some time to catch up, read the code, and find my way around, testing different files to get good at this.
+
+---
+
+I had to add some `includes` to `src/SyntactileViz.jl`, but the demo script runs without error!
+
+Everything is checked in.
+
+I am not seeing colored output. This might have to do with my MacOS terminal? I'm also using `zsh` as my shell. I *do* see colors in the command-prompt, if that is informative.
+
+
 
 
 

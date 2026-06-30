@@ -37,3 +37,11 @@ for node in get_tokens_in_vu(g2, "VU8")
 end
 
 println("\n✓ Done.")
+
+# Test Pretty Print
+
+println("\n=== Pretty Print (HQ1.7) ===")
+pretty_print(g1)
+
+println("\n=== Pretty Print with Verbal Units (Ellipsis example) ===")
+pretty_print(g2; show_vu=true)

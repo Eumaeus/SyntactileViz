@@ -15,5 +15,7 @@ export build_syntax_graph
 export get_node, get_root, outgoing, incoming, children_of
 export get_tokens_in_vu, get_verbal_units_of_node
 export print_graph_summary
+export pretty_print, get_subgraph_for_vu, get_verbal_units_sorted
+export get_primary_verbal_unit
 
 end # module SyntactileViz
