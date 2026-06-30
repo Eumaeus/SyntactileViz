@@ -402,6 +402,34 @@ Trying it on the ellipsis example, I got a complex error of many lines, the hear
 
 I was using '【⋯】' as placeholder-text for ellipsis-tokens, because it looks cool and distinctive.
 
-I replaces that with "{ ellipsis }" and got a good graph.
+I replaced that with "{ ellipsis }" and got a good graph.
+
+---
+
+Yes, please, to this:
+
+- Nodes whose ID starts with urn:cite2:fuTeaching:syntax.ellipsis are colored yellow (like in your text pretty-printer)?
+- Optionally give them a slightly different shape or border?
+
+If you can give me an example, I can have a lot of fun tweaking it over time.
+
+Is there an option to control the typeface/font for these graphs, in general? `FreeTypeAbstraction` doesn't seem to have polytonic Greek glyphs, so it is doing font-substitution for things like 'ῶ' and 'ἄ', which makes the text presentation uneven. This is not a big deal for now.
+
+This is exciting, to see these PDFs!
+
+---
+
+Conversation at: <https://x.com/i/grok/share/d5e4c291048f405face5a8adfac4a06a>
+
+Okay, lovely! 
+
+This is truly amazing progress for a Tuesday morning! Thank you for this help.
+
+You've given me a lot, so I think I will look at this, get familiar with the code, and come back when I can suggest next steps in an informed and articulate way.
+
+I need to spend enough time with the code so that I am not wasting your bandwidth on little aesthetic tweaks that I can do myself.
+
+Everything is in the repo.
+
 
 

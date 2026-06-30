@@ -21,8 +21,8 @@ urn:cts:fuTeaching:blackwell.hq.2026:4.2.token.7#ἀγαθὴ#VU2
 urn:cts:fuTeaching:blackwell.hq.2026:4.2.token.8#δὲ#VU2
 urn:cts:fuTeaching:blackwell.hq.2026:4.2.token.9#ἡ#VU2
 urn:cts:fuTeaching:blackwell.hq.2026:4.2.token.10#νίκη#VU2
-urn:cite2:fuTeaching:syntax.ellipsis:13#【⋯】#VU1
-urn:cite2:fuTeaching:syntax.ellipsis:14#【⋯】#VU2
+urn:cite2:fuTeaching:syntax.ellipsis:13#{ … }#VU1
+urn:cite2:fuTeaching:syntax.ellipsis:14#{ … }#VU2
 
 #!citedata
 unitId#syntacticType#semanticType#level

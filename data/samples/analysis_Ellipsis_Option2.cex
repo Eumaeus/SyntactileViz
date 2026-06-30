@@ -45,7 +45,7 @@ urn:cts:greekLit:tlg0031.tlg001.wh:14.19.32#δὲ#VU8
 urn:cts:greekLit:tlg0031.tlg001.wh:14.19.33#μαθηταὶ#VU8
 urn:cts:greekLit:tlg0031.tlg001.wh:14.19.34#τοῖς#VU8
 urn:cts:greekLit:tlg0031.tlg001.wh:14.19.35#ὄχλοις#VU8
-urn:cite2:fuTeaching:syntax.ellipsis:38#【⋯】#VU8
+urn:cite2:fuTeaching:syntax.ellipsis:38#{ … }#VU8
 
 #!citedata
 unitId#syntacticType#semanticType#level
