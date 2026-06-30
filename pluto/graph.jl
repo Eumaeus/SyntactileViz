@@ -4,26 +4,17 @@
 using Markdown
 using InteractiveUtils
 
+# ╔═╡ d9de5cc1-b43c-4f1a-afa3-a24a02c4c815
+begin
+	
+	### Activate the parent project so Pluto can see the local SyntactileViz package
+	import Pkg
+	Pkg.activate(joinpath(@__DIR__, ".."))
+end
+
 # ╔═╡ 66af0998-746d-11f1-bf8b-c5b59c446eff
 using SyntactileViz
 
-# ╔═╡ 00000000-0000-0000-0000-000000000001
-PLUTO_PROJECT_TOML_CONTENTS = """
-[deps]
-"""
-
-# ╔═╡ 00000000-0000-0000-0000-000000000002
-PLUTO_MANIFEST_TOML_CONTENTS = """
-# This file is machine-generated - editing it directly is not advised
-
-julia_version = "1.12.6"
-manifest_format = "2.0"
-project_hash = "71853c6197a6a7f222db0f1978c7cb232b87c5ee"
-
-[deps]
-"""
-
 # ╔═╡ Cell order:
+# ╠═d9de5cc1-b43c-4f1a-afa3-a24a02c4c815
 # ╠═66af0998-746d-11f1-bf8b-c5b59c446eff
-# ╟─00000000-0000-0000-0000-000000000001
-# ╟─00000000-0000-0000-0000-000000000002
