@@ -4,7 +4,6 @@ using ..SyntaxGraph
 using ..CEXParser
 using Printf          # ← REQUIRED for @printf
 
-
 export ComparisonResult, compare_syntax_graphs, report_comparison, diff_summary
 
 # ============================================================
@@ -85,7 +84,7 @@ function compare_syntax_graphs(g1::SyntaxGraph, g2::SyntaxGraph)
 end
 
 # ============================================================
-# New: Quick one-line summary
+# Quick one-line summary
 # ============================================================
 
 function diff_summary(comp::ComparisonResult)
@@ -96,7 +95,7 @@ function diff_summary(comp::ComparisonResult)
 end
 
 # ============================================================
-# Enhanced reporting with Verbal Unit comparison
+# Full reporting (with Verbal Unit section)
 # ============================================================
 
 function report_comparison(comp::ComparisonResult; show_details::Bool = true)
@@ -123,7 +122,7 @@ function report_comparison(comp::ComparisonResult; show_details::Bool = true)
     println()
 
     if show_details
-        # --- Attachment differences ---
+        # Attachment differences
         if !isempty(comp.label_diff)
             println("── Minor differences (same head, different label) ──")
             for (nid, l1, l2) in comp.label_diff
@@ -150,13 +149,12 @@ function report_comparison(comp::ComparisonResult; show_details::Bool = true)
             println("✓ Perfect agreement on all attachments!")
         end
 
-        # --- NEW: Verbal Unit differences ---
+        # Verbal Unit differences
         println("── Verbal Unit Comparison ──")
         vus1 = Set(keys(g1.verbal_units))
         vus2 = Set(keys(g2.verbal_units))
         only_in_g1 = setdiff(vus1, vus2)
         only_in_g2 = setdiff(vus2, vus1)
-        common_vus = intersect(vus1, vus2)
 
         println("  VUs in Analysis 1: $(length(vus1))   |   VUs in Analysis 2: $(length(vus2))")
         if !isempty(only_in_g1)
@@ -166,7 +164,7 @@ function report_comparison(comp::ComparisonResult; show_details::Bool = true)
             println("  Only in Analysis 2: $(collect(only_in_g2))")
         end
 
-        # Check for nodes with different primary verbal unit
+        # Nodes with changed primary VU
         nodes1 = setdiff(collect(keys(g1.nodes)), ["root"])
         nodes2 = setdiff(collect(keys(g2.nodes)), ["root"])
         common_nodes = intersect(nodes1, nodes2)
