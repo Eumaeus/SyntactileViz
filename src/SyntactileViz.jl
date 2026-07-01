@@ -1,16 +1,15 @@
 module SyntactileViz
 
-# Include the submodules
 include("CEXParser.jl")
 include("SyntaxGraph.jl")
+include("Comparison.jl")          # ← NEW
 include("Visualization.jl")
 
-# Bring everything into this namespace
 using .CEXParser
 using .SyntaxGraph
+using .Comparison               # ← NEW
 using .Visualization
 
-# Re-export the most useful names
 export parse_cex, Analysis, Token, VerbalUnit, SyntacticRelation
 export SyntaxNode, SyntaxEdge, SyntaxGraph
 export build_syntax_graph
@@ -19,6 +18,9 @@ export get_tokens_in_vu, get_verbal_units_of_node
 export print_graph_summary
 export pretty_print, get_subgraph_for_vu, get_verbal_units_sorted
 export get_primary_verbal_unit
+
+# Comparison exports
+export ComparisonResult, compare_syntax_graphs, report_comparison, compare_cex_files
 
 # Visualization exports
 export draw_syntax_tree, save_syntax_tree

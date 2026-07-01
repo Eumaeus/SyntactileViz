@@ -52,3 +52,43 @@ I would love to see your suggestions.
 I have added a directory, `/data/comparison`, that contains six CEX files. They are paired as `Comp1-` (two files), `Comp2-` (two files), and `Comp3-` (two files). Those can serve to start as example data.
 
 Everything at this point is checked into the repository: <https://github.com/Eumaeus/SyntactileViz>
+
+---
+Conversation at: <https://x.com/i/grok/share/4c6850b1af2341bca79369439a01ab0a>
+
+This is great. 
+
+Perfect. We don't need NP-Hard problems on our hands, and the UAS & LAS scores are exactly what I asked for, without knowing the terms-of-art. Super!
+
+You sketches of what is needed look ideal. For reporting, I love that you proposed what I was thinking: identifying graph by editor + sentence-id. Perfect.
+
+Currently `src/Comparison.jl` is an empty stub, so code can go there.
+
+As always, I will need a lot of help wiring it into the SyntactileViz project.
+
+Thanks for this! Let's go ahead and implement it!
+
+
+---
+
+This is looking great! One error on running the script, almost certainly a matter of integration of `Comparison.jl` into `SyntactileViz.jl`:
+
+~~~
+ERROR: LoadError: UndefVarError: `parse_cex` not defined in `SyntactileViz.Comparison`
+Suggestion: check for spelling errors or missing imports.
+Hint: a global variable of this name also exists in SyntactileViz.CEXParser.
+    - Also exported by SyntactileViz.
+Stacktrace:
+ [1] compare_cex_files(path1::String, path2::String)
+   @ SyntactileViz.Comparison ~/Dropbox/CITE/grok/SyntactileViz/src/Comparison.jl:167
+ [2] top-level scope
+   @ ~/Dropbox/CITE/grok/SyntactileViz/scripts/05_Comparison.jl:11
+ [3] include(mod::Module, _path::String)
+   @ Base ./Base.jl:306
+ [4] exec_options(opts::Base.JLOptions)
+   @ Base ./client.jl:317
+ [5] _start()
+   @ Base ./client.jl:550
+in expression starting at /Users/cblackwell/Dropbox/CITE/grok/SyntactileViz/scripts/05_Comparison.jl:11
+➜  SyntactileViz git:(main) ✗ 
+~~~
