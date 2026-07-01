@@ -79,3 +79,114 @@ in expression starting at /Users/cblackwell/Dropbox/CITE/grok/SyntactileViz/scri
 
 julia> 
 ~~~
+
+---
+
+I confused the issue by not pushing the latest code before getting back to you. My apologies!
+
+All the code in the repository is now up-to-date. I'm still getting that error:
+
+~~~
+julia> include("scripts/03_PDFer1.jl")
+ERROR: LoadError: MethodError: no method matching syntaxgraph_to_digraph(::SyntactileViz.SyntaxGraph.SyntaxGraph)
+The function `syntaxgraph_to_digraph` exists, but no method is defined for this combination of argument types.
+Stacktrace:
+ [1] draw_syntax_tree(g::SyntactileViz.SyntaxGraph.SyntaxGraph; title::Nothing, kwargs::@Kwargs{})
+   @ SyntactileViz.Visualization ~/Dropbox/CITE/grok/SyntactileViz/src/Visualization.jl:50
+ [2] draw_syntax_tree(g::SyntactileViz.SyntaxGraph.SyntaxGraph)
+   @ SyntactileViz.Visualization ~/Dropbox/CITE/grok/SyntactileViz/src/Visualization.jl:49
+ [3] top-level scope
+   @ ~/Dropbox/CITE/grok/SyntactileViz/scripts/03_PDFer1.jl:12
+ [4] include(mapexpr::Function, mod::Module, _path::String)
+   @ Base ./Base.jl:307
+ [5] top-level scope
+   @ REPL[12]:1
+in expression starting at /Users/cblackwell/Dropbox/CITE/grok/SyntactileViz/scripts/03_PDFer1.jl:12
+
+julia> 
+~~~
+
+
+---
+
+Conversation at: <https://x.com/i/grok/share/3f2620efc1504da5ba775f70cadb025c>
+
+Thanks! Still getting errors, but different ones. All code is up-to-date in the repository.
+
+~~~
+julia> include("scripts/03_PDFer1.jl")
+[ Info: Precompiling SyntactileViz [7a31ebc7-e5f0-4d97-940e-aa3fdd0bc38d](cache misses: include_dependency fsize change (1))
+Info Given SyntactileViz was explicitly requested, output will be shown live 
+ERROR: LoadError: FieldError: type DataType has no field `SyntaxGraph`, available fields: `name`, `super`, `parameters`, `types`, `instance`, `layout`, `hash`, `flags`
+Stacktrace:
+  [1] getproperty(x::Type, f::Symbol)
+    @ Base ./Base_compiler.jl:48
+  [2] top-level scope
+    @ ~/Dropbox/CITE/grok/SyntactileViz/src/Visualization.jl:12
+  [3] include(mapexpr::Function, mod::Module, _path::String)
+    @ Base ./Base.jl:307
+  [4] top-level scope
+    @ ~/Dropbox/CITE/grok/SyntactileViz/src/SyntactileViz.jl:6
+  [5] include(mod::Module, _path::String)
+    @ Base ./Base.jl:306
+  [6] include_package_for_output(pkg::Base.PkgId, input::String, depot_path::Vector{String}, dl_load_path::Vector{String}, load_path::Vector{String}, concrete_deps::Vector{Pair{Base.PkgId, UInt128}}, source::Nothing)
+    @ Base ./loading.jl:3028
+  [7] top-level scope
+    @ stdin:5
+  [8] eval(m::Module, e::Any)
+    @ Core ./boot.jl:489
+  [9] include_string(mapexpr::typeof(identity), mod::Module, code::String, filename::String)
+    @ Base ./loading.jl:2874
+ [10] include_string
+    @ ./loading.jl:2884 [inlined]
+ [11] exec_options(opts::Base.JLOptions)
+    @ Base ./client.jl:315
+ [12] _start()
+    @ Base ./client.jl:550
+in expression starting at /Users/cblackwell/Dropbox/CITE/grok/SyntactileViz/src/Visualization.jl:1
+in expression starting at /Users/cblackwell/Dropbox/CITE/grok/SyntactileViz/src/SyntactileViz.jl:1
+in expression starting at stdin:5
+  ✗ SyntactileViz
+Precompiling SyntactileViz finished.
+  0 dependencies successfully precompiled in 4 seconds. 294 already precompiled.
+
+ERROR: LoadError: The following 1 direct dependency failed to precompile:
+
+SyntactileViz 
+
+Failed to precompile SyntactileViz [7a31ebc7-e5f0-4d97-940e-aa3fdd0bc38d] to "/Users/cblackwell/.julia/compiled/v1.12/SyntactileViz/jl_OIlgrL".
+ERROR: LoadError: FieldError: type DataType has no field `SyntaxGraph`, available fields: `name`, `super`, `parameters`, `types`, `instance`, `layout`, `hash`, `flags`
+Stacktrace:
+  [1] getproperty(x::Type, f::Symbol)
+    @ Base ./Base_compiler.jl:48
+  [2] top-level scope
+    @ ~/Dropbox/CITE/grok/SyntactileViz/src/Visualization.jl:12
+  [3] include(mapexpr::Function, mod::Module, _path::String)
+    @ Base ./Base.jl:307
+  [4] top-level scope
+    @ ~/Dropbox/CITE/grok/SyntactileViz/src/SyntactileViz.jl:6
+  [5] include(mod::Module, _path::String)
+    @ Base ./Base.jl:306
+  [6] include_package_for_output(pkg::Base.PkgId, input::String, depot_path::Vector{String}, dl_load_path::Vector{String}, load_path::Vector{String}, concrete_deps::Vector{Pair{Base.PkgId, UInt128}}, source::Nothing)
+    @ Base ./loading.jl:3028
+  [7] top-level scope
+    @ stdin:5
+  [8] eval(m::Module, e::Any)
+    @ Core ./boot.jl:489
+  [9] include_string(mapexpr::typeof(identity), mod::Module, code::String, filename::String)
+    @ Base ./loading.jl:2874
+ [10] include_string
+    @ ./loading.jl:2884 [inlined]
+ [11] exec_options(opts::Base.JLOptions)
+    @ Base ./client.jl:315
+ [12] _start()
+    @ Base ./client.jl:550
+in expression starting at /Users/cblackwell/Dropbox/CITE/grok/SyntactileViz/src/Visualization.jl:1
+in expression starting at /Users/cblackwell/Dropbox/CITE/grok/SyntactileViz/src/SyntactileViz.jl:1
+in expression starting at stdin:
+in expression starting at /Users/cblackwell/Dropbox/CITE/grok/SyntactileViz/scripts/03_PDFer1.jl:2
+
+julia> 
+
+~~~
+

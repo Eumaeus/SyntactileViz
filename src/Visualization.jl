@@ -10,12 +10,7 @@ using NetworkLayout
 export draw_syntax_tree, save_syntax_tree
 
 """
-    syntaxgraph_to_digraph(g::SyntaxGraph)
-
-Converts a SyntaxGraph into data usable by GraphMakie.
-"""
-"""
-    syntaxgraph_to_digraph(g::SyntaxGraph; reverse_direction::Bool = true)
+    syntaxgraph_to_digraph(g::SyntaxGraph.SyntaxGraph; reverse_direction::Bool = true)
 
 Converts a SyntaxGraph into data usable by GraphMakie.
 When `reverse_direction=true` (default), edges are reversed for display
@@ -23,16 +18,7 @@ so arrows point from head → dependent (more intuitive reading:
 "ROOT has a sentence adverbial, καὶ").
 The underlying SyntaxGraph data and CEX serialization are never changed.
 """
-"""
-    syntaxgraph_to_digraph(g::SyntaxGraph; reverse_direction::Bool = true)
-
-Converts a SyntaxGraph into data usable by GraphMakie.
-When `reverse_direction=true` (default), edges are reversed for display
-so arrows point from head → dependent (more intuitive reading:
-"ROOT has a sentence adverbial, καὶ").
-The underlying SyntaxGraph data and CEX serialization are never changed.
-"""
-function syntaxgraph_to_digraph(g::SyntaxGraph; reverse_direction::Bool = true)
+function syntaxgraph_to_digraph(g::SyntaxGraph.SyntaxGraph; reverse_direction::Bool = true)
     node_ids = collect(keys(g.nodes))
     sort!(node_ids)
     id_to_idx = Dict(id => i for (i, id) in enumerate(node_ids))
@@ -43,11 +29,9 @@ function syntaxgraph_to_digraph(g::SyntaxGraph; reverse_direction::Bool = true)
     for e in g.edges
         if haskey(id_to_idx, e.source) && haskey(id_to_idx, e.target)
             if reverse_direction
-                # Display direction: head (target) → dependent (source)
                 add_edge!(digraph, id_to_idx[e.target], id_to_idx[e.source])
                 label_map[(e.target, e.source)] = e.label
             else
-                # Original data direction
                 add_edge!(digraph, id_to_idx[e.source], id_to_idx[e.target])
                 label_map[(e.source, e.target)] = e.label
             end
@@ -66,11 +50,12 @@ function syntaxgraph_to_digraph(g::SyntaxGraph; reverse_direction::Bool = true)
 end
 
 """
-    draw_syntax_tree(g::SyntaxGraph; title=nothing, kwargs...)
+    draw_syntax_tree(g::SyntaxGraph.SyntaxGraph; title=nothing, kwargs...)
 
-Draws a syntax graph. Ellipsis nodes are highlighted in yellow.
+Draws a syntax graph. Ellipsis nodes are highlighted in plum, root in gold.
+Arrows point head → dependent when `reverse_direction=true` (the default).
 """
-function draw_syntax_tree(g::SyntaxGraph; title = nothing, kwargs...)
+function draw_syntax_tree(g::SyntaxGraph.SyntaxGraph; title = nothing, kwargs...)
     digraph, node_ids, node_labels, edge_labels = syntaxgraph_to_digraph(g)
 
     # === Special styling for ellipsis nodes ===
@@ -79,27 +64,21 @@ function draw_syntax_tree(g::SyntaxGraph; title = nothing, kwargs...)
 
     for (i, id) in enumerate(node_ids)
         if startswith(id, "urn:cite2:fuTeaching:syntax.ellipsis")
-            node_colors[i] = :plum         # Yellow/gold like in pretty_print
-            node_sizes[i]  = 35             # Slightly larger
+            node_colors[i] = :plum
+            node_sizes[i]  = 35
         end
         if startswith(id, "root")
-            node_colors[i] = :gold2          # Yellow/gold like in pretty_print
-            node_sizes[i]  = 60             # Slightly larger
+            node_colors[i] = :gold2
+            node_sizes[i]  = 60
         end
     end
 
     fig = Figure(size = (1100, 800))
     titleText = g.editor * "\n\n" * replace(g.sentence_text, "," => ",\n")
-    # ax = Axis(fig[1, 1]; title = something(title, g.sentence_text))
     ax = Axis(fig[1, 1]; title = titleText)
-    # ax = Axis(fig[1, 1]; title = something(title, g.editor))
-    # ax = Axis(fig[1, 1]; title = something(title, g.editor, g.sentence_text))
 
     graphplot!(ax, digraph;
-        # layout = NetworkLayout.Spring(),
-        # layout = NetworkLayout.Stress(),
         layout = NetworkLayout.Stress(dim=2),
-
         nlabels = node_labels,
         nlabels_align = (:center, :center),
         nlabels_fontsize = 10,
@@ -119,11 +98,9 @@ function draw_syntax_tree(g::SyntaxGraph; title = nothing, kwargs...)
 end
 
 """
-    save_syntax_tree(g::SyntaxGraph, path::String; format=:pdf, title=nothing)
-
-Save the visualization as PDF, PNG, or SVG.
+    save_syntax_tree(g::SyntaxGraph.SyntaxGraph, path::String; format=:pdf, title=nothing)
 """
-function save_syntax_tree(g::SyntaxGraph, path::String; format::Symbol = :pdf, title = nothing)
+function save_syntax_tree(g::SyntaxGraph.SyntaxGraph, path::String; format::Symbol = :pdf, title = nothing)
     fig = draw_syntax_tree(g; title = title)
     save(path, fig)
     return path
