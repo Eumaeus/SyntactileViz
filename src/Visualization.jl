@@ -23,6 +23,15 @@ so arrows point from head → dependent (more intuitive reading:
 "ROOT has a sentence adverbial, καὶ").
 The underlying SyntaxGraph data and CEX serialization are never changed.
 """
+"""
+    syntaxgraph_to_digraph(g::SyntaxGraph; reverse_direction::Bool = true)
+
+Converts a SyntaxGraph into data usable by GraphMakie.
+When `reverse_direction=true` (default), edges are reversed for display
+so arrows point from head → dependent (more intuitive reading:
+"ROOT has a sentence adverbial, καὶ").
+The underlying SyntaxGraph data and CEX serialization are never changed.
+"""
 function syntaxgraph_to_digraph(g::SyntaxGraph; reverse_direction::Bool = true)
     node_ids = collect(keys(g.nodes))
     sort!(node_ids)
@@ -38,7 +47,7 @@ function syntaxgraph_to_digraph(g::SyntaxGraph; reverse_direction::Bool = true)
                 add_edge!(digraph, id_to_idx[e.target], id_to_idx[e.source])
                 label_map[(e.target, e.source)] = e.label
             else
-                # Original data direction: dependent (source) → head (target)
+                # Original data direction
                 add_edge!(digraph, id_to_idx[e.source], id_to_idx[e.target])
                 label_map[(e.source, e.target)] = e.label
             end
@@ -47,7 +56,6 @@ function syntaxgraph_to_digraph(g::SyntaxGraph; reverse_direction::Bool = true)
 
     node_labels = [g.nodes[id].text for id in node_ids]
 
-    # Build edge_labels in the exact order GraphMakie expects
     digraph_edges = collect(edges(digraph))
     edge_labels = [
         get(label_map, (node_ids[e.src], node_ids[e.dst]), "")
