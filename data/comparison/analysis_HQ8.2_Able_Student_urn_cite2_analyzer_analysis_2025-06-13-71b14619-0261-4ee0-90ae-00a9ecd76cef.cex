@@ -1,0 +1,64 @@
+#!citelibrary
+name#Ancient Greek Syntax Analysis
+urn#urn:cite2:analyzer:analysis:2025-06-13-71b14619-0261-4ee0-90ae-00a9ecd76cef
+text#urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.1-8.2.token.21
+editor#Able_Student
+date#2026-07-01
+
+#!citedata
+sentence#ctsurn#text
+urn:cite2:analyzer:analysis:2025-06-13-71b14619-0261-4ee0-90ae-00a9ecd76cef#urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.1-8.2.token.21#θυσίαν ἀγάγωμεν θεοῖς τοῖς Ἀθηναίους ἐν ἐκείνῃ τῇ μάχῃ σώσασιν ὅπως καὶ νῦν ἐθέλωσι πάντες οἱ θεοὶ τὴν δημοκρατίαν φυλάττειν .
+
+#!citedata
+tokenId#text#verbalUnitIds
+root#ROOT#
+urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.1#θυσίαν#VU1
+urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.2#ἀγάγωμεν#VU1
+urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.3#θεοῖς#VU1,VU2
+urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.4#τοῖς#VU1,VU2
+urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.5#Ἀθηναίους#VU1,VU2
+urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.6#ἐν#VU1,VU2
+urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.7#ἐκείνῃ#VU1,VU2
+urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.8#τῇ#VU1,VU2
+urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.9#μάχῃ#VU1,VU2
+urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.10#σώσασιν#VU1,VU2
+urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.11#ὅπως#VU3
+urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.12#καὶ#VU3
+urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.13#νῦν#VU3
+urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.14#ἐθέλωσι#VU3
+urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.15#πάντες#VU3
+urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.16#οἱ#VU3
+urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.17#θεοὶ#VU3
+urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.18#τὴν#VU3
+urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.19#δημοκρατίαν#VU3
+urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.20#φυλάττειν#VU3
+
+#!citedata
+unitId#syntacticType#semanticType#level
+VU1#Independent Clause#Transitive#1
+VU2#Circumstantial Participle#Transitive#2
+VU3#Subordinate Clause#Intransitive#2
+
+#!citerelations
+source#target#relation
+source#target#relation
+urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.2#root#Unit Verb
+urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.1#urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.2#Direct Object
+urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.3#urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.1#Attribute
+urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.4#urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.3#Article
+urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.10#urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.4#Unit Participle
+urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.5#urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.10#Direct Object
+urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.6#urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.10#Preposition
+urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.9#urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.6#Object of Prep.
+urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.8#urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.9#Article
+urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.7#urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.9#Attribute
+urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.11#urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.2#Unit Adverbial
+urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.14#urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.11#Unit Verb
+urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.12#urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.14#Adverbial
+urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.13#urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.14#Adverbial
+urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.15#urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.17#Attribute
+urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.16#urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.17#Article
+urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.17#urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.14#Subject
+urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.20#urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.14#Auxiliary Infinitive
+urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.19#urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.20#Direct Object
+urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.18#urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.19#Article
