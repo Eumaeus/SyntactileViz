@@ -29,6 +29,20 @@ For the moment, I would like to work purely in Julia, with reporting via somethi
 
 We can talk at a subsequent stage about visualizing comparison via Makie. And I am really looking forward to doing TikZ visualizations of graphs and comparisons, which I think will be very elegant and offer lots of scope for fine-tuning layout and typesetting.
 
+---
+
+Conversation at: <https://x.com/i/grok/share/4c6850b1af2341bca79369439a01ab0a>
+
+This is great. Perfect. We don't need NP-Hard problems on our hands, and the UAS & LAS scores are exactly what I asked for, without knowing the terms-of-art. Super!
+
+You sketches of what is needed look ideal. For reporting, I love that you proposed what I was thinking: identifying graph by editor + sentence-id. Perfect.
+
+Currently `src/Comparison.jl` is an empty stub, so code can go there.
+
+As always, I will need a lot of help wiring it into the SyntactileViz project.
+
+Thanks for this! Let's go ahead and implement it!
+
 So, for comparing two graphs, I'm not sure what graph-theorists do. I assume we can catalog edges differently labeled, and pull out sub-graphs that differ. 
 
 Is there a standard way to assign a number to "degree of difference" between two graphs? A way to weight that according to more trivial difference (differently labeled edge) vs. more significant differences (different nodes linked with different graphs)?

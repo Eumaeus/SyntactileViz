@@ -1,0 +1,33 @@
+#!citelibrary
+name#Ancient Greek Syntax Analysis
+urn#urn:cite2:analyzer:analysis:2025-06-13-80ba9362-fa32-44f9-a276-b576de99619b
+text#urn:cts:greekLit:demos.ad_hoc.default:0
+editor#Panda_Diet
+date#2026-07-01
+
+#!citedata
+sentence#ctsurn#text
+urn:cite2:analyzer:analysis:2025-06-13-80ba9362-fa32-44f9-a276-b576de99619b#urn:cts:greekLit:demos.ad_hoc.default:0#Panda eats shoots and leaves.
+
+#!citedata
+tokenId#text#verbalUnitIds
+root#ROOT#
+1#Panda#VU1
+2#eats#VU1
+3#shoots#VU1
+4#and#VU1
+5#leaves#VU1
+
+#!citedata
+unitId#syntacticType#semanticType#level
+VU1#Independent Clause#Transitive#1
+
+#!citerelations
+source#target#relation
+source#target#relation
+2#root#Unit Verb
+1#2#Subject
+3#2#Direct Object
+5#2#Direct Object
+4#3#Conjunction
+4#5#Conjunction
