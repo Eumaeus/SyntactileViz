@@ -1,6 +1,9 @@
 using Revise
 using SyntactileViz
 
+Revise.revise()
+
+
 # Option A: Compare two graphs you already have
 g1 = build_syntax_graph(parse_cex("data/comparison/Comp1-analysis_HQ1.7-corect.cex"))
 g2 = build_syntax_graph(parse_cex("data/comparison/Comp1-analysis_HQ1.7_incorrect.cex"))

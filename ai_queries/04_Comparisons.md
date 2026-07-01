@@ -101,3 +101,8 @@ Everything runs cleanly, and the output and information look perfect.
 
 Let's do all three of your suggestions as a next step!
 
+---
+
+Got it.
+
+In the previous version of `Comparison.jl` and in this new one, there are some `@printf` calls that throw errors prefenting compilation. Earlier, I just changed those to `println` and it worked. Is `@printf` something I need to know about?

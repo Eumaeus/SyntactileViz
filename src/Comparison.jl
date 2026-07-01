@@ -1,10 +1,11 @@
 module Comparison
 
 using ..SyntaxGraph
-using ..CEXParser          # ← ADD THIS LINE
+using ..CEXParser
+using Printf          # ← REQUIRED for @printf
 
 
-export ComparisonResult, compare_syntax_graphs, report_comparison, compare_cex_files
+export ComparisonResult, compare_syntax_graphs, report_comparison, diff_summary
 
 # ============================================================
 # Result struct
@@ -16,18 +17,15 @@ struct ComparisonResult
     uas::Float64
     las::Float64
     total_tokens::Int
-    agreeing::Vector{String}                           # node_ids with full match
-    label_diff::Vector{Tuple{String, String, String}}  # (node_id, label_g1, label_g2)
-    head_diff::Vector{Tuple{String, String, String}}   # (node_id, head_g1, head_g2)
+    agreeing::Vector{String}
+    label_diff::Vector{Tuple{String, String, String}}
+    head_diff::Vector{Tuple{String, String, String}}
 end
 
 # ============================================================
-# Core comparison logic
+# Core helpers
 # ============================================================
 
-"""
-    get_head_and_label(g::SyntaxGraph, node_id::String) -> (head_id, label) or (nothing, nothing)
-"""
 function get_head_and_label(g::SyntaxGraph, node_id::String)
     outs = outgoing(g, node_id)
     if isempty(outs)
@@ -42,21 +40,17 @@ function get_head_and_label(g::SyntaxGraph, node_id::String)
     end
 end
 
-"""
-    compare_syntax_graphs(g1::SyntaxGraph, g2::SyntaxGraph) -> ComparisonResult
-"""
 function compare_syntax_graphs(g1::SyntaxGraph, g2::SyntaxGraph)
     if g1.sentence_text != g2.sentence_text
         @warn "Sentences differ between the two graphs"
     end
 
-    # Work with non-root nodes that exist in both graphs
     nodes1 = setdiff(collect(keys(g1.nodes)), ["root"])
     nodes2 = setdiff(collect(keys(g2.nodes)), ["root"])
     common_nodes = intersect(nodes1, nodes2)
 
-    if length(common_nodes) < length(nodes1) || length(common_nodes) < length(nodes2)
-        @warn "Node sets are not identical between the two analyses"
+    if length(common_nodes) < min(length(nodes1), length(nodes2))
+        @warn "Node sets are not identical"
     end
 
     total = length(common_nodes)
@@ -91,12 +85,20 @@ function compare_syntax_graphs(g1::SyntaxGraph, g2::SyntaxGraph)
 end
 
 # ============================================================
-# Reporting
+# New: Quick one-line summary
 # ============================================================
 
-"""
-    report_comparison(comp::ComparisonResult; show_details::Bool=true)
-"""
+function diff_summary(comp::ComparisonResult)
+    minor = length(comp.label_diff)
+    major = length(comp.head_diff)
+    @printf("UAS: %5.1f%% | LAS: %5.1f%% | Minor diffs: %2d | Major diffs: %2d\n",
+            comp.uas * 100, comp.las * 100, minor, major)
+end
+
+# ============================================================
+# Enhanced reporting with Verbal Unit comparison
+# ============================================================
+
 function report_comparison(comp::ComparisonResult; show_details::Bool = true)
     g1 = comp.g1
     g2 = comp.g2
@@ -114,13 +116,14 @@ function report_comparison(comp::ComparisonResult; show_details::Bool = true)
     println("            $(g2.analysis_urn)")
     println()
     println("────────────────────────────────────────────────────────────────────")
-    println("UAS (Unlabeled Attachment Score) : %6.1f%%\n", comp.uas * 100)
-    println("LAS (Labeled Attachment Score)   : %6.1f%%\n", comp.las * 100)
+    @printf("UAS (Unlabeled Attachment Score) : %6.1f%%\n", comp.uas * 100)
+    @printf("LAS (Labeled Attachment Score)   : %6.1f%%\n", comp.las * 100)
     println("Tokens evaluated                 : $(comp.total_tokens)")
     println("────────────────────────────────────────────────────────────────────")
     println()
 
     if show_details
+        # --- Attachment differences ---
         if !isempty(comp.label_diff)
             println("── Minor differences (same head, different label) ──")
             for (nid, l1, l2) in comp.label_diff
@@ -136,8 +139,8 @@ function report_comparison(comp::ComparisonResult; show_details::Bool = true)
             for (nid, h1, h2) in comp.head_diff
                 node = get_node(g1, nid)
                 text = node === nothing ? nid : node.text
-                h1_text = get_node(g1, h1) !== nothing ? get_node(g1, h1).text : h1
-                h2_text = get_node(g2, h2) !== nothing ? get_node(g2, h2).text : h2
+                h1_text = get_node(g1, h1) !== nothing ? get_node(g1, h1).text : string(h1)
+                h2_text = get_node(g2, h2) !== nothing ? get_node(g2, h2).text : string(h2)
                 println("  • $(text)  →  head: \"$h1_text\"  vs  \"$h2_text\"")
             end
             println()
@@ -146,31 +149,58 @@ function report_comparison(comp::ComparisonResult; show_details::Bool = true)
         if isempty(comp.label_diff) && isempty(comp.head_diff)
             println("✓ Perfect agreement on all attachments!")
         end
+
+        # --- NEW: Verbal Unit differences ---
+        println("── Verbal Unit Comparison ──")
+        vus1 = Set(keys(g1.verbal_units))
+        vus2 = Set(keys(g2.verbal_units))
+        only_in_g1 = setdiff(vus1, vus2)
+        only_in_g2 = setdiff(vus2, vus1)
+        common_vus = intersect(vus1, vus2)
+
+        println("  VUs in Analysis 1: $(length(vus1))   |   VUs in Analysis 2: $(length(vus2))")
+        if !isempty(only_in_g1)
+            println("  Only in Analysis 1: $(collect(only_in_g1))")
+        end
+        if !isempty(only_in_g2)
+            println("  Only in Analysis 2: $(collect(only_in_g2))")
+        end
+
+        # Check for nodes with different primary verbal unit
+        nodes1 = setdiff(collect(keys(g1.nodes)), ["root"])
+        nodes2 = setdiff(collect(keys(g2.nodes)), ["root"])
+        common_nodes = intersect(nodes1, nodes2)
+
+        vu_assignment_diffs = Tuple{String, Union{String,Nothing}, Union{String,Nothing}}[]
+        for nid in common_nodes
+            pu1 = get_primary_verbal_unit(g1, nid)
+            pu2 = get_primary_verbal_unit(g2, nid)
+            if pu1 != pu2
+                push!(vu_assignment_diffs, (nid, pu1, pu2))
+            end
+        end
+
+        if !isempty(vu_assignment_diffs)
+            println("\n  Nodes with different primary Verbal Unit assignment:")
+            for (nid, pu1, pu2) in vu_assignment_diffs
+                node = get_node(g1, nid)
+                text = node === nothing ? nid : node.text
+                println("    • $(text)  →  $(pu1)  vs  $(pu2)")
+            end
+        else
+            println("  ✓ All nodes have consistent primary Verbal Unit assignments")
+        end
+        println()
     end
 
     println("────────────────────────────────────────────────────────────────────")
-    println("Quick tree views (for reference):")
+    println("Quick tree views:")
     println()
     println(">>> Analysis 1 ($(g1.editor)):")
-    pretty_print(g1; show_vu=true)
+    pretty_print(g1; show_vu = true)
     println()
     println(">>> Analysis 2 ($(g2.editor)):")
-    pretty_print(g2; show_vu=true)
-end
-
-# ============================================================
-# Convenience function
-# ============================================================
-
-"""
-    compare_cex_files(path1::String, path2::String) -> ComparisonResult
-"""
-function compare_cex_files(path1::String, path2::String)
-    a1 = parse_cex(path1)
-    a2 = parse_cex(path2)
-    g1 = build_syntax_graph(a1)
-    g2 = build_syntax_graph(a2)
-    compare_syntax_graphs(g1, g2)
+    pretty_print(g2; show_vu = true)
 end
 
 end # module Comparison
