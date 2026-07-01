@@ -2,7 +2,7 @@
 
 julia_version = "1.12.6"
 manifest_format = "2.0"
-project_hash = "3f2a7f124a15b426630c8a82d3e1f1c324ffa3ba"
+project_hash = "6ec8a5bb3f8c3fb508b22776361388059004a167"
 
 [[deps.AbstractFFTs]]
 deps = ["LinearAlgebra"]
@@ -1413,7 +1413,7 @@ uuid = "bea87d4a-7f5b-5778-9afe-8cc45184846c"
 version = "7.8.3+2"
 
 [[deps.SyntactileViz]]
-deps = ["CairoMakie", "GraphMakie", "Graphs", "Makie", "NetworkLayout"]
+deps = ["CairoMakie", "GraphMakie", "Graphs", "Makie", "NetworkLayout", "Printf"]
 path = "."
 uuid = "7a31ebc7-e5f0-4d97-940e-aa3fdd0bc38d"
 version = "0.1.0"

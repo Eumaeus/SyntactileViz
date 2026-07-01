@@ -3,6 +3,7 @@ module Comparison
 using ..SyntaxGraph
 using ..CEXParser
 using Printf
+using Dates
 
 export ComparisonResult, compare_syntax_graphs, report_comparison, 
        diff_summary, export_comparison_markdown
@@ -85,6 +86,21 @@ function compare_syntax_graphs(g1::SyntaxGraph, g2::SyntaxGraph)
 end
 
 # ============================================================
+# Helper to safely capture pretty_print output
+# ============================================================
+function capture_pretty_print(g::SyntaxGraph; show_vu::Bool = true)
+    io = IOBuffer()
+    original_stdout = stdout
+    try
+        redirect_stdout(io)
+        pretty_print(g; show_vu = show_vu)
+    finally
+        redirect_stdout(original_stdout)
+    end
+    return String(take!(io))
+end
+
+# ============================================================
 # Quick one-line summary
 # ============================================================
 
@@ -142,40 +158,45 @@ function report_comparison(comp::ComparisonResult;
 end
 
 # ============================================================
-# NEW: Export as Markdown file
+# NEW & IMPROVED: export_comparison_markdown
 # ============================================================
-
-"""
-    export_comparison_markdown(comp, filepath; show_details=true, show_tree=true)
-
-Writes a nicely formatted Markdown report to `filepath`.
-Trees are placed inside code blocks so alignment is preserved.
-"""
 function export_comparison_markdown(comp::ComparisonResult, filepath::String;
                                     show_details::Bool = true,
-                                    show_tree::Bool = true)
+                                    show_tree::Bool = true,
+                                    executive_summary::Bool = false)
+    
+    if executive_summary
+        show_tree = false
+    end
+
     g1 = comp.g1
     g2 = comp.g2
+    timestamp = Dates.format(now(), "yyyy-mm-dd HH:MM")
 
     open(filepath, "w") do io
+        # Header
         write(io, "# Syntactic Analysis Comparison Report\n\n")
+        write(io, "**Generated:** $(timestamp)\n\n")
         write(io, "**Sentence:** $(g1.sentence_text)\n\n")
+        
         write(io, "**Analysis 1:** $(g1.editor)  \n")
         write(io, "$(g1.analysis_urn)\n\n")
         write(io, "**Analysis 2:** $(g2.editor)  \n")
         write(io, "$(g2.analysis_urn)\n\n")
+        
         write(io, "---\n\n")
 
-        # Scores
+        # Scores as a Markdown table
         write(io, "## Scores\n\n")
-        @printf(io, "- **UAS**: %.1f%%\n", comp.uas * 100)
-        @printf(io, "- **LAS**: %.1f%%\n", comp.las * 100)
-        write(io, "- **Tokens evaluated**: $(comp.total_tokens)\n\n")
+        write(io, "| Metric | Value |\n")
+        write(io, "|--------|-------:|\n")
+        @printf(io, "| UAS    | %.1f%% |\n", comp.uas * 100)
+        @printf(io, "| LAS    | %.1f%% |\n", comp.las * 100)
+        write(io, "| Tokens | $(comp.total_tokens) |\n\n")
 
         if show_details
             write(io, "## Differences\n\n")
 
-            # Minor differences
             if !isempty(comp.label_diff)
                 write(io, "### Minor Differences (same head, different label)\n\n")
                 for (nid, l1, l2) in comp.label_diff
@@ -186,7 +207,6 @@ function export_comparison_markdown(comp::ComparisonResult, filepath::String;
                 write(io, "\n")
             end
 
-            # Major differences
             if !isempty(comp.head_diff)
                 write(io, "### Major Differences (different head)\n\n")
                 for (nid, h1, h2) in comp.head_diff
@@ -199,45 +219,30 @@ function export_comparison_markdown(comp::ComparisonResult, filepath::String;
                 write(io, "\n")
             end
 
-            # Verbal Unit section (simplified for Markdown)
+            # Verbal Unit section
             write(io, "### Verbal Unit Comparison\n\n")
-            vus1 = keys(g1.verbal_units) |> collect |> Set
-            vus2 = keys(g2.verbal_units) |> collect |> Set
+            vus1 = Set(keys(g1.verbal_units))
+            vus2 = Set(keys(g2.verbal_units))
             only_g1 = setdiff(vus1, vus2)
             only_g2 = setdiff(vus2, vus1)
 
-            write(io, "- VUs in Analysis 1: $(length(vus1))\n")
-            write(io, "- VUs in Analysis 2: $(length(vus2))\n")
-            if !isempty(only_g1)
-                write(io, "- Only in Analysis 1: $(collect(only_g1))\n")
-            end
-            if !isempty(only_g2)
-                write(io, "- Only in Analysis 2: $(collect(only_g2))\n")
-            end
+            write(io, "- **VUs in Analysis 1**: $(length(vus1))\n")
+            write(io, "- **VUs in Analysis 2**: $(length(vus2))\n")
+            if !isempty(only_g1) write(io, "- Only in Analysis 1: $(collect(only_g1))\n") end
+            if !isempty(only_g2) write(io, "- Only in Analysis 2: $(collect(only_g2))\n") end
             write(io, "\n")
         end
 
         if show_tree
-            write(io, "---\n\n")
-            write(io, "## Tree Views\n\n")
+            write(io, "---\n\n## Tree Views\n\n")
 
-            # Capture tree 1
-            tree1 = sprint() do s
-                redirect_stdout(s) do
-                    pretty_print(g1; show_vu = true)
-                end
-            end
+            tree1 = capture_pretty_print(g1; show_vu = true)
             write(io, "### Analysis 1 – $(g1.editor)\n\n")
             write(io, "```text\n")
             write(io, tree1)
             write(io, "```\n\n")
 
-            # Capture tree 2
-            tree2 = sprint() do s
-                redirect_stdout(s) do
-                    pretty_print(g2; show_vu = true)
-                end
-            end
+            tree2 = capture_pretty_print(g2; show_vu = true)
             write(io, "### Analysis 2 – $(g2.editor)\n\n")
             write(io, "```text\n")
             write(io, tree2)

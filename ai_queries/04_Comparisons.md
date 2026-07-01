@@ -183,4 +183,44 @@ And while we look at that, your three suggestions sound great:
 
 Thank you for all this help!
 
+---
 
+Another error having to do with IO:
+
+~~~
+ERROR: LoadError: MethodError: no method matching (::Base.RedirectStdStream)(::IOBuffer)
+The function `Base.RedirectStdStream(1, true)` exists, but no method is defined for this combination of argument types.
+
+Closest candidates are:
+  (::Base.RedirectStdStream)()
+   @ Base stream.jl:1293
+  (::Base.RedirectStdStream)(::Pipe)
+   @ Base stream.jl:1285
+  (::Base.RedirectStdStream)(::Base.DevNull)
+   @ Base stream.jl:1271
+  ...
+
+Stacktrace:
+  [1] capture_pretty_print(g::SyntactileViz.SyntaxGraph.SyntaxGraph; show_vu::Bool)
+    @ SyntactileViz.Comparison ~/Dropbox/CITE/grok/SyntactileViz/src/Comparison.jl:95
+  [2] (::SyntactileViz.Comparison.var"#5#6"{Bool, ComparisonResult, String, SyntactileViz.SyntaxGraph.SyntaxGraph, SyntactileViz.SyntaxGraph.SyntaxGraph})(io::IOStream)
+    @ SyntactileViz.Comparison ~/Dropbox/CITE/grok/SyntactileViz/src/Comparison.jl:239
+  [3] open(::SyntactileViz.Comparison.var"#5#6"{Bool, ComparisonResult, String, SyntactileViz.SyntaxGraph.SyntaxGraph, SyntactileViz.SyntaxGraph.SyntaxGraph}, ::String, ::Vararg{String}; kwargs::@Kwargs{})
+    @ Base ./io.jl:412
+  [4] open
+    @ ./io.jl:409 [inlined]
+  [5] export_comparison_markdown(comp::ComparisonResult, filepath::String; show_details::Bool, show_tree::Bool, executive_summary::Bool)
+    @ SyntactileViz.Comparison ~/Dropbox/CITE/grok/SyntactileViz/src/Comparison.jl:176
+  [6] export_comparison_markdown(comp::ComparisonResult, filepath::String)
+    @ SyntactileViz.Comparison ~/Dropbox/CITE/grok/SyntactileViz/src/Comparison.jl:163
+  [7] top-level scope
+    @ ~/Dropbox/CITE/grok/SyntactileViz/scripts/09_Markdown_Report.jl:9
+  [8] include(mod::Module, _path::String)
+    @ Base ./Base.jl:306
+  [9] exec_options(opts::Base.JLOptions)
+    @ Base ./client.jl:317
+ [10] _start()
+    @ Base ./client.jl:550
+in expression starting at /Users/cblackwell/Dropbox/CITE/grok/SyntactileViz/scripts/09_Markdown_Report.jl:9
+➜  SyntactileViz git:(main) ✗      
+~~~

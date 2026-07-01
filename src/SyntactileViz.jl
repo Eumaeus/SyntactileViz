@@ -9,6 +9,7 @@ using .CEXParser
 using .SyntaxGraph
 using .Comparison
 using .Visualization
+using Dates
 
 export parse_cex, Analysis, Token, VerbalUnit, SyntacticRelation
 export SyntaxNode, SyntaxEdge, SyntaxGraph
