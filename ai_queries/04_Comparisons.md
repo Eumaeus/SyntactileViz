@@ -125,3 +125,62 @@ When we turn to more elegant printable visualizations, that might be the natural
 
 So perhaps just a provision to export a report as a Markdown file, using code-blocks to force a monospaced font, thus allowing the tree-view to line up correctly?
 
+---
+
+Conversation at: <https://x.com/i/grok/share/c41c9e9d6d4d446bb23d6cb853ed37ec>
+
+Okay! I've made these changes and updated the repo. 
+
+`export_comparison_markdown()` throws this error:
+
+~~~
+ERROR: LoadError: MethodError: no method matching (::Base.RedirectStdStream)(::IOBuffer)
+The function `Base.RedirectStdStream(1, true)` exists, but no method is defined for this combination of argument types.
+
+Closest candidates are:
+  (::Base.RedirectStdStream)()
+   @ Base stream.jl:1293
+  (::Base.RedirectStdStream)(::Pipe)
+   @ Base stream.jl:1285
+  (::Base.RedirectStdStream)(::Base.DevNull)
+   @ Base stream.jl:1271
+  ...
+
+Stacktrace:
+  [1] (::Base.RedirectStdStream)(thunk::SyntactileViz.Comparison.var"#12#13"{SyntactileViz.SyntaxGraph.SyntaxGraph}, stream::IOBuffer)
+    @ Base ./stream.jl:1462
+  [2] (::SyntactileViz.Comparison.var"#10#11"{SyntactileViz.SyntaxGraph.SyntaxGraph})(s::IOBuffer)
+    @ SyntactileViz.Comparison ~/Dropbox/CITE/grok/SyntactileViz/src/Comparison.jl:226
+  [3] sprint(::SyntactileViz.Comparison.var"#10#11"{SyntactileViz.SyntaxGraph.SyntaxGraph}; context::Nothing, sizehint::Int64)
+    @ Base ./strings/io.jl:117
+  [4] sprint(::Function)
+    @ Base ./strings/io.jl:110
+  [5] (::SyntactileViz.Comparison.var"#8#9"{Bool, Bool, ComparisonResult, SyntactileViz.SyntaxGraph.SyntaxGraph, SyntactileViz.SyntaxGraph.SyntaxGraph})(io::IOStream)
+    @ SyntactileViz.Comparison ~/Dropbox/CITE/grok/SyntactileViz/src/Comparison.jl:225
+  [6] open(::SyntactileViz.Comparison.var"#8#9"{Bool, Bool, ComparisonResult, SyntactileViz.SyntaxGraph.SyntaxGraph, SyntactileViz.SyntaxGraph.SyntaxGraph}, ::String, ::Vararg{String}; kwargs::@Kwargs{})
+    @ Base ./io.jl:412
+  [7] open
+    @ ./io.jl:409 [inlined]
+  [8] #export_comparison_markdown#2
+    @ ~/Dropbox/CITE/grok/SyntactileViz/src/Comparison.jl:160 [inlined]
+  [9] top-level scope
+    @ ~/Dropbox/CITE/grok/SyntactileViz/scripts/09_Markdown_Report.jl:16
+ [10] include(mod::Module, _path::String)
+    @ Base ./Base.jl:306
+ [11] exec_options(opts::Base.JLOptions)
+    @ Base ./client.jl:317
+ [12] _start()
+    @ Base ./client.jl:550
+in expression starting at /Users/cblackwell/Dropbox/CITE/grok/SyntactileViz/scripts/09_Markdown_Report.jl:16
+➜  SyntactileViz git:(main) ✗ 
+~~~
+
+And while we look at that, your three suggestions sound great:
+
+- A timestamp in the Markdown header?
+- A small table for the scores instead of a list?
+- An option to include only the differences (no trees) for a shorter “executive summary” version?
+
+Thank you for all this help!
+
+
