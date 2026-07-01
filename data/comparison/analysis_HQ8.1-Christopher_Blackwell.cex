@@ -1,0 +1,50 @@
+#!citelibrary
+name#Ancient Greek Syntax Analysis
+urn#urn:cite2:analyzer:analysis:2025-06-13-e6363067-fa03-4696-a57a-af2b9d558425
+text#urn:cts:fuTeaching:blackwell.hq.2026:8.1.token.1-8.1.token.12
+editor#Christopher_Blackwell
+date#2026-07-01
+
+#!citedata
+sentence#ctsurn#text
+urn:cite2:analyzer:analysis:2025-06-13-e6363067-fa03-4696-a57a-af2b9d558425#urn:cts:fuTeaching:blackwell.hq.2026:8.1.token.1-8.1.token.12#τοὺς γέροντας λιποῦσαι ἥκομεν σύμπαντας τοὺς ῥήτορας τοὺς κεκλοφότας δώρων γραψόμεναι .
+
+#!citedata
+tokenId#text#verbalUnitIds
+root#ROOT#
+urn:cts:fuTeaching:blackwell.hq.2026:8.1.token.1#τοὺς#VU2
+urn:cts:fuTeaching:blackwell.hq.2026:8.1.token.2#γέροντας#VU2
+urn:cts:fuTeaching:blackwell.hq.2026:8.1.token.3#λιποῦσαι#VU2
+urn:cts:fuTeaching:blackwell.hq.2026:8.1.token.4#ἥκομεν#VU1
+urn:cts:fuTeaching:blackwell.hq.2026:8.1.token.5#σύμπαντας#VU3
+urn:cts:fuTeaching:blackwell.hq.2026:8.1.token.6#τοὺς#VU3
+urn:cts:fuTeaching:blackwell.hq.2026:8.1.token.7#ῥήτορας#VU3
+urn:cts:fuTeaching:blackwell.hq.2026:8.1.token.8#τοὺς#VU3,VU4
+urn:cts:fuTeaching:blackwell.hq.2026:8.1.token.9#κεκλοφότας#VU3,VU4
+urn:cts:fuTeaching:blackwell.hq.2026:8.1.token.10#δώρων#VU3
+urn:cts:fuTeaching:blackwell.hq.2026:8.1.token.11#γραψόμεναι#VU3
+urn:cite2:fuTeaching:syntax.ellipsis:13#{ … }#VU1
+
+#!citedata
+unitId#syntacticType#semanticType#level
+VU1#Independent Clause#Intransitive#1
+VU2#Circumstantial Participle#Transitive#2
+VU3#Subordinate Clause#Transitive#2
+VU4#Attributive Participle#Intransitive#3
+
+#!citerelations
+source#target#relation
+source#target#relation
+source#target#relation
+urn:cts:fuTeaching:blackwell.hq.2026:8.1.token.4#root#Unit Verb
+urn:cts:fuTeaching:blackwell.hq.2026:8.1.token.2#urn:cts:fuTeaching:blackwell.hq.2026:8.1.token.3#Direct Object
+urn:cts:fuTeaching:blackwell.hq.2026:8.1.token.1#urn:cts:fuTeaching:blackwell.hq.2026:8.1.token.2#Article
+urn:cts:fuTeaching:blackwell.hq.2026:8.1.token.11#urn:cite2:fuTeaching:syntax.ellipsis:13#Unit Participle
+urn:cts:fuTeaching:blackwell.hq.2026:8.1.token.3#urn:cite2:fuTeaching:syntax.ellipsis:13#Unit Participle
+urn:cts:fuTeaching:blackwell.hq.2026:8.1.token.7#urn:cts:fuTeaching:blackwell.hq.2026:8.1.token.11#Direct Object
+urn:cts:fuTeaching:blackwell.hq.2026:8.1.token.6#urn:cts:fuTeaching:blackwell.hq.2026:8.1.token.7#Article
+urn:cts:fuTeaching:blackwell.hq.2026:8.1.token.5#urn:cts:fuTeaching:blackwell.hq.2026:8.1.token.7#Attribute
+urn:cts:fuTeaching:blackwell.hq.2026:8.1.token.9#urn:cts:fuTeaching:blackwell.hq.2026:8.1.token.7#Unit Participle
+urn:cts:fuTeaching:blackwell.hq.2026:8.1.token.8#urn:cts:fuTeaching:blackwell.hq.2026:8.1.token.9#Article
+urn:cts:fuTeaching:blackwell.hq.2026:8.1.token.10#urn:cts:fuTeaching:blackwell.hq.2026:8.1.token.11#Adverbial
+urn:cite2:fuTeaching:syntax.ellipsis:13#urn:cts:fuTeaching:blackwell.hq.2026:8.1.token.4#Subject
