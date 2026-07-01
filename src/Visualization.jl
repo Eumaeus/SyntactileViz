@@ -1,6 +1,6 @@
 module Visualization
 
-using ..SyntaxGraph
+import ..SyntaxGraph
 
 using CairoMakie
 using GraphMakie
