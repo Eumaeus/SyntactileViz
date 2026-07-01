@@ -1,6 +1,8 @@
 module Comparison
 
 using ..SyntaxGraph
+using ..CEXParser          # ← ADD THIS LINE
+
 
 export ComparisonResult, compare_syntax_graphs, report_comparison, compare_cex_files
 

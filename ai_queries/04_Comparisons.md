@@ -92,3 +92,12 @@ Stacktrace:
 in expression starting at /Users/cblackwell/Dropbox/CITE/grok/SyntactileViz/scripts/05_Comparison.jl:11
 ➜  SyntactileViz git:(main) ✗ 
 ~~~
+
+Updates are checked into the repository.
+
+---
+
+Everything runs cleanly, and the output and information look perfect.
+
+Let's do all three of your suggestions as a next step!
+
