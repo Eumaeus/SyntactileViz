@@ -198,6 +198,18 @@ Adding a comment explaining why we use `import` here would be helpful!
 
 And… perhaps I need to know a little more about how to take advantage of Revise.jl. Should I do `Revise.revise()` before each iteration of `include…`?
 
+---
 
+Conversation at: <https://x.com/i/grok/share/ec6d4f2e6dcd429985b52b3dcc43fbeb>
+
+Perfect!
+
+Thanks for all your help today getting PDF-generation of these graphs working so well.
+
+I will think overnight, and come back for help with `src/Comparison.jl`, which I hope will give me the ability to script out reports comparing two syntactic analyses of the same sentence. This will be useful for evaulating student work, and to focus conversation about controversial readings of difficult passages.
+
+Thucydides 1.22 comes to mind… what is he saying? And what does it mean?
+
+So, again, thank you for all this, and I'll look forward to moving ahead!
 
 

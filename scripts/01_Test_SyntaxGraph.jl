@@ -1,4 +1,8 @@
+using Revise
 using SyntactileViz
+
+Revise.revise()
+
 
 println("=== Testing SyntactileViz Package ===\n")
 

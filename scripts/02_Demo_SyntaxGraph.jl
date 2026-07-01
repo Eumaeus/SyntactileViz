@@ -1,4 +1,9 @@
+using Revise
 using SyntactileViz
+
+Revise.revise()
+
+
 
 println("=== DEMO: SyntaxGraph Features ===\n")
 

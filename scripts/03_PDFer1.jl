@@ -3,6 +3,10 @@ using SyntactileViz
 using Makie
 
 
+Revise.revise()
+
+
+
 # Set a font with good Greek support (Noto Sans usually works well)
 Makie.set_theme!(fonts = (regular = "DejaVu Sans", bold = "DejaVu Sans Bold"))
 

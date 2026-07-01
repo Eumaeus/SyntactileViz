@@ -1,5 +1,11 @@
 module Visualization
 
+# We use `import` (instead of `using`) for the sibling submodule
+# because `SyntaxGraph` is both the module name *and* the name of
+# an exported type inside it. `using ..SyntaxGraph` can cause the
+# bare name `SyntaxGraph` to resolve to the *type* in some contexts,
+# which then breaks qualified access like `SyntaxGraph.SyntaxGraph`.
+# `import` brings only the module, avoiding the name clash.
 import ..SyntaxGraph
 
 using CairoMakie

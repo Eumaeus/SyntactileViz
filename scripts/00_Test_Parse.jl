@@ -1,9 +1,15 @@
+using Revise
 using Pkg
 Pkg.activate(".")
+
+Revise.revise()
+
 
 include("../src/CEXParser.jl")
 
 using .CEXParser
+
+
 
 a = parse_cex("data/samples/analysis_HQ1.7-corect.cex")
 println(length(a.tokens))      # should be 14 (root + 13 tokens)
