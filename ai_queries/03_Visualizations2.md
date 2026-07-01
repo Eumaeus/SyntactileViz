@@ -4,9 +4,11 @@ It is closely associated with this one that we have worked on a lot:<https://git
 
 The goal is to analyze the syntax of Ancient Greek sentences and serialize those analyses in a way that can be usefully compared, visualized, aligned with their source texts and thus used in various ways.
 
-The tool exports alignment serialized as `.cex` files. The data—analyzed tokens—is linked to the words in their literary context by means of CTS-URNs.
+The tool Syntactile exports alignment serialized as `.cex` files. The data—analyzed tokens—is linked to the words in their literary context by means of CTS-URNs.
 
-The code at <https://github.com/Eumaeus/SyntactileViz> includes a directory, `ai_queries` that contains the history of my requests for help that got the project to its present state.
+The code for the project we're looking at now, at <https://github.com/Eumaeus/SyntactileViz>, includes a directory, `ai_queries` that contains the history of my requests for help that got the project to its present state.
+
+All code and data is up-to-date in the repository.
 
 The last conversation we had on this topic is here: <https://x.com/i/grok/share/d5e4c291048f405face5a8adfac4a06a>.
 
@@ -14,23 +16,25 @@ We had just added `src/SyntaxGraph.jl` and `src/Visualizations.jl`.
 
 ## Something is Amiss with Visualizations
 
-Working with the script at `/scripts/03_PDFer1.jl`, which draws on the CEX file at `/data/samples/analysis_Ellipsis_Option3.cex`.
+I've been working with the script at `/scripts/02_Demo_SyntaxGraph.jl` and `/scripts/03_PDFer1.jl`, which draw on the CEX file at `/data/samples/analysis_Ellipsis_Option3.cex`.
 
-The code in `src/SyntaxGraph.jl` works very well. All of the functions work, and the output of `pretty_print` shows that the code is parsting the graph from the CEX correctly.
+The code in `src/SyntaxGraph.jl` works very well. All of the functions work, and the output of `pretty_print` shows that the code is parsing the graph from the CEX correctly.
 
-`Visualization.jl` is not producing a correct graph. The overall graph of nodes seems correct, but the edge-labels seems all mixed up.
+`Visualization.jl` is not producing a correct graph. The overall graph of nodes seems correct, but the edge-labels seem all mixed up.
 
 As far as I can tell, the function `syntaxgraph_to_digraph()` works properly, capturing edges for nodes.
 
 I have not tracked the problem down further.
 
-In the generated PDF graph, for example, the CEX graph has this relation:
+In CEX, for example, the CEX graph has this relation:
 
    urn:cts:greekLit:tlg0031.tlg001.wh:14.19.1#root#Sentence Adverbial
 
 That is, node `urn:cts:greekLit:tlg0031.tlg001.wh:14.19.1` ("καὶ") is linked to node `root` by edge `Sentence Adverbial`.
 
-In the generated PDF graph, "καὶ", `urn:cts:greekLit:tlg0031.tlg001.wh:14.19.1`, is linked to `root` by an edge labeled `Unit Verb`.
+The code in `CEXParser.jl` and `SyntaxGraph.jl` handle this perfectly.
+
+In the PDF generated from `Visualization.jl`, however, "καὶ", `urn:cts:greekLit:tlg0031.tlg001.wh:14.19.1`, is linked to `root` by an edge labeled `Unit Verb`.
 
 All other edges are also incorrectly labeled.
 
@@ -39,3 +43,39 @@ Could you take a look?
 All code is up to date in the repository: <https://github.com/Eumaeus/SyntactileViz>
 
 Thanks!
+
+---
+
+Conversation at: <https://x.com/i/grok/share/a1ae82eb687240e3af128af187eda778>
+
+That works great! Perfect, tidy fix.
+
+And, yes, let's reverse the arrows. 
+
+I like the order captured by Syntactile and serialized in the CEX. That order implies the sentence "καὶ **is a** sentence adverbial **of** ROOT."
+
+For the PDF, I think most people would expect to see this implied sentence: "ROOT **has a** sentence adverbial, καὶ." Flipping the arrows for display, but not in data, would help.
+
+---
+
+Oops. That change results in this error. Maybe another Substring problem?
+
+~~~
+julia> include("scripts/03_PDFer1.jl")
+ERROR: LoadError: MethodError: no method matching syntaxgraph_to_digraph(::SyntactileViz.SyntaxGraph.SyntaxGraph)
+The function `syntaxgraph_to_digraph` exists, but no method is defined for this combination of argument types.
+Stacktrace:
+ [1] draw_syntax_tree(g::SyntactileViz.SyntaxGraph.SyntaxGraph; title::Nothing, kwargs::@Kwargs{})
+   @ SyntactileViz.Visualization ~/Dropbox/CITE/grok/SyntactileViz/src/Visualization.jl:50
+ [2] draw_syntax_tree(g::SyntactileViz.SyntaxGraph.SyntaxGraph)
+   @ SyntactileViz.Visualization ~/Dropbox/CITE/grok/SyntactileViz/src/Visualization.jl:49
+ [3] top-level scope
+   @ ~/Dropbox/CITE/grok/SyntactileViz/scripts/03_PDFer1.jl:12
+ [4] include(mapexpr::Function, mod::Module, _path::String)
+   @ Base ./Base.jl:307
+ [5] top-level scope
+   @ REPL[12]:1
+in expression starting at /Users/cblackwell/Dropbox/CITE/grok/SyntactileViz/scripts/03_PDFer1.jl:12
+
+julia> 
+~~~
