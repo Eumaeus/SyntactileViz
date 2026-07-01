@@ -37,3 +37,4 @@ I would love to see your suggestions.
 
 I have added a directory, `/data/comparison`, that contains six CEX files. They are paired as `Comp1-` (two files), `Comp2-` (two files), and `Comp3-` (two files). Those can serve to start as example data.
 
+Everything at this point is checked into the repository: <https://github.com/Eumaeus/SyntactileViz>
