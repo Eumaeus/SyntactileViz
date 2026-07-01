@@ -85,21 +85,17 @@ function compare_syntax_graphs(g1::SyntaxGraph, g2::SyntaxGraph)
 end
 
 # ============================================================
-# Robust helper to capture pretty_print output (pipe-based)
+# Robust stdout capture using a temp file (avoids pipe deadlocks)
 # ============================================================
 function capture_pretty_print(g::SyntaxGraph; show_vu::Bool = true)
-    old_stdout = stdout
-    rd, wr = redirect_stdout()          # creates a pipe
-    output = ""
-    try
-        pretty_print(g; show_vu = show_vu)
-        close(wr)                       # important: close write end
-        output = read(rd, String)
-    finally
-        redirect_stdout(old_stdout)
-        close(rd)
+    mktemp() do path, file_io
+        redirect_stdout(file_io) do
+            pretty_print(g; show_vu = show_vu)
+        end
+        flush(file_io)
+        seekstart(file_io)
+        return read(file_io, String)
     end
-    return output
 end
 
 # ============================================================

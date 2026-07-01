@@ -224,3 +224,52 @@ Stacktrace:
 in expression starting at /Users/cblackwell/Dropbox/CITE/grok/SyntactileViz/scripts/09_Markdown_Report.jl:9
 ➜  SyntactileViz git:(main) ✗      
 ~~~
+
+---
+
+Okay, the current code (up-to-date in the repo), compiles and runs, but never seems to exit.
+
+It _does_ generate markdown files, but without drawing the tree.
+
+If this helps, when I quit the Julia process, I get this error:
+
+~~~
+Stacktrace:
+  [1] poptask(W::Base.IntrusiveLinkedListSynchronized{Task})
+    @ Base ./task.jl:1216
+  [2] wait()
+    @ Base ./task.jl:1228
+  [3] wait(c::Base.GenericCondition{Base.Threads.SpinLock}; first::Bool)
+    @ Base ./condition.jl:141
+  [4] wait
+    @ ./condition.jl:136 [inlined]
+  [5] wait_readnb(x::Base.PipeEndpoint, nb::Int64)
+    @ Base ./stream.jl:416
+  [6] read
+    @ ./stream.jl:963 [inlined]
+  [7] read(s::Base.PipeEndpoint, ::Type{String})
+    @ Base ./io.jl:1181
+  [8] capture_pretty_print(g::SyntactileViz.SyntaxGraph.SyntaxGraph; show_vu::Bool)
+    @ SyntactileViz.Comparison ~/Dropbox/CITE/grok/SyntactileViz/src/Comparison.jl:97
+  [9] capture_pretty_print
+    @ ~/Dropbox/CITE/grok/SyntactileViz/src/Comparison.jl:90 [inlined]
+ [10] (::SyntactileViz.Comparison.var"#5#6"{…})(io::IOStream)
+    @ SyntactileViz.Comparison ~/Dropbox/CITE/grok/SyntactileViz/src/Comparison.jl:242
+ [11] open(::SyntactileViz.Comparison.var"#5#6"{…}, ::String, ::Vararg{…}; kwargs::@Kwargs{})
+    @ Base ./io.jl:412
+ [12] open
+    @ ./io.jl:409 [inlined]
+ [13] 
+    @ SyntactileViz.Comparison ~/Dropbox/CITE/grok/SyntactileViz/src/Comparison.jl:178
+ [14] export_comparison_markdown(comp::ComparisonResult, filepath::String)
+    @ SyntactileViz.Comparison ~/Dropbox/CITE/grok/SyntactileViz/src/Comparison.jl:165
+ [15] include(mapexpr::Function, mod::Module, _path::String)
+    @ Base ./Base.jl:307
+in expression starting at /Users/cblackwell/Dropbox/CITE/grok/SyntactileViz/scripts/09_Markdown_Report.jl:9
+~~~
+
+---
+
+Yes, that worked beautifully! The `.md` documents look great. I want to play with all this new code you have given me. Then I'll be back and we can talk about the next level of visualization. But for now this is a lot! Thank you!
+
+Conversation at: <https://x.com/i/grok/share/0298d6537c704587a0eb1a4a1222c0ec>
