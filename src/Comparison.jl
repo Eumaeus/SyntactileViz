@@ -98,7 +98,7 @@ end
 # Full reporting (with Verbal Unit section)
 # ============================================================
 
-function report_comparison(comp::ComparisonResult; show_details::Bool = true)
+function report_comparison(comp::ComparisonResult; show_details::Bool = true, show_tree::Bool = true)
     g1 = comp.g1
     g2 = comp.g2
 
@@ -189,16 +189,22 @@ function report_comparison(comp::ComparisonResult; show_details::Bool = true)
             println("  ✓ All nodes have consistent primary Verbal Unit assignments")
         end
         println()
+
+       
     end
 
-    println("────────────────────────────────────────────────────────────────────")
-    println("Quick tree views:")
-    println()
-    println(">>> Analysis 1 ($(g1.editor)):")
-    pretty_print(g1; show_vu = true)
-    println()
-    println(">>> Analysis 2 ($(g2.editor)):")
-    pretty_print(g2; show_vu = true)
+    if show_tree
+        println("────────────────────────────────────────────────────────────────────")
+        println("Quick tree views:")
+        println()
+        println(">>> Analysis 1 ($(g1.editor)):")
+        pretty_print(g1; show_vu = true)
+        println()
+        println(">>> Analysis 2 ($(g2.editor)):")
+        pretty_print(g2; show_vu = true)
+    end
+
+   
 end
 
 end # module Comparison

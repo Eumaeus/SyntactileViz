@@ -106,3 +106,22 @@ Let's do all three of your suggestions as a next step!
 Got it.
 
 In the previous version of `Comparison.jl` and in this new one, there are some `@printf` calls that throw errors prefenting compilation. Earlier, I just changed those to `println` and it worked. Is `@printf` something I need to know about?
+
+---
+
+That worked, once I added Printf. Thanks!
+
+I am happy using Printf.
+
+I love this. I did a little editing in `src/Comparison.jl` to give three levels of reporting:
+
+  `function report_comparison(comp::ComparisonResult; show_details::Bool = true, show_tree::Bool = true)`
+
+I think these reports are ideal.
+
+Now, what would be the best way to get these in a format I can print out and share? My instinct is always to use Markdown. That might be easiest for now.
+
+When we turn to more elegant printable visualizations, that might be the natural point to pay more attention to typsetting reports. 
+
+So perhaps just a provision to export a report as a Markdown file, using code-blocks to force a monospaced font, thus allowing the tree-view to line up correctly?
+
