@@ -32,6 +32,7 @@ struct SyntaxGraph
     verbal_units::Dict{String, VerbalUnit}
     analysis_urn::String
     sentence_text::String
+    editor::String
 end
 
 # ============================================
@@ -47,7 +48,9 @@ function build_syntax_graph(analysis::Analysis)::SyntaxGraph
     edges = [SyntaxEdge(r.source, r.target, r.relation) for r in analysis.relations]
     vu_dict = Dict(vu.id => vu for vu in analysis.verbal_units)
 
-    SyntaxGraph(nodes, edges, vu_dict, analysis.analysis_urn, analysis.sentence_text)
+    editor = analysis.editor
+
+    SyntaxGraph(nodes, edges, vu_dict, analysis.analysis_urn, analysis.sentence_text, editor)
 end
 
 # ============================================
@@ -129,7 +132,8 @@ function get_subgraph_for_vu(g::SyntaxGraph, vu_id::String)
         filtered_edges,
         filtered_vus,
         g.analysis_urn,
-        g.sentence_text
+        g.sentence_text,
+        g.editor
     )
 end
 
@@ -204,6 +208,7 @@ end
 
 function print_graph_summary(g::SyntaxGraph)
     println("SyntaxGraph")
+    println("  Editor:        $(g.editor)")
     println("  Analysis:      $(g.analysis_urn)")
     println("  Sentence:      $(g.sentence_text)")
     println("  Nodes:         $(length(g.nodes))")

@@ -12,4 +12,4 @@ g = build_syntax_graph(a)
 draw_syntax_tree(g)
 
 # Or save it
-save_syntax_tree(g, "reports/pdf/syntax_with_labels.pdf")
+save_syntax_tree(g, "reports/pdf/syntax_with_labels-stress.pdf")

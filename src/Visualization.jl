@@ -42,31 +42,42 @@ function draw_syntax_tree(g::SyntaxGraph; title = nothing, kwargs...)
     digraph, node_ids, node_labels, edge_labels = syntaxgraph_to_digraph(g)
 
     # === Special styling for ellipsis nodes ===
-    node_colors = fill(:lightblue, length(node_ids))
+    node_colors = fill(:wheat1, length(node_ids))
     node_sizes  = fill(35, length(node_ids))
 
     for (i, id) in enumerate(node_ids)
         if startswith(id, "urn:cite2:fuTeaching:syntax.ellipsis")
-            node_colors[i] = :gold          # Yellow/gold like in pretty_print
-            node_sizes[i]  = 42             # Slightly larger
+            node_colors[i] = :plum         # Yellow/gold like in pretty_print
+            node_sizes[i]  = 35             # Slightly larger
+        end
+        if startswith(id, "root")
+            node_colors[i] = :gold2          # Yellow/gold like in pretty_print
+            node_sizes[i]  = 60             # Slightly larger
         end
     end
 
     fig = Figure(size = (1100, 800))
-    ax = Axis(fig[1, 1]; title = something(title, g.sentence_text))
+    titleText = g.editor * "\n\n" * replace(g.sentence_text, "," => ",\n")
+    # ax = Axis(fig[1, 1]; title = something(title, g.sentence_text))
+    ax = Axis(fig[1, 1]; title = titleText)
+    # ax = Axis(fig[1, 1]; title = something(title, g.editor))
+    # ax = Axis(fig[1, 1]; title = something(title, g.editor, g.sentence_text))
 
     graphplot!(ax, digraph;
-        layout = NetworkLayout.Stress(),
+        # layout = NetworkLayout.Spring(),
+        # layout = NetworkLayout.Stress(),
+        layout = NetworkLayout.Stress(dim=2),
+
         nlabels = node_labels,
         nlabels_align = (:center, :center),
-        nlabels_fontsize = 12,
+        nlabels_fontsize = 10,
         node_size = node_sizes,
         node_color = node_colors,
         edge_color = :gray50,
-        arrow_size = 18,
+        arrow_size = 8,
         elabels = edge_labels,
         elabels_color = :darkred,
-        elabels_fontsize = 9,
+        elabels_fontsize = 6,
         kwargs...
     )
 
@@ -80,8 +91,7 @@ end
 
 Save the visualization as PDF, PNG, or SVG.
 """
-function save_syntax_tree(g::SyntaxGraph, path::String; 
-                          format::Symbol = :pdf, title = nothing)
+function save_syntax_tree(g::SyntaxGraph, path::String; format::Symbol = :pdf, title = nothing)
     fig = draw_syntax_tree(g; title = title)
     save(path, fig)
     return path
