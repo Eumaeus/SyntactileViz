@@ -1,6 +1,6 @@
 # Syntactic Analysis Comparison Report
 
-**Generated:** 2026-07-01 13:18
+**Generated:** 2026-07-01 13:29
 
 **Sentence:** τοὺς γέροντας λιποῦσαι ἥκομεν σύμπαντας τοὺς ῥήτορας τοὺς κεκλοφότας δώρων γραψόμεναι .
 

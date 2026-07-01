@@ -5,8 +5,7 @@ using ..CEXParser
 using Printf
 using Dates
 
-export ComparisonResult, compare_syntax_graphs, report_comparison, 
-       diff_summary, export_comparison_markdown
+export ComparisonResult, compare_syntax_graphs, report_comparison, diff_summary, export_comparison_markdown
 
 # ============================================================
 # Result struct
@@ -86,18 +85,21 @@ function compare_syntax_graphs(g1::SyntaxGraph, g2::SyntaxGraph)
 end
 
 # ============================================================
-# Helper to safely capture pretty_print output
+# Robust helper to capture pretty_print output (pipe-based)
 # ============================================================
 function capture_pretty_print(g::SyntaxGraph; show_vu::Bool = true)
-    io = IOBuffer()
-    original_stdout = stdout
+    old_stdout = stdout
+    rd, wr = redirect_stdout()          # creates a pipe
+    output = ""
     try
-        redirect_stdout(io)
         pretty_print(g; show_vu = show_vu)
+        close(wr)                       # important: close write end
+        output = read(rd, String)
     finally
-        redirect_stdout(original_stdout)
+        redirect_stdout(old_stdout)
+        close(rd)
     end
-    return String(take!(io))
+    return output
 end
 
 # ============================================================
@@ -233,6 +235,7 @@ function export_comparison_markdown(comp::ComparisonResult, filepath::String;
             write(io, "\n")
         end
 
+        # Inside export_comparison_markdown, the tree capture becomes:
         if show_tree
             write(io, "---\n\n## Tree Views\n\n")
 
