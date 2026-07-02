@@ -109,3 +109,46 @@ in expression starting at /Users/cblackwell/Dropbox/CITE/grok/SyntactileViz/scri
 ➜  SyntactileViz git:(main) ✗ 
 
 ~~~
+
+Conversation at: <https://x.com/i/grok/share/1f551398d8484ebb900da71644ee5115>
+
+---
+
+Success! I was able to generate a `.tex` file, which looks good. I used the current version of `scripts/12_TikZ_Comparison.jl`.
+
+In `src/TikzExport.jl`, the function `save_tikz_dependency()` takes advantage of the constant `default_preamble` at the front of the `.tex` file.
+
+~~~
+
+function save_tikz_dependency(g::SyntaxGraph.SyntaxGraph, path::String; 
+                              preamble::String = default_preamble,
+                              use_adjustbox::Bool = true,
+                              adjustbox_options::String = "max width=\\textwidth",
+                              # NEW
+                              edge_overrides::Dict{Tuple{String,String}, String} = Dict{Tuple{String,String}, String}())
+
+~~~
+
+It also concludes the generated `.tex` file with closing code:
+
+~~~
+   full = """
+    $preamble
+
+    \\begin{document}
+    \\begin{figure}[ht]
+    \\centering
+    $content
+    \\caption{$(g.editor) — $(g.sentence_text)}
+    \\end{figure}
+    \\end{document}
+    """
+    write(path, full)
+    return path
+~~~
+
+And in the TikZ Dependency files from a single analysis, the edge-labels are nicely at the apex of each arc, thus staying out of each others' way. In the dual-comparison ones, they are all on the same vertical level and collide.
+
+I wasn't able to locate where in the older code we set those for the single-analysis graphs. Maybe that is the default, that we are overriding for the dual-comparison?
+
+Thanks for your ongoing help with this!

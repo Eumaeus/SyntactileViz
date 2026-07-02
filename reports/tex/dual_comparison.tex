@@ -1,0 +1,138 @@
+\documentclass{article}
+\usepackage{fontspec}
+\usepackage{tikz}
+\usepackage{tikz-dependency}
+\usepackage{adjustbox}
+
+
+% === Your polytonic Greek setup (customize with your purchased fonts) ===
+\defaultfontfeatures{Ligatures=TeX}
+\setmainfont{ArnoPro-Regular}          % e.g. Brill, IFAO, or your professional font
+% \newfontfamily\greekfont[Script=Greek]{YourGreekFontHere}
+\newfontfamily\greekfont[Script=Greek]{Arno Pro}
+
+% \usepackage{polyglossia}
+% \setotherlanguage[variant=ancient]{greek}
+
+
+\begin{document}
+\begin{figure}[ht]
+\centering
+\begin{adjustbox}{max width=\textwidth}
+\begin{tikzpicture}[
+    every node/.style={font=\footnotesize, minimum width=1.8em, minimum height=0.9em,
+                       draw=black!40, align=center, inner sep=2pt},
+    arc g1/.style={->, thick, blue!75, shorten >=1pt, shorten <=1pt},
+    arc g2/.style={->, thick, teal!75, shorten >=1pt, shorten <=1pt},
+    diff arc/.style={->, thick, red!85, shorten >=1pt, shorten <=1pt},
+    label/.style={font=\scriptsize}
+]
+\node[font=\bfseries, above] at (25.0, 3.2) {Dependency Comparison};
+\node[font=\small] at (25.0, 2.4) {Analysis 1 (above, blue) vs Analysis 2 (below, teal)};
+\node[font=\tiny] at (25.0, 1.85) {Green = agree • Orange = label diff • Salmon = head diff • Red arcs = differences};
+  \node[fill=white] (n1) at (2.5, 0) {\strut θυσίαν};
+  \node[fill=white] (n2) at (5.0, 0) {\strut ἀγάγωμεν};
+  \node[fill=white] (n3) at (7.5, 0) {\strut θεοῖς};
+  \node[fill=white] (n4) at (10.0, 0) {\strut τοῖς};
+  \node[fill=white] (n5) at (12.5, 0) {\strut Ἀθηναίους};
+  \node[fill=white] (n6) at (15.0, 0) {\strut ἐν};
+  \node[fill=white] (n7) at (17.5, 0) {\strut ἐκείνῃ};
+  \node[fill=white] (n8) at (20.0, 0) {\strut τῇ};
+  \node[fill=white] (n9) at (22.5, 0) {\strut μάχῃ};
+  \node[fill=white] (n10) at (25.0, 0) {\strut σώσασιν};
+  \node[fill=white] (n11) at (27.5, 0) {\strut ὅπως};
+  \node[fill=white] (n12) at (30.0, 0) {\strut καὶ};
+  \node[fill=white] (n13) at (32.5, 0) {\strut νῦν};
+  \node[fill=white] (n14) at (35.0, 0) {\strut ἐθέλωσι};
+  \node[fill=white] (n15) at (37.5, 0) {\strut πάντες};
+  \node[fill=white] (n16) at (40.0, 0) {\strut οἱ};
+  \node[fill=white] (n17) at (42.5, 0) {\strut θεοὶ};
+  \node[fill=white] (n18) at (45.0, 0) {\strut τὴν};
+  \node[fill=white] (n19) at (47.5, 0) {\strut δημοκρατίαν};
+  \node[fill=white] (n20) at (50.0, 0) {\strut φυλάττειν};
+
+% === g1 arcs (ABOVE) ===
+  \draw[arc g1] (n2) to [out=125, in=55, looseness=1.35] (n1);
+  \node[label, above] at (3.75, 1.05) {Direct Object};
+  \draw[arc g1] (n2) to [out=55, in=125, looseness=1.35] (n3);
+  \node[label, above] at (6.25, 1.05) {Adverbial};
+  \draw[arc g1] (n3) to [out=55, in=125, looseness=1.35] (n4);
+  \node[label, above] at (8.75, 1.05) {Article};
+  \draw[arc g1] (n4) to [out=55, in=125, looseness=1.35] (n10);
+  \node[label, above] at (17.5, 1.05) {Unit Participle};
+  \draw[arc g1] (n10) to [out=125, in=55, looseness=1.35] (n5);
+  \node[label, above] at (18.75, 1.05) {Direct Object};
+  \draw[arc g1] (n10) to [out=125, in=55, looseness=1.35] (n6);
+  \node[label, above] at (20.0, 1.05) {Preposition};
+  \draw[arc g1] (n6) to [out=55, in=125, looseness=1.35] (n9);
+  \node[label, above] at (18.75, 1.05) {Object of Prep.};
+  \draw[arc g1] (n9) to [out=125, in=55, looseness=1.35] (n8);
+  \node[label, above] at (21.25, 1.05) {Article};
+  \draw[arc g1] (n9) to [out=125, in=55, looseness=1.35] (n7);
+  \node[label, above] at (20.0, 1.05) {Attribute};
+  \draw[arc g1] (n2) to [out=55, in=125, looseness=1.35] (n11);
+  \node[label, above] at (16.25, 1.05) {Unit Adverbial};
+  \draw[arc g1] (n11) to [out=55, in=125, looseness=1.35] (n14);
+  \node[label, above] at (31.25, 1.05) {Unit Verb};
+  \draw[arc g1] (n13) to [out=125, in=55, looseness=1.35] (n12);
+  \node[label, above] at (31.25, 1.05) {Adverbial};
+  \draw[arc g1] (n14) to [out=125, in=55, looseness=1.35] (n13);
+  \node[label, above] at (33.75, 1.05) {Adverbial};
+  \draw[arc g1] (n17) to [out=125, in=55, looseness=1.35] (n15);
+  \node[label, above] at (40.0, 1.05) {Attribute};
+  \draw[arc g1] (n17) to [out=125, in=55, looseness=1.35] (n16);
+  \node[label, above] at (41.25, 1.05) {Article};
+  \draw[arc g1] (n14) to [out=55, in=125, looseness=1.35] (n17);
+  \node[label, above] at (38.75, 1.05) {Subject};
+  \draw[arc g1] (n14) to [out=55, in=125, looseness=1.35] (n20);
+  \node[label, above] at (42.5, 1.05) {Auxiliary Infinitive};
+  \draw[arc g1] (n20) to [out=125, in=55, looseness=1.35] (n19);
+  \node[label, above] at (48.75, 1.05) {Direct Object};
+  \draw[arc g1] (n19) to [out=125, in=55, looseness=1.35] (n18);
+  \node[label, above] at (46.25, 1.05) {Article};
+
+% === g2 arcs (BELOW) ===
+  \draw[arc g2] (n2) to [out=-125, in=-55, looseness=1.35] (n1);
+  \node[label, below] at (3.75, -1.05) {Direct Object};
+  \draw[arc g2] (n1) to [out=-55, in=-125, looseness=1.35] (n3);
+  \node[label, below] at (5.0, -1.05) {Attribute};
+  \draw[arc g2] (n3) to [out=-55, in=-125, looseness=1.35] (n4);
+  \node[label, below] at (8.75, -1.05) {Article};
+  \draw[arc g2] (n4) to [out=-55, in=-125, looseness=1.35] (n10);
+  \node[label, below] at (17.5, -1.05) {Unit Participle};
+  \draw[arc g2] (n10) to [out=-125, in=-55, looseness=1.35] (n5);
+  \node[label, below] at (18.75, -1.05) {Direct Object};
+  \draw[arc g2] (n10) to [out=-125, in=-55, looseness=1.35] (n6);
+  \node[label, below] at (20.0, -1.05) {Preposition};
+  \draw[arc g2] (n6) to [out=-55, in=-125, looseness=1.35] (n9);
+  \node[label, below] at (18.75, -1.05) {Object of Prep.};
+  \draw[arc g2] (n9) to [out=-125, in=-55, looseness=1.35] (n8);
+  \node[label, below] at (21.25, -1.05) {Article};
+  \draw[arc g2] (n9) to [out=-125, in=-55, looseness=1.35] (n7);
+  \node[label, below] at (20.0, -1.05) {Attribute};
+  \draw[arc g2] (n2) to [out=-55, in=-125, looseness=1.35] (n11);
+  \node[label, below] at (16.25, -1.05) {Unit Adverbial};
+  \draw[arc g2] (n11) to [out=-55, in=-125, looseness=1.35] (n14);
+  \node[label, below] at (31.25, -1.05) {Unit Verb};
+  \draw[arc g2] (n14) to [out=-125, in=-55, looseness=1.35] (n12);
+  \node[label, below] at (32.5, -1.05) {Adverbial};
+  \draw[arc g2] (n14) to [out=-125, in=-55, looseness=1.35] (n13);
+  \node[label, below] at (33.75, -1.05) {Adverbial};
+  \draw[arc g2] (n17) to [out=-125, in=-55, looseness=1.35] (n15);
+  \node[label, below] at (40.0, -1.05) {Attribute};
+  \draw[arc g2] (n17) to [out=-125, in=-55, looseness=1.35] (n16);
+  \node[label, below] at (41.25, -1.05) {Article};
+  \draw[arc g2] (n14) to [out=-55, in=-125, looseness=1.35] (n17);
+  \node[label, below] at (38.75, -1.05) {Subject};
+  \draw[arc g2] (n14) to [out=-55, in=-125, looseness=1.35] (n20);
+  \node[label, below] at (42.5, -1.05) {Auxiliary Infinitive};
+  \draw[arc g2] (n20) to [out=-125, in=-55, looseness=1.35] (n19);
+  \node[label, below] at (48.75, -1.05) {Direct Object};
+  \draw[arc g2] (n19) to [out=-125, in=-55, looseness=1.35] (n18);
+  \node[label, below] at (46.25, -1.05) {Article};
+\end{tikzpicture}
+\end{adjustbox}
+
+\caption{Hierarchical tree — Christopher Blackwell — ἐὰν αἱ μοῦσαι τὸν ἀγαθὸν ποιητὴν εὖ διδάξωσιν , γράψει καλὸν βιβλίον περὶ τῶν ἐν ἀγορᾷ θυσιῶν .}
+\end{figure}
+\end{document}

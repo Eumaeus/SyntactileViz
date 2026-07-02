@@ -16,7 +16,7 @@ using Printf
 using Dates
 
 export ComparisonResult, compare_syntax_graphs, report_comparison, diff_summary, export_comparison_markdown
-export draw_syntax_comparison, save_syntax_comparison, tikz_dependency_comparison
+export draw_syntax_comparison, save_syntax_comparison, tikz_dependency_comparison, save_tikz_dual_dependency_comparison
 
 
 
@@ -330,10 +330,10 @@ Convenience wrapper that calls the dual-arc TikZ function using the diff informa
 already computed in the `ComparisonResult`.
 """
 function tikz_dependency_comparison(comp::ComparisonResult; kwargs...)
-    tikz_dual_dependency_comparison(
+    TikzExport.tikz_dual_dependency_comparison(
         comp.g1, comp.g2;
-        head_diff = Set(comp.head_diff),
-        label_diff = Set(comp.label_diff),
+        head_diff   = Set(first(t) for t in comp.head_diff),
+        label_diff  = Set(first(t) for t in comp.label_diff),
         kwargs...
     )
 end

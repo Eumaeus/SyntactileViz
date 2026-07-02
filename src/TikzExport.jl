@@ -2,7 +2,7 @@ module TikzExport
 
 import ..SyntaxGraph
 
-export tikz_dependency_code, save_tikz_dependency, save_tikz_tree, tikz_hierarchical_tree_code, tikz_dependency_comparison, tikz_dual_dependency_comparison
+export tikz_dependency_code, save_tikz_dependency, save_tikz_tree, tikz_hierarchical_tree_code, tikz_dependency_comparison, tikz_dual_dependency_comparison, save_tikz_dual_dependency_comparison
 
 const default_preamble = """
 \\documentclass{article}
@@ -312,8 +312,7 @@ function tikz_dual_dependency_comparison(g1::SyntaxGraph.SyntaxGraph,
 
     tikz = """
 \\begin{tikzpicture}[
-    every node/.style={font=\\footnotesize, minimum width=1.8em, minimum height=0.9em,
-                       draw=black!40, align=center, inner sep=2pt},
+    every node/.style={font=\\footnotesize, minimum width=1.8em, minimum height=0.9em, draw=black!40, align=center, inner sep=2pt},
     arc g1/.style={->, thick, blue!75, shorten >=1pt, shorten <=1pt},
     arc g2/.style={->, thick, teal!75, shorten >=1pt, shorten <=1pt},
     diff arc/.style={->, thick, red!85, shorten >=1pt, shorten <=1pt},
