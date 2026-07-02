@@ -1,0 +1,61 @@
+\documentclass{article}
+\usepackage{fontspec}
+\usepackage{tikz}
+\usepackage{tikz-dependency}
+
+% === Your polytonic Greek setup (customize with your purchased fonts) ===
+\defaultfontfeatures{Ligatures=TeX}
+\setmainfont{ArnoPro-Regular}          % e.g. Brill, IFAO, or your professional font
+% \newfontfamily\greekfont[Script=Greek]{YourGreekFontHere}
+\newfontfamily\greekfont[Script=Greek]{Arno Pro}
+
+% \usepackage{polyglossia}
+% \setotherlanguage[variant=ancient]{greek}
+
+
+\begin{document}
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[
+  every node/.style={draw, rounded corners, fill=gray!8, align=center, font=\small, minimum width=2.8cm, minimum height=0.9cm},
+  level distance=2.8cm,
+  sibling distance=2.2cm,
+  >=stealth,
+]
+  \node (n_root) at (0.0cm, 0.0cm) {ROOT};
+  \node (n_urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.10) at (0.0cm, -2.8cm) {γράψει};
+  \node (n_urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.1) at (0.0cm, -5.6cm) {ἐὰν};
+  \node (n_urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.12) at (8.8cm, -5.6cm) {βιβλίον};
+  \node (n_urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.8) at (0.0cm, -8.399999999999999cm) {διδάξωσιν};
+  \node (n_urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.11) at (8.8cm, -8.399999999999999cm) {καλὸν};
+  \node (n_urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.13) at (11.0cm, -8.399999999999999cm) {περὶ};
+  \node (n_urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.3) at (0.0cm, -11.2cm) {μοῦσαι};
+  \node (n_urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.7) at (2.2cm, -11.2cm) {εὖ};
+  \node (n_urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.6) at (4.4cm, -11.2cm) {ποιητὴν};
+  \node (n_urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.17) at (11.0cm, -11.2cm) {θυσιῶν};
+  \node (n_urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.2) at (0.0cm, -14.0cm) {αἱ};
+  \node (n_urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.5) at (4.4cm, -14.0cm) {ἀγαθὸν};
+  \node (n_urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.4) at (6.6000000000000005cm, -14.0cm) {τὸν};
+  \node (n_urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.14) at (11.0cm, -14.0cm) {τῶν};
+  \node (n_urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.15) at (13.2cm, -14.0cm) {ἐν};
+  \node (n_urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.16) at (13.2cm, -16.799999999999997cm) {ἀγορᾷ};
+  \draw[->, thick, >=stealth] (n_root) -- node[midway, above, font=\tiny, red!70!black] {Unit Verb} (n_urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.10);
+  \draw[->, thick, >=stealth] (n_urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.10) -- node[midway, above, font=\tiny, red!70!black] {Unit Adverbial} (n_urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.1);
+  \draw[->, thick, >=stealth] (n_urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.1) -- node[midway, above, font=\tiny, red!70!black] {Unit Verb} (n_urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.8);
+  \draw[->, thick, >=stealth] (n_urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.8) -- node[midway, above, font=\tiny, red!70!black] {Subject} (n_urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.3);
+  \draw[->, thick, >=stealth] (n_urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.3) -- node[midway, above, font=\tiny, red!70!black] {Article} (n_urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.2);
+  \draw[->, thick, >=stealth] (n_urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.8) -- node[midway, above, font=\tiny, red!70!black] {Adverbial} (n_urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.7);
+  \draw[->, thick, >=stealth] (n_urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.8) -- node[midway, above, font=\tiny, red!70!black] {Direct Object} (n_urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.6);
+  \draw[->, thick, >=stealth] (n_urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.6) -- node[midway, above, font=\tiny, red!70!black] {Attribute} (n_urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.5);
+  \draw[->, thick, >=stealth] (n_urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.6) -- node[midway, above, font=\tiny, red!70!black] {Article} (n_urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.4);
+  \draw[->, thick, >=stealth] (n_urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.10) -- node[midway, above, font=\tiny, red!70!black] {Direct Object} (n_urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.12);
+  \draw[->, thick, >=stealth] (n_urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.12) -- node[midway, above, font=\tiny, red!70!black] {Attribute} (n_urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.11);
+  \draw[->, thick, >=stealth] (n_urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.12) -- node[midway, above, font=\tiny, red!70!black] {Preposition} (n_urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.13);
+  \draw[->, thick, >=stealth] (n_urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.13) -- node[midway, above, font=\tiny, red!70!black] {Object of Prep.} (n_urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.17);
+  \draw[->, thick, >=stealth] (n_urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.17) -- node[midway, above, font=\tiny, red!70!black] {Article} (n_urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.14);
+  \draw[->, thick, >=stealth] (n_urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.17) -- node[midway, above, font=\tiny, red!70!black] {Preposition} (n_urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.15);
+  \draw[->, thick, >=stealth] (n_urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.15) -- node[midway, above, font=\tiny, red!70!black] {Object of Prep.} (n_urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.16);
+\end{tikzpicture}
+\caption{Hierarchical tree — Christopher Blackwell — ἐὰν αἱ μοῦσαι τὸν ἀγαθὸν ποιητὴν εὖ διδάξωσιν , γράψει καλὸν βιβλίον περὶ τῶν ἐν ἀγορᾷ θυσιῶν .}
+\end{figure}
+\end{document}

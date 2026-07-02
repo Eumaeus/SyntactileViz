@@ -179,3 +179,43 @@ Conversation at: <https://x.com/i/grok/share/e6e78b8a1a49455cbc8a248b3295de12>
 That compiled! Thanks! I'll make a test-script to see what we get!
 
 And I would love a second function, perhaps the pure TikZ hierarchical version you mentioned? 
+
+
+---
+
+Nice!!!
+
+The code compiles, and my little test-script at `scripts/11_TikZ.jl` produced two `.tex` files, one a "dependency" and one a "tree":
+
+- `reports/tex/hq4_1_dependency.tex`
+- `reports/tex/hq4_1_tree.tex`
+
+All these changes are in the repository.
+
+The "dependency" file compiled perfectly with `xelatex` to a PDF, but we'll need to make some adjustment for the fact that the graph is (inevitably) going to exceed the width of the page. I would welcome advice on how to set up the TeX parameters to make sure that the whole graph fits. Whatever you think will work!
+
+The "tree" file did not compile with `xelatex`. It threw a bunch of errors like:
+
+~~~
+
+
+! Package PGF Math Error: Unknown function `cts' (in 'cts:fuTeaching:blackwell.
+hq.2026:4.1.token.10').
+
+See the PGF Math package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.42 ...fuTeaching:blackwell.hq.2026:4.1.token.10)
+
+~~~
+
+It doesn't like 
+
+    \draw[->, thick, >=stealth] (n_root) -- node[midway, above, font=\tiny, red!70!black] {Unit Verb} (n_urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.10);
+
+or any of the other lines like that.
+
+And if I am reading this correct, is this script usign the node-id (the CTS-URN) instead of the node-text in the graph? Or am I mistaken (quite likely).
+
+Everything, including the `.tex` output, is checked into the repo.

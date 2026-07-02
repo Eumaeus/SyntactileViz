@@ -4,6 +4,23 @@ import ..SyntaxGraph
 
 export tikz_dependency_code, save_tikz_dependency, save_tikz_tree, tikz_hierarchical_tree_code
 
+
+const default_preamble = """
+\\documentclass{article}
+\\usepackage{fontspec}
+\\usepackage{tikz}
+\\usepackage{tikz-dependency}
+
+% === Your polytonic Greek setup (customize with your purchased fonts) ===
+\\defaultfontfeatures{Ligatures=TeX}
+\\setmainfont{ArnoPro-Regular}          % e.g. Brill, IFAO, or your professional font
+% \\newfontfamily\\greekfont[Script=Greek]{YourGreekFontHere}
+\\newfontfamily\\greekfont[Script=Greek]{Arno Pro}
+
+% \\usepackage{polyglossia}
+% \\setotherlanguage[variant=ancient]{greek}
+"""
+
 function tikz_dependency_code(g::SyntaxGraph.SyntaxGraph;
                               theme::String = "simple",
                               column_sep::String = "1.2em",
@@ -49,8 +66,8 @@ function escape_latex(s::String)
 end
 
 function save_tikz_dependency(g::SyntaxGraph.SyntaxGraph, path::String; 
-                              preamble::String = default_preamble())
-    code = tikz_dependency_code(g)
+                              preamble::String = default_preamble,
+                              code = tikz_dependency_code(g))
     full = """
     $preamble
 
@@ -66,19 +83,6 @@ function save_tikz_dependency(g::SyntaxGraph.SyntaxGraph, path::String;
     return path
 end
 
-const default_preamble = """
-\\documentclass{article}
-\\usepackage{fontspec}
-\\usepackage{tikz}
-\\usepackage{tikz-dependency}
-
-% === Your polytonic Greek setup (customize with your purchased fonts) ===
-\\defaultfontfeatures{Ligatures=TeX}
-\\setmainfont{YourGreekFontHere}          % e.g. Brill, IFAO, or your professional font
-% \\newfontfamily\\greekfont[Script=Greek]{YourGreekFontHere}
-% \\usepackage{polyglossia}
-% \\setotherlanguage[variant=ancient]{greek}
-"""
 
 # =====================================================
 # Hierarchical Tree (pure TikZ, no extra packages)
@@ -182,8 +186,8 @@ function tikz_hierarchical_tree_code(g::SyntaxGraph.SyntaxGraph;
 end
 
 function save_tikz_tree(g::SyntaxGraph.SyntaxGraph, path::String;
-    preamble::String = default_preamble())
-    code = tikz_hierarchical_tree_code(g)
+    preamble::String = default_preamble,
+    code = tikz_hierarchical_tree_code(g))
     full = """
     $preamble
 
