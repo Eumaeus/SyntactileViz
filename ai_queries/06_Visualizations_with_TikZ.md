@@ -82,6 +82,92 @@ But I am open to anything that can get the job done, and I will certainly heed y
 
 ---
 
-Conversation at: <>
+Conversation at: <https://x.com/i/grok/share/cf376630121a404eba8439162ec8f981>
 
-And I should have mentoned earlier that an option for a more traditional tree-graph would also be nice to have. Something similar to what we're creating with Makie.
+Thank you! This is exciting.
+
+All updates are in the repository, <https://github.com/Eumaeus/SyntactileViz>.
+
+I made the changes, and added an `include` and `export` line to `SyntactileViz.jl`. I ran the following to test it initially:
+
+`julia --project=. -e 'using SyntactileViz; println("Loaded successfully")'`
+
+This is the error:
+
+~~~
+
+ SyntactileViz git:(main) ✗ julia --project=. -e 'using SyntactileViz; println("Loaded successfully")'
+Info Given SyntactileViz was explicitly requested, output will be shown live 
+ERROR: LoadError: FieldError: type DataType has no field `SyntaxGraph`, available fields: `name`, `super`, `parameters`, `types`, `instance`, `layout`, `hash`, `flags`
+Stacktrace:
+  [1] getproperty(x::Type, f::Symbol)
+    @ Base ./Base_compiler.jl:48
+  [2] top-level scope
+    @ ~/Dropbox/CITE/grok/SyntactileViz/src/TikzExport.jl:7
+  [3] include(mapexpr::Function, mod::Module, _path::String)
+    @ Base ./Base.jl:307
+  [4] top-level scope
+    @ ~/Dropbox/CITE/grok/SyntactileViz/src/SyntactileViz.jl:7
+  [5] include(mod::Module, _path::String)
+    @ Base ./Base.jl:306
+  [6] include_package_for_output(pkg::Base.PkgId, input::String, depot_path::Vector{String}, dl_load_path::Vector{String}, load_path::Vector{String}, concrete_deps::Vector{Pair{Base.PkgId, UInt128}}, source::Nothing)
+    @ Base ./loading.jl:3028
+  [7] top-level scope
+    @ stdin:5
+  [8] eval(m::Module, e::Any)
+    @ Core ./boot.jl:489
+  [9] include_string(mapexpr::typeof(identity), mod::Module, code::String, filename::String)
+    @ Base ./loading.jl:2874
+ [10] include_string
+    @ ./loading.jl:2884 [inlined]
+ [11] exec_options(opts::Base.JLOptions)
+    @ Base ./client.jl:315
+ [12] _start()
+    @ Base ./client.jl:550
+in expression starting at /Users/cblackwell/Dropbox/CITE/grok/SyntactileViz/src/TikzExport.jl:1
+in expression starting at /Users/cblackwell/Dropbox/CITE/grok/SyntactileViz/src/SyntactileViz.jl:1
+in expression starting at stdin:5
+  ✗ SyntactileViz
+Precompiling SyntactileViz finished.
+  0 dependencies successfully precompiled in 7 seconds. 294 already precompiled.
+
+ERROR: The following 1 direct dependency failed to precompile:
+
+SyntactileViz 
+
+Failed to precompile SyntactileViz [7a31ebc7-e5f0-4d97-940e-aa3fdd0bc38d] to "/Users/cblackwell/.julia/compiled/v1.12/SyntactileViz/jl_qJ0w4W".
+ERROR: LoadError: FieldError: type DataType has no field `SyntaxGraph`, available fields: `name`, `super`, `parameters`, `types`, `instance`, `layout`, `hash`, `flags`
+Stacktrace:
+  [1] getproperty(x::Type, f::Symbol)
+    @ Base ./Base_compiler.jl:48
+  [2] top-level scope
+    @ ~/Dropbox/CITE/grok/SyntactileViz/src/TikzExport.jl:7
+  [3] include(mapexpr::Function, mod::Module, _path::String)
+    @ Base ./Base.jl:307
+  [4] top-level scope
+    @ ~/Dropbox/CITE/grok/SyntactileViz/src/SyntactileViz.jl:7
+  [5] include(mod::Module, _path::String)
+    @ Base ./Base.jl:306
+  [6] include_package_for_output(pkg::Base.PkgId, input::String, depot_path::Vector{String}, dl_load_path::Vector{String}, load_path::Vector{String}, concrete_deps::Vector{Pair{Base.PkgId, UInt128}}, source::Nothing)
+    @ Base ./loading.jl:3028
+  [7] top-level scope
+    @ stdin:5
+  [8] eval(m::Module, e::Any)
+    @ Core ./boot.jl:489
+  [9] include_string(mapexpr::typeof(identity), mod::Module, code::String, filename::String)
+    @ Base ./loading.jl:2874
+ [10] include_string
+    @ ./loading.jl:2884 [inlined]
+ [11] exec_options(opts::Base.JLOptions)
+    @ Base ./client.jl:315
+ [12] _start()
+    @ Base ./client.jl:550
+in expression starting at /Users/cblackwell/Dropbox/CITE/grok/SyntactileViz/src/TikzExport.jl:1
+in expression starting at /Users/cblackwell/Dropbox/CITE/grok/SyntactileViz/src/SyntactileViz.jl:1
+in expression starting at stdin:
+➜  SyntactileViz git:(main) ✗ 
+
+~~~
+
+
+And I should have mentoned earlier that an option for a more traditional tree-graph would also be nice to have. It looks like your code allows this with the `theme` parameter on `tikz_dependency_code()`. Something similar to what we're creating with Makie.
