@@ -205,3 +205,25 @@ Must the nodes' background be a circle? A nice rounded rectangle that fits the t
 
 These are nit-picks, though. What you have given me is stunning.
 
+---
+
+Let's try this:
+
+- Apply the improved edge-label positioning right now (recommended first step)
+
+---
+
+Okay. That is perfect. 
+
+I also added `elabels_distance = 7` and increased the size of the node-circles a little, both of which add a lot to legibility. 
+
+I think this part of the project is in great shape. Thank you so much for the help bringing all of this together!
+
+I love that I have a script now that can produce markdown and pdf comparisons. This is going to be great for my students, who will have something concrete, informative, and impressive to show for their work on Greek!
+
+I am going to write up my thoughts on TikZ export and come back to you with that. I am really looking forward to seeing what XeLaTeX, or whatever engine we use, can do with these graphs!
+
+In the meantime, I've got everything safely in the repo.
+
+Conversation at: <https://x.com/i/grok/share/d5cdc3aac37748a99438c5d0f36763ca>
+

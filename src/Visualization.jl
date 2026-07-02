@@ -74,15 +74,15 @@ function plot_syntax_tree!(ax::Axis, g::SyntaxGraph.SyntaxGraph;
     digraph, node_ids, node_labels, edge_labels = syntaxgraph_to_digraph(g; reverse_direction=reverse_direction)
 
     node_colors = fill(:wheat1, length(node_ids))
-    node_sizes  = fill(35, length(node_ids))
+    node_sizes  = fill(55, length(node_ids))
 
     for (i, id) in enumerate(node_ids)
         if startswith(id, "urn:cite2:fuTeaching:syntax.ellipsis")
             node_colors[i] = :plum
-            node_sizes[i]  = 35
+            node_sizes[i]  = 55
         elseif startswith(id, "root")
             node_colors[i] = :gold2
-            node_sizes[i]  = 60
+            node_sizes[i]  = 75
         end
 
         if haskey(node_color_overrides, id)
@@ -103,10 +103,12 @@ function plot_syntax_tree!(ax::Axis, g::SyntaxGraph.SyntaxGraph;
         node_size = node_sizes,
         node_color = node_colors,
         edge_color = edge_colors,
-        arrow_size = 8,
+        arrow_size = 10,                    # slightly larger arrows for better separation
         elabels = edge_labels,
         elabels_color = :darkred,
-        elabels_fontsize = 6,
+        elabels_fontsize = 7,               # a touch larger
+        elabels_align = (:center, :bottom), # pushes labels slightly away from the arrows
+        elabels_distance = 7,
         kwargs...
     )
 
