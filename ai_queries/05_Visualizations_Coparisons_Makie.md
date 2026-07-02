@@ -109,3 +109,80 @@ in expression starting at stdin:
 in expression starting at /Users/cblackwell/Dropbox/CITE/grok/SyntactileViz/scripts/10_Side-by-Side-Makie.jl:2
 ➜  SyntactileViz git:(main) ✗ 
 ~~~
+
+---
+
+Another new error when checking compilation:
+
+~~~
+SyntactileViz git:(main) ✗ julia --project=. -e 'using SyntactileViz; println("Loaded successfully")'
+
+
+Info Given SyntactileViz was explicitly requested, output will be shown live 
+ERROR: LoadError: UndefVarError: `Comparison` not defined in `SyntactileViz.Visualization`
+Suggestion: check for spelling errors or missing imports.
+Stacktrace:
+  [1] top-level scope
+    @ ~/Dropbox/CITE/grok/SyntactileViz/src/Visualization.jl:143
+  [2] include(mapexpr::Function, mod::Module, _path::String)
+    @ Base ./Base.jl:307
+  [3] top-level scope
+    @ ~/Dropbox/CITE/grok/SyntactileViz/src/SyntactileViz.jl:5
+  [4] include(mod::Module, _path::String)
+    @ Base ./Base.jl:306
+  [5] include_package_for_output(pkg::Base.PkgId, input::String, depot_path::Vector{String}, dl_load_path::Vector{String}, load_path::Vector{String}, concrete_deps::Vector{Pair{Base.PkgId, UInt128}}, source::Nothing)
+    @ Base ./loading.jl:3028
+  [6] top-level scope
+    @ stdin:5
+  [7] eval(m::Module, e::Any)
+    @ Core ./boot.jl:489
+  [8] include_string(mapexpr::typeof(identity), mod::Module, code::String, filename::String)
+    @ Base ./loading.jl:2874
+  [9] include_string
+    @ ./loading.jl:2884 [inlined]
+ [10] exec_options(opts::Base.JLOptions)
+    @ Base ./client.jl:315
+ [11] _start()
+    @ Base ./client.jl:550
+in expression starting at /Users/cblackwell/Dropbox/CITE/grok/SyntactileViz/src/Visualization.jl:1
+in expression starting at /Users/cblackwell/Dropbox/CITE/grok/SyntactileViz/src/SyntactileViz.jl:1
+in expression starting at stdin:5
+  ✗ SyntactileViz
+Precompiling SyntactileViz finished.
+  0 dependencies successfully precompiled in 5 seconds. 294 already precompiled.
+
+ERROR: The following 1 direct dependency failed to precompile:
+
+SyntactileViz 
+
+Failed to precompile SyntactileViz [7a31ebc7-e5f0-4d97-940e-aa3fdd0bc38d] to "/Users/cblackwell/.julia/compiled/v1.12/SyntactileViz/jl_pORcrW".
+ERROR: LoadError: UndefVarError: `Comparison` not defined in `SyntactileViz.Visualization`
+Suggestion: check for spelling errors or missing imports.
+Stacktrace:
+  [1] top-level scope
+    @ ~/Dropbox/CITE/grok/SyntactileViz/src/Visualization.jl:143
+  [2] include(mapexpr::Function, mod::Module, _path::String)
+    @ Base ./Base.jl:307
+  [3] top-level scope
+    @ ~/Dropbox/CITE/grok/SyntactileViz/src/SyntactileViz.jl:5
+  [4] include(mod::Module, _path::String)
+    @ Base ./Base.jl:306
+  [5] include_package_for_output(pkg::Base.PkgId, input::String, depot_path::Vector{String}, dl_load_path::Vector{String}, load_path::Vector{String}, concrete_deps::Vector{Pair{Base.PkgId, UInt128}}, source::Nothing)
+    @ Base ./loading.jl:3028
+  [6] top-level scope
+    @ stdin:5
+  [7] eval(m::Module, e::Any)
+    @ Core ./boot.jl:489
+  [8] include_string(mapexpr::typeof(identity), mod::Module, code::String, filename::String)
+    @ Base ./loading.jl:2874
+  [9] include_string
+    @ ./loading.jl:2884 [inlined]
+ [10] exec_options(opts::Base.JLOptions)
+    @ Base ./client.jl:315
+ [11] _start()
+    @ Base ./client.jl:550
+in expression starting at /Users/cblackwell/Dropbox/CITE/grok/SyntactileViz/src/Visualization.jl:1
+in expression starting at /Users/cblackwell/Dropbox/CITE/grok/SyntactileViz/src/SyntactileViz.jl:1
+in expression starting at stdin:
+➜  SyntactileViz git:(main) ✗ 
+~~~
