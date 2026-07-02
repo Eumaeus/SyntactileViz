@@ -178,3 +178,4 @@ Conversation at: <https://x.com/i/grok/share/e6e78b8a1a49455cbc8a248b3295de12>
 
 That compiled! Thanks! I'll make a test-script to see what we get!
 
+And I would love a second function, perhaps the pure TikZ hierarchical version you mentioned? 
