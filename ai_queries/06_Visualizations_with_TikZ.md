@@ -226,3 +226,12 @@ Conversation at: <https://x.com/i/grok/share/cea2ff9afda3439793ff8ad8ecb64b9a>
 
 Yes, if you could update the save_tikz_dependency and save_tikz_tree functions to automatically include an adjustbox wrapper (with a toggle), that would be really helpful.
 
+---
+
+Beautiful!!! Everything compiles! The Julia code made two `.tex` files, and both compiled with XeLaTeX without error.
+
+Everything is up-to-date in the repo.
+
+The "dependency" graph looks amazing and resized nicely.
+
+The "tree" graph looks good, but the edge-labels appear as dark maroon boxes with no visible text in them. I'm thinking that this is simply a matter of adjusting `edge_style`?
