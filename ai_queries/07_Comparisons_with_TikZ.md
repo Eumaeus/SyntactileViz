@@ -76,3 +76,36 @@ in expression starting at /Users/cblackwell/Dropbox/CITE/grok/SyntactileViz/scri
 ➜  SyntactileViz git:(main) ✗ 
 
 ~~~
+
+
+---
+
+Progress!!!
+
+The change you suggested, and changing the order of `import`s in SyntactileViz.jl to put TikzExport.jl _before_ Comparison.jl, got it to compile.
+
+I'm now getting the following error:
+
+~~~
+
+SyntactileViz git:(main) ✗ julia --project=. scripts/12_TikZ_Comparison.jl
+Precompiling SyntactileViz finished.
+  1 dependency successfully precompiled in 5 seconds. 294 already precompiled.
+ERROR: LoadError: TypeError: in keyword argument head_diff, expected Set{String}, got a value of type Set{Tuple{String, String, String}}
+Stacktrace:
+ [1] tikz_dependency_comparison(comp::ComparisonResult; kwargs::@Kwargs{})
+   @ SyntactileViz.Comparison ~/Dropbox/CITE/grok/SyntactileViz/src/Comparison.jl:333
+ [2] tikz_dependency_comparison(comp::ComparisonResult)
+   @ SyntactileViz.Comparison ~/Dropbox/CITE/grok/SyntactileViz/src/Comparison.jl:332
+ [3] top-level scope
+   @ ~/Dropbox/CITE/grok/SyntactileViz/scripts/12_TikZ_Comparison.jl:16
+ [4] include(mod::Module, _path::String)
+   @ Base ./Base.jl:306
+ [5] exec_options(opts::Base.JLOptions)
+   @ Base ./client.jl:317
+ [6] _start()
+   @ Base ./client.jl:550
+in expression starting at /Users/cblackwell/Dropbox/CITE/grok/SyntactileViz/scripts/12_TikZ_Comparison.jl:16
+➜  SyntactileViz git:(main) ✗ 
+
+~~~

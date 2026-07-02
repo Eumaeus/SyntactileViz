@@ -3,8 +3,8 @@ module SyntactileViz
 include("CEXParser.jl")
 include("SyntaxGraph.jl")
 include("Visualization.jl")   # ← move this up
-include("Comparison.jl")
 include("TikzExport.jl")
+include("Comparison.jl")
 
 using .CEXParser
 using .SyntaxGraph

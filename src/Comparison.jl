@@ -8,6 +8,9 @@ using NetworkLayout
 using ..SyntaxGraph
 using ..CEXParser
 using ..Visualization
+using ..TikzExport          # ← ADD THIS LINE
+
+
 
 using Printf
 using Dates
