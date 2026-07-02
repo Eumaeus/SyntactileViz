@@ -29,7 +29,7 @@ export ComparisonResult, compare_syntax_graphs, report_comparison, diff_summary,
 export draw_syntax_tree, save_syntax_tree
 
 # TikZ
-export tikz_dependency_code, save_tikz_dependency, save_tikz_tree, tikz_hierarchical_tree_code
+export tikz_dependency_code, save_tikz_dependency, save_tikz_tree, tikz_hierarchical_tree_code, tikz_dependency_comparison, tikz_dual_dependency_comparison
 
 
 # Convenience function (moved here from Comparison module)

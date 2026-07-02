@@ -40,4 +40,39 @@ Great! Okay… let me get all this into place!
 
 Conversation at: <https://x.com/i/grok/share/c1d4698239ec47868bfa8a60104387b1>
 
-  
+---
+
+Okay. All new changes are checked into the repo: <https://github.com/Eumaeus/SyntactileViz>.
+
+As seems always to be the case when I add functions in Julia, I'm getting integration errors.
+
+I've edited `scripts/12_TikZ_Comparison.jl` as a test script.
+
+The error I get is:
+
+~~~
+
+ SyntactileViz git:(main) ✗ julia --project=. scripts/12_TikZ_Comparison.jl
+Precompiling SyntactileViz finished.
+  1 dependency successfully precompiled in 5 seconds. 294 already precompiled.
+ERROR: LoadError: UndefVarError: `tikz_dual_dependency_comparison` not defined in `SyntactileViz.Comparison`
+Suggestion: check for spelling errors or missing imports.
+Hint: a global variable of this name also exists in SyntactileViz.TikzExport.
+    - Also exported by SyntactileViz.
+Stacktrace:
+ [1] tikz_dependency_comparison(comp::ComparisonResult; kwargs::@Kwargs{})
+   @ SyntactileViz.Comparison ~/Dropbox/CITE/grok/SyntactileViz/src/Comparison.jl:330
+ [2] tikz_dependency_comparison(comp::ComparisonResult)
+   @ SyntactileViz.Comparison ~/Dropbox/CITE/grok/SyntactileViz/src/Comparison.jl:329
+ [3] top-level scope
+   @ ~/Dropbox/CITE/grok/SyntactileViz/scripts/12_TikZ_Comparison.jl:16
+ [4] include(mod::Module, _path::String)
+   @ Base ./Base.jl:306
+ [5] exec_options(opts::Base.JLOptions)
+   @ Base ./client.jl:317
+ [6] _start()
+   @ Base ./client.jl:550
+in expression starting at /Users/cblackwell/Dropbox/CITE/grok/SyntactileViz/scripts/12_TikZ_Comparison.jl:16
+➜  SyntactileViz git:(main) ✗ 
+
+~~~

@@ -2,11 +2,7 @@ module TikzExport
 
 import ..SyntaxGraph
 
-export tikz_dependency_code, save_tikz_dependency, save_tikz_tree, tikz_hierarchical_tree_code, tikz_dependency_comparison
-
-
-
-
+export tikz_dependency_code, save_tikz_dependency, save_tikz_tree, tikz_hierarchical_tree_code, tikz_dependency_comparison, tikz_dual_dependency_comparison
 
 const default_preamble = """
 \\documentclass{article}

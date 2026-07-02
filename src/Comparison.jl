@@ -327,7 +327,7 @@ Convenience wrapper that calls the dual-arc TikZ function using the diff informa
 already computed in the `ComparisonResult`.
 """
 function tikz_dependency_comparison(comp::ComparisonResult; kwargs...)
-    TikzExport.tikz_dual_dependency_comparison(
+    tikz_dual_dependency_comparison(
         comp.g1, comp.g2;
         head_diff = Set(comp.head_diff),
         label_diff = Set(comp.label_diff),
