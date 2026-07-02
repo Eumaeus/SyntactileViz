@@ -81,8 +81,10 @@ end
 function save_tikz_dependency(g::SyntaxGraph.SyntaxGraph, path::String; 
                               preamble::String = default_preamble,
                               use_adjustbox::Bool = true,
-                              adjustbox_options::String = "max width=\\textwidth")
-    code = tikz_dependency_code(g)
+                              adjustbox_options::String = "max width=\\textwidth",
+                              # NEW
+                              edge_overrides::Dict{Tuple{String,String}, String} = Dict{Tuple{String,String}, String}())
+    code = tikz_dependency_code(g; edge_overrides = edge_overrides)
     
     content = if use_adjustbox
         """

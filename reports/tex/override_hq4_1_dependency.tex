@@ -1,0 +1,47 @@
+\documentclass{article}
+\usepackage{fontspec}
+\usepackage{tikz}
+\usepackage{tikz-dependency}
+\usepackage{adjustbox}
+
+
+% === Your polytonic Greek setup (customize with your purchased fonts) ===
+\defaultfontfeatures{Ligatures=TeX}
+\setmainfont{ArnoPro-Regular}          % e.g. Brill, IFAO, or your professional font
+% \newfontfamily\greekfont[Script=Greek]{YourGreekFontHere}
+\newfontfamily\greekfont[Script=Greek]{Arno Pro}
+
+% \usepackage{polyglossia}
+% \setotherlanguage[variant=ancient]{greek}
+
+
+\begin{document}
+\begin{figure}[ht]
+\centering
+\begin{adjustbox}{max width=\textwidth}
+\begin{dependency}[theme = simple]
+   \begin{deptext}[column sep=1.2em]
+      ἐὰν \& αἱ \& μοῦσαι \& τὸν \& ἀγαθὸν \& ποιητὴν \& εὖ \& διδάξωσιν \& γράψει \& καλὸν \& βιβλίον \& περὶ \& τῶν \& ἐν \& ἀγορᾷ \& θυσιῶν \\
+   \end{deptext}
+   \deproot{9}{Unit Verb}
+   \depedge[orange, dashed]{9}{1}{Unit Adverbial}
+   \depedge{1}{8}{Unit Verb}
+   \depedge[red, thick]{8}{3}{Subject}
+   \depedge{3}{2}{Article}
+   \depedge{8}{7}{Adverbial}
+   \depedge{8}{6}{Direct Object}
+   \depedge{6}{5}{Attribute}
+   \depedge{6}{4}{Article}
+   \depedge{9}{11}{Direct Object}
+   \depedge{11}{10}{Attribute}
+   \depedge{11}{12}{Preposition}
+   \depedge{12}{16}{Object of Prep.}
+   \depedge{16}{13}{Article}
+   \depedge{16}{14}{Preposition}
+   \depedge{14}{15}{Object of Prep.}
+\end{dependency}
+\end{adjustbox}
+
+\caption{Christopher Blackwell — ἐὰν αἱ μοῦσαι τὸν ἀγαθὸν ποιητὴν εὖ διδάξωσιν , γράψει καλὸν βιβλίον περὶ τῶν ἐν ἀγορᾷ θυσιῶν .}
+\end{figure}
+\end{document}
