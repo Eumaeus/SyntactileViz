@@ -247,3 +247,20 @@ I've checked everything in, and will spend a little time making graphs of other 
 Incredible progress before breakfast! I cannot express my gratitude for this help.
 
 Conversation at: <https://x.com/i/grok/share/39de56b98ca04ebf8b3052656290228f>
+
+---
+
+I made those edits, the code compiles, and my sample script ran with no errors!
+
+Everything is checked in.
+
+Let's add similar (edge-focused) override support to tikz_dependency_code!
+
+---
+
+Conversation at: <https://x.com/i/grok/share/7c6094e118724723ac3538d74affeda2>
+
+Okay… that update went well and is checked in.
+
+Now we can update save_tikz_dependency to accept and forward the edge_overrides parameter!
+

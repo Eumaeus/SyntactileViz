@@ -27,7 +27,8 @@ const default_preamble = """
 function tikz_dependency_code(g::SyntaxGraph.SyntaxGraph;
                               theme::String = "simple",
                               column_sep::String = "1.2em",
-                              root_label::String = "ROOT")
+                              # NEW: edge overrides for comparison highlighting
+                              edge_overrides::Dict{Tuple{String,String}, String} = Dict{Tuple{String,String}, String}())
     ordered_ids = g.ordered_token_ids
     if isempty(ordered_ids)
         return "% Empty graph"
@@ -48,13 +49,22 @@ function tikz_dependency_code(g::SyntaxGraph.SyntaxGraph;
         if e.target == "root"
             if haskey(pos_map, e.source)
                 pos = pos_map[e.source]
+                # deproot can also take options if needed later
                 push!(lines, "   \\deproot{$pos}{$(e.label)}")
             end
         else
             if haskey(pos_map, e.source) && haskey(pos_map, e.target)
-                dep_pos = pos_map[e.source]   # original source = dependent
-                gov_pos = pos_map[e.target]   # original target = governor/head
-                push!(lines, "   \\depedge{$gov_pos}{$dep_pos}{$(e.label)}")
+                dep_pos = pos_map[e.source]      # dependent
+                gov_pos = pos_map[e.target]      # governor / head
+
+                # Check for override on this edge (gov_id, dep_id)
+                override = get(edge_overrides, (e.target, e.source), "")
+                
+                if isempty(override)
+                    push!(lines, "   \\depedge{$gov_pos}{$dep_pos}{$(e.label)}")
+                else
+                    push!(lines, "   \\depedge[$override]{$gov_pos}{$dep_pos}{$(e.label)}")
+                end
             end
         end
     end
@@ -115,10 +125,14 @@ Uses simple level-based positioning (good results for typical sentence length).
 function tikz_hierarchical_tree_code(g::SyntaxGraph.SyntaxGraph;
         level_distance::String = "2.8cm",
         sibling_distance::String = "2.2cm",
-        node_style::String = "draw, rounded corners, fill=gray!8, align=center, font=\\small, minimum width=2cm, minimum height=0.9cm",
-        edge_style::String = "->, draw=lightgray, thick, >=stealth",
-        edge_label_style::String = "pos=0.9, fill=none, draw=none, font=\\small, text=black",
-        show_labels::Bool = true)
+        node_style::String = "draw, rounded corners, fill=gray!8, align=center, font=\\small, minimum width=2.8cm, minimum height=0.9cm",
+        edge_style::String = "->, thick, >=stealth",
+        edge_label_style::String = "fill=none, draw=none, font=\\tiny, text=black",
+        show_labels::Bool = true,
+        # NEW: overrides for comparison highlighting
+        node_overrides::Dict{String, String} = Dict{String, String}(),           # id => TikZ style string
+        edge_overrides::Dict{Tuple{String,String}, String} = Dict{Tuple{String,String}, String}()  # (parent, child) => TikZ style string
+    )
 
     # --- Build children (head → dependents) ---
     children = Dict{String, Vector{String}}()
@@ -172,16 +186,19 @@ function tikz_hierarchical_tree_code(g::SyntaxGraph.SyntaxGraph;
     push!(lines, "  >=stealth,")
     push!(lines, "]")
 
-    # Nodes
+ # Nodes with optional overrides
     for (id, lvl) in sort(collect(node_level), by = x -> (x[2], get(node_x, x[1], 0.0)))
         text = (id == "root") ? "ROOT" : escape_latex(g.nodes[id].text)
         x = get(node_x, id, 0.0)
         y = -lvl * parse(Float64, replace(level_distance, "cm" => ""))
         nodename = id_to_node[id]
-        push!(lines, "  \\node ($nodename) at ($(x)cm, $(y)cm) {$text};")
+        
+        extra_style = get(node_overrides, id, "")
+        style = isempty(extra_style) ? node_style : "$node_style, $extra_style"
+        push!(lines, "  \\node[$style] ($nodename) at ($(x)cm, $(y)cm) {$text};")
     end
 
-    # Edges + labels (now with proper label styling)
+    # Edges with optional overrides
     for e in g.edges
         if e.target == "root"
             parent_id, child_id = "root", e.source
@@ -192,11 +209,16 @@ function tikz_hierarchical_tree_code(g::SyntaxGraph.SyntaxGraph;
         if haskey(id_to_node, parent_id) && haskey(id_to_node, child_id)
             pnode = id_to_node[parent_id]
             cnode = id_to_node[child_id]
+            
+            base_edge = edge_style
+            extra = get(edge_overrides, (parent_id, child_id), "")
+            final_edge = isempty(extra) ? base_edge : "$base_edge, $extra"
+            
             if show_labels
                 label = "node[midway, above, $edge_label_style] {$(e.label)}"
-                push!(lines, "  \\draw[$edge_style] ($pnode) -- $label ($cnode);")
+                push!(lines, "  \\draw[$final_edge] ($pnode) -- $label ($cnode);")
             else
-                push!(lines, "  \\draw[$edge_style] ($pnode) -- ($cnode);")
+                push!(lines, "  \\draw[$final_edge] ($pnode) -- ($cnode);")
             end
         end
     end
