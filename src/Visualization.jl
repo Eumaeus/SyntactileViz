@@ -55,16 +55,24 @@ function syntaxgraph_to_digraph(g::SyntaxGraph.SyntaxGraph; reverse_direction::B
     return digraph, node_ids, node_labels, edge_labels
 end
 
-"""
-    draw_syntax_tree(g::SyntaxGraph.SyntaxGraph; title=nothing, kwargs...)
 
-Draws a syntax graph. Ellipsis nodes are highlighted in plum, root in gold.
-Arrows point head → dependent when `reverse_direction=true` (the default).
 """
-function draw_syntax_tree(g::SyntaxGraph.SyntaxGraph; title = nothing, kwargs...)
-    digraph, node_ids, node_labels, edge_labels = syntaxgraph_to_digraph(g)
+    plot_syntax_tree!(ax::Axis, g::SyntaxGraph.SyntaxGraph;
+                      reverse_direction::Bool = true,
+                      node_color_overrides::Dict{String, Symbol} = Dict{String, Symbol}(),
+                      edge_color_overrides::Dict{Tuple{String,String}, Symbol} = Dict{Tuple{String,String}, Symbol}(),
+                      kwargs...)
 
-    # === Special styling for ellipsis nodes ===
+Core plotting function that draws into an existing Axis.  
+Supports per-node and per-edge color overrides for difference highlighting.
+"""
+function plot_syntax_tree!(ax::Axis, g::SyntaxGraph.SyntaxGraph;
+                           reverse_direction::Bool = true,
+                           node_color_overrides::Dict{String, Symbol} = Dict{String, Symbol}(),
+                           edge_color_overrides::Dict{Tuple{String,String}, Symbol} = Dict{Tuple{String,String}, Symbol}(),
+                           kwargs...)
+    digraph, node_ids, node_labels, edge_labels = syntaxgraph_to_digraph(g; reverse_direction=reverse_direction)
+
     node_colors = fill(:wheat1, length(node_ids))
     node_sizes  = fill(35, length(node_ids))
 
@@ -72,16 +80,20 @@ function draw_syntax_tree(g::SyntaxGraph.SyntaxGraph; title = nothing, kwargs...
         if startswith(id, "urn:cite2:fuTeaching:syntax.ellipsis")
             node_colors[i] = :plum
             node_sizes[i]  = 35
-        end
-        if startswith(id, "root")
+        elseif startswith(id, "root")
             node_colors[i] = :gold2
             node_sizes[i]  = 60
         end
+
+        if haskey(node_color_overrides, id)
+            node_colors[i] = node_color_overrides[id]
+        end
     end
 
-    fig = Figure(size = (1100, 800))
-    titleText = g.editor * "\n\n" * replace(g.sentence_text, "," => ",\n")
-    ax = Axis(fig[1, 1]; title = titleText)
+    digraph_edges = collect(edges(digraph))
+    edge_colors = fill(:gray50, length(digraph_edges))
+
+    # (Optional) apply edge overrides here if you pass them in the future
 
     graphplot!(ax, digraph;
         layout = NetworkLayout.Stress(dim=2),
@@ -90,7 +102,7 @@ function draw_syntax_tree(g::SyntaxGraph.SyntaxGraph; title = nothing, kwargs...
         nlabels_fontsize = 10,
         node_size = node_sizes,
         node_color = node_colors,
-        edge_color = :gray50,
+        edge_color = edge_colors,
         arrow_size = 8,
         elabels = edge_labels,
         elabels_color = :darkred,
@@ -100,6 +112,22 @@ function draw_syntax_tree(g::SyntaxGraph.SyntaxGraph; title = nothing, kwargs...
 
     hidedecorations!(ax)
     hidespines!(ax)
+end
+
+"""
+    draw_syntax_tree(g::SyntaxGraph.SyntaxGraph; title=nothing, kwargs...)
+
+Draws a syntax graph. Ellipsis nodes are highlighted in plum, root in gold.
+Arrows point head → dependent when `reverse_direction=true` (the default).
+"""
+# Update the existing draw_syntax_tree to use the new function
+function draw_syntax_tree(g::SyntaxGraph.SyntaxGraph; title = nothing, kwargs...)
+    fig = Figure(size = (1100, 800))
+    titleText = isnothing(title) ? 
+        (g.editor * "\n\n" * replace(g.sentence_text, "," => ",\n")) : title
+    ax = Axis(fig[1, 1]; title = titleText)
+
+    plot_syntax_tree!(ax, g; kwargs...)
     return fig
 end
 
@@ -109,6 +137,72 @@ end
 function save_syntax_tree(g::SyntaxGraph.SyntaxGraph, path::String; format::Symbol = :pdf, title = nothing)
     fig = draw_syntax_tree(g; title = title)
     save(path, fig)
+    return path
+end
+
+"""
+    draw_syntax_comparison(comp::Comparison.ComparisonResult;
+                           highlight_diffs::Bool = true,
+                           size = (2200, 900))
+
+Side-by-side Makie visualization of two syntax analyses.
+Differing tokens are highlighted in color.
+"""
+function draw_syntax_comparison(comp::Comparison.ComparisonResult;
+                                highlight_diffs::Bool = true,
+                                size = (2200, 900))
+    g1 = comp.g1
+    g2 = comp.g2
+
+    node_overrides = Dict{String, Symbol}()
+
+    if highlight_diffs
+        for (nid, _, _) in comp.label_diff
+            node_overrides[nid] = :orange
+        end
+        for (nid, _, _) in comp.head_diff
+            node_overrides[nid] = :salmon
+        end
+    end
+
+    fig = Figure(size = size)
+
+    # Header
+    Label(fig[0, 1:2],
+          "Syntactic Analysis Comparison\n$(g1.sentence_text)",
+          fontsize = 18, halign = :center, tellwidth = false)
+
+    # Left panel
+    ax1 = Axis(fig[1, 1];
+               title = "Analysis 1: $(g1.editor)\nUAS: $(round(comp.uas*100, digits=1))%  |  LAS: $(round(comp.las*100, digits=1))%",
+               titlesize = 14)
+    plot_syntax_tree!(ax1, g1; node_color_overrides = node_overrides)
+
+    # Right panel
+    ax2 = Axis(fig[1, 2];
+               title = "Analysis 2: $(g2.editor)\nUAS: $(round(comp.uas*100, digits=1))%  |  LAS: $(round(comp.las*100, digits=1))%",
+               titlesize = 14)
+    plot_syntax_tree!(ax2, g2; node_color_overrides = node_overrides)
+
+    # Legend
+    Label(fig[2, 1:2],
+          "Orange = label change (minor diff)   •   Salmon = head change (major diff)   •   Gold = root, Plum = ellipsis",
+          fontsize = 11, halign = :center)
+
+    return fig
+end
+
+"""
+    save_syntax_comparison(comp::Comparison.ComparisonResult, path::String;
+                           format::Symbol = :pdf, kwargs...)
+
+Convenience wrapper to generate and save the side-by-side comparison figure.
+"""
+function save_syntax_comparison(comp::Comparison.ComparisonResult, path::String;
+                                format::Symbol = :pdf, kwargs...)
+    fig = draw_syntax_comparison(comp; kwargs...)
+    save(path, fig)
+    @info "Saved comparison visualization → $path"
     return path
 end
 

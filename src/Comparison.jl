@@ -2,10 +2,13 @@ module Comparison
 
 using ..SyntaxGraph
 using ..CEXParser
+using ..Visualization
+
 using Printf
 using Dates
 
 export ComparisonResult, compare_syntax_graphs, report_comparison, diff_summary, export_comparison_markdown
+export visualize_comparison, save_comparison_visualization
 
 # ============================================================
 # Result struct
@@ -254,5 +257,8 @@ function export_comparison_markdown(comp::ComparisonResult, filepath::String;
 
     println("Markdown report written to: $filepath")
 end
+
+const visualize_comparison = Visualization.draw_syntax_comparison
+const save_comparison_visualization = Visualization.save_syntax_comparison
 
 end # module Comparison
