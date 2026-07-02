@@ -264,3 +264,10 @@ Okay… that update went well and is checked in.
 
 Now we can update save_tikz_dependency to accept and forward the edge_overrides parameter!
 
+---
+
+That works beautifully! My sample-script shows lovely red and orange edges! `scripts/11_TikZ.jl`.
+
+I've been editing the function declarations to remove the `()` after `preamble::String = default_preamble()`. It seems that `default_preamble` is just a `const`, not a function.
+
+This is great! If we can add dependencies to the "tree" code, we'll have all the bases covered.
