@@ -14,14 +14,12 @@
 % \usepackage{polyglossia}
 % \setotherlanguage[variant=ancient]{greek}
 
-
 \begin{document}
 \begin{figure}[ht]
 \centering
 \begin{adjustbox}{max width=\textwidth}
 \begin{tikzpicture}[
-    every node/.style={font=\footnotesize, minimum width=1.8em, minimum height=0.9em,
-                       draw=black!40, align=center, inner sep=2pt},
+    every node/.style={font=\footnotesize, minimum width=1.8em, minimum height=0.9em, draw=none, align=center, inner sep=2pt},
     arc g1/.style={->, thick, blue!75, shorten >=1pt, shorten <=1pt},
     arc g2/.style={->, thick, teal!75, shorten >=1pt, shorten <=1pt},
     diff arc/.style={->, thick, red!85, shorten >=1pt, shorten <=1pt},
@@ -53,86 +51,86 @@
 
 % === g1 arcs (ABOVE) ===
   \draw[arc g1] (n2) to [out=125, in=55, looseness=1.35] (n1);
-  \node[label, above] at (3.75, 1.05) {Direct Object};
-  \draw[arc g1] (n2) to [out=55, in=125, looseness=1.35] (n3);
-  \node[label, above] at (6.25, 1.05) {Adverbial};
+  \node[label, above] at (3.75, 1.4) {Direct Object};
+  \draw[arc g1] (n1) to [out=55, in=125, looseness=1.35] (n3);
+  \node[label, above] at (5.0, 2.2) {Attribute};
   \draw[arc g1] (n3) to [out=55, in=125, looseness=1.35] (n4);
-  \node[label, above] at (8.75, 1.05) {Article};
+  \node[label, above] at (8.75, 1.4) {Article};
   \draw[arc g1] (n4) to [out=55, in=125, looseness=1.35] (n10);
-  \node[label, above] at (17.5, 1.05) {Unit Participle};
+  \node[label, above] at (17.5, 5.4) {Unit Participle};
   \draw[arc g1] (n10) to [out=125, in=55, looseness=1.35] (n5);
-  \node[label, above] at (18.75, 1.05) {Direct Object};
+  \node[label, above] at (18.75, 4.6) {Direct Object};
   \draw[arc g1] (n10) to [out=125, in=55, looseness=1.35] (n6);
-  \node[label, above] at (20.0, 1.05) {Preposition};
+  \node[label, above] at (20.0, 3.8000000000000003) {Preposition};
   \draw[arc g1] (n6) to [out=55, in=125, looseness=1.35] (n9);
-  \node[label, above] at (18.75, 1.05) {Object of Prep.};
+  \node[label, above] at (18.75, 3.0000000000000004) {Object of Prep.};
   \draw[arc g1] (n9) to [out=125, in=55, looseness=1.35] (n8);
-  \node[label, above] at (21.25, 1.05) {Article};
+  \node[label, above] at (21.25, 1.4) {Article};
   \draw[arc g1] (n9) to [out=125, in=55, looseness=1.35] (n7);
-  \node[label, above] at (20.0, 1.05) {Attribute};
+  \node[label, above] at (20.0, 2.2) {Attribute};
   \draw[arc g1] (n2) to [out=55, in=125, looseness=1.35] (n11);
-  \node[label, above] at (16.25, 1.05) {Unit Adverbial};
+  \node[label, above] at (16.25, 7.8) {Unit Adverbial};
   \draw[arc g1] (n11) to [out=55, in=125, looseness=1.35] (n14);
-  \node[label, above] at (31.25, 1.05) {Unit Verb};
-  \draw[arc g1] (n13) to [out=125, in=55, looseness=1.35] (n12);
-  \node[label, above] at (31.25, 1.05) {Adverbial};
+  \node[label, above] at (31.25, 3.0000000000000004) {Unit Verb};
+  \draw[arc g1] (n14) to [out=125, in=55, looseness=1.35] (n12);
+  \node[label, above] at (32.5, 2.2) {Adverbial};
   \draw[arc g1] (n14) to [out=125, in=55, looseness=1.35] (n13);
-  \node[label, above] at (33.75, 1.05) {Adverbial};
+  \node[label, above] at (33.75, 1.4) {Adverbial};
   \draw[arc g1] (n17) to [out=125, in=55, looseness=1.35] (n15);
-  \node[label, above] at (40.0, 1.05) {Attribute};
+  \node[label, above] at (40.0, 2.2) {Attribute};
   \draw[arc g1] (n17) to [out=125, in=55, looseness=1.35] (n16);
-  \node[label, above] at (41.25, 1.05) {Article};
+  \node[label, above] at (41.25, 1.4) {Article};
   \draw[arc g1] (n14) to [out=55, in=125, looseness=1.35] (n17);
-  \node[label, above] at (38.75, 1.05) {Subject};
+  \node[label, above] at (38.75, 3.0000000000000004) {Subject};
   \draw[arc g1] (n14) to [out=55, in=125, looseness=1.35] (n20);
-  \node[label, above] at (42.5, 1.05) {Auxiliary Infinitive};
+  \node[label, above] at (42.5, 5.4) {Auxiliary Infinitive};
   \draw[arc g1] (n20) to [out=125, in=55, looseness=1.35] (n19);
-  \node[label, above] at (48.75, 1.05) {Direct Object};
+  \node[label, above] at (48.75, 1.4) {Direct Object};
   \draw[arc g1] (n19) to [out=125, in=55, looseness=1.35] (n18);
-  \node[label, above] at (46.25, 1.05) {Article};
+  \node[label, above] at (46.25, 1.4) {Article};
 
 % === g2 arcs (BELOW) ===
   \draw[arc g2] (n2) to [out=-125, in=-55, looseness=1.35] (n1);
-  \node[label, below] at (3.75, -1.05) {Direct Object};
-  \draw[arc g2] (n1) to [out=-55, in=-125, looseness=1.35] (n3);
-  \node[label, below] at (5.0, -1.05) {Attribute};
+  \node[label, below] at (3.75, -1.4) {Direct Object};
+  \draw[arc g2] (n2) to [out=-55, in=-125, looseness=1.35] (n3);
+  \node[label, below] at (6.25, -1.4) {Adverbial};
   \draw[arc g2] (n3) to [out=-55, in=-125, looseness=1.35] (n4);
-  \node[label, below] at (8.75, -1.05) {Article};
+  \node[label, below] at (8.75, -1.4) {Article};
   \draw[arc g2] (n4) to [out=-55, in=-125, looseness=1.35] (n10);
-  \node[label, below] at (17.5, -1.05) {Unit Participle};
+  \node[label, below] at (17.5, -5.4) {Unit Participle};
   \draw[arc g2] (n10) to [out=-125, in=-55, looseness=1.35] (n5);
-  \node[label, below] at (18.75, -1.05) {Direct Object};
+  \node[label, below] at (18.75, -4.6) {Direct Object};
   \draw[arc g2] (n10) to [out=-125, in=-55, looseness=1.35] (n6);
-  \node[label, below] at (20.0, -1.05) {Preposition};
+  \node[label, below] at (20.0, -3.8000000000000003) {Preposition};
   \draw[arc g2] (n6) to [out=-55, in=-125, looseness=1.35] (n9);
-  \node[label, below] at (18.75, -1.05) {Object of Prep.};
+  \node[label, below] at (18.75, -3.0000000000000004) {Object of Prep.};
   \draw[arc g2] (n9) to [out=-125, in=-55, looseness=1.35] (n8);
-  \node[label, below] at (21.25, -1.05) {Article};
+  \node[label, below] at (21.25, -1.4) {Article};
   \draw[arc g2] (n9) to [out=-125, in=-55, looseness=1.35] (n7);
-  \node[label, below] at (20.0, -1.05) {Attribute};
+  \node[label, below] at (20.0, -2.2) {Attribute};
   \draw[arc g2] (n2) to [out=-55, in=-125, looseness=1.35] (n11);
-  \node[label, below] at (16.25, -1.05) {Unit Adverbial};
+  \node[label, below] at (16.25, -7.8) {Unit Adverbial};
   \draw[arc g2] (n11) to [out=-55, in=-125, looseness=1.35] (n14);
-  \node[label, below] at (31.25, -1.05) {Unit Verb};
-  \draw[arc g2] (n14) to [out=-125, in=-55, looseness=1.35] (n12);
-  \node[label, below] at (32.5, -1.05) {Adverbial};
+  \node[label, below] at (31.25, -3.0000000000000004) {Unit Verb};
+  \draw[arc g2] (n13) to [out=-125, in=-55, looseness=1.35] (n12);
+  \node[label, below] at (31.25, -1.4) {Adverbial};
   \draw[arc g2] (n14) to [out=-125, in=-55, looseness=1.35] (n13);
-  \node[label, below] at (33.75, -1.05) {Adverbial};
+  \node[label, below] at (33.75, -1.4) {Adverbial};
   \draw[arc g2] (n17) to [out=-125, in=-55, looseness=1.35] (n15);
-  \node[label, below] at (40.0, -1.05) {Attribute};
+  \node[label, below] at (40.0, -2.2) {Attribute};
   \draw[arc g2] (n17) to [out=-125, in=-55, looseness=1.35] (n16);
-  \node[label, below] at (41.25, -1.05) {Article};
+  \node[label, below] at (41.25, -1.4) {Article};
   \draw[arc g2] (n14) to [out=-55, in=-125, looseness=1.35] (n17);
-  \node[label, below] at (38.75, -1.05) {Subject};
+  \node[label, below] at (38.75, -3.0000000000000004) {Subject};
   \draw[arc g2] (n14) to [out=-55, in=-125, looseness=1.35] (n20);
-  \node[label, below] at (42.5, -1.05) {Auxiliary Infinitive};
+  \node[label, below] at (42.5, -5.4) {Auxiliary Infinitive};
   \draw[arc g2] (n20) to [out=-125, in=-55, looseness=1.35] (n19);
-  \node[label, below] at (48.75, -1.05) {Direct Object};
+  \node[label, below] at (48.75, -1.4) {Direct Object};
   \draw[arc g2] (n19) to [out=-125, in=-55, looseness=1.35] (n18);
-  \node[label, below] at (46.25, -1.05) {Article};
+  \node[label, below] at (46.25, -1.4) {Article};
 \end{tikzpicture}
-\end{adjustbox}
 
-\caption{Hierarchical tree — Christopher Blackwell — ἐὰν αἱ μοῦσαι τὸν ἀγαθὸν ποιητὴν εὖ διδάξωσιν , γράψει καλὸν βιβλίον περὶ τῶν ἐν ἀγορᾷ θυσιῶν .}
+\end{adjustbox}
+\caption{Comparison: θυσίαν ἀγάγωμεν θεοῖς τοῖς Ἀθηναίους ἐν ἐκείνῃ τῇ μάχῃ σώσασιν ὅπως καὶ νῦν ἐθέλωσι πάντες οἱ θεοὶ τὴν δημοκρατίαν φυλάττειν .}
 \end{figure}
 \end{document}

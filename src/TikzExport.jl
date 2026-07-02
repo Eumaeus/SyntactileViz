@@ -288,6 +288,7 @@ for automatic highlighting.
 """
 function tikz_dual_dependency_comparison(g1::SyntaxGraph.SyntaxGraph, 
                                          g2::SyntaxGraph.SyntaxGraph;
+                                         preamble::String = default_preamble,
                                          head_diff::Set{String} = Set{String}(),
                                          label_diff::Set{String} = Set{String}(),
                                          node_overrides::Dict{String,String} = Dict{String,String}(),
@@ -304,7 +305,7 @@ function tikz_dual_dependency_comparison(g1::SyntaxGraph.SyntaxGraph,
     # Merge any explicit node_overrides with diff colors
     node_colors = copy(node_overrides)
     for id in head_diff
-        node_colors[id] = get(node_colors, id, "salmon!85!white")
+        node_colors[id] = get(node_colors, id, "red!85!white")
     end
     for id in label_diff
         node_colors[id] = get(node_colors, id, "orange!75!white")
@@ -312,7 +313,7 @@ function tikz_dual_dependency_comparison(g1::SyntaxGraph.SyntaxGraph,
 
     tikz = """
 \\begin{tikzpicture}[
-    every node/.style={font=\\footnotesize, minimum width=1.8em, minimum height=0.9em, draw=black!40, align=center, inner sep=2pt},
+    every node/.style={font=\\footnotesize, minimum width=1.8em, minimum height=0.9em, draw=none, align=center, inner sep=2pt},
     arc g1/.style={->, thick, blue!75, shorten >=1pt, shorten <=1pt},
     arc g2/.style={->, thick, teal!75, shorten >=1pt, shorten <=1pt},
     diff arc/.style={->, thick, red!85, shorten >=1pt, shorten <=1pt},
@@ -344,8 +345,16 @@ function tikz_dual_dependency_comparison(g1::SyntaxGraph.SyntaxGraph,
         in_a  = i_head > i_dep ? 125 : 55
         tikz *= "  \\draw[$style] (n$i_dep) to [out=$out_a, in=$in_a, looseness=1.35] (n$i_head);\n"
         if !isempty(label)
-            mid = (i_dep + i_head) * node_spacing / 2
-            tikz *= "  \\node[label, above] at ($mid, 1.05) {$label};\n"
+            mid_x = (i_dep + i_head) * node_spacing / 2
+            distance = abs(i_head - i_dep)
+            # Dynamic vertical offset — longer arcs get labels farther away
+            y_offset = 0.6 + (distance * 0.8)
+
+            if occursin("g1", style) || occursin("arc g1", style)
+                tikz *= "  \\node[label, above] at ($mid_x, $y_offset) {$label};\n"
+            else
+                tikz *= "  \\node[label, below] at ($mid_x, -$y_offset) {$label};\n"
+            end
         end
     end
 
@@ -363,13 +372,34 @@ function tikz_dual_dependency_comparison(g1::SyntaxGraph.SyntaxGraph,
         in_a  = i_head > i_dep ? -125 : -55
         tikz *= "  \\draw[$style] (n$i_dep) to [out=$out_a, in=$in_a, looseness=1.35] (n$i_head);\n"
         if !isempty(label)
-            mid = (i_dep + i_head) * node_spacing / 2
-            tikz *= "  \\node[label, below] at ($mid, -1.05) {$label};\n"
-        end
+            mid_x = (i_dep + i_head) * node_spacing / 2
+            distance = abs(i_head - i_dep)
+            # Dynamic vertical offset — longer arcs get labels farther away
+            y_offset = 0.6 + (distance * 0.8)
+
+            if occursin("g1", style) || occursin("arc g1", style)
+                tikz *= "  \\node[label, above] at ($mid_x, $y_offset) {$label};\n"
+            else
+                tikz *= "  \\node[label, below] at ($mid_x, -$y_offset) {$label};\n"
+            end
+         end
     end
 
     tikz *= "\\end{tikzpicture}\n"
-    return tikz
+
+    fullTex = """
+    $preamble
+    \\begin{document}
+    \\begin{figure}[ht]
+    \\centering
+    \\begin{adjustbox}{max width=\\textwidth}
+    $tikz
+    \\end{adjustbox}
+    \\caption{Comparison: $(g1.sentence_text)}
+    \\end{figure}
+    \\end{document}
+    """
+    return fullTex
 end
 
 function save_tikz_dual_dependency_comparison(g1, g2, path::String; kwargs...)
