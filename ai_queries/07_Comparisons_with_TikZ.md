@@ -26,3 +26,18 @@ For the Dependency view, the most perfect solution would be to have the arcs rep
 
 I imagine that the "tree" view would follow what we did with Makie, but I am completely open to other approaches.
 
+---
+
+This looks great… thanks!
+
+Before I start editing, we do have a file `src/TikzExport.jl` for all other TikZ-related functions. I want to make sure it would not be better to add this new TikZ stuff there?
+
+But I am _not_ well-informed at the complexities of Julia modules!
+
+---
+
+Great! Okay… let me get all this into place!
+
+Conversation at: <https://x.com/i/grok/share/c1d4698239ec47868bfa8a60104387b1>
+
+  
