@@ -127,9 +127,9 @@ Uses simple level-based positioning (good results for typical sentence length).
 function tikz_hierarchical_tree_code(g::SyntaxGraph.SyntaxGraph;
         level_distance::String = "2.8cm",
         sibling_distance::String = "2.2cm",
-        node_style::String = "draw, rounded corners, fill=gray!8, align=center, font=\\small, minimum width=2.8cm, minimum height=0.9cm",
-        edge_style::String = "->, thick, >=stealth",
-        edge_label_style::String = "fill=none, draw=none, font=\\tiny, text=black",
+        node_style::String = "draw, rounded corners, fill=gray!8, align=center, font=\\small, minimum width=2cm, minimum height=0.9cm",
+        edge_style::String = "->, thick, draw=lightgray, >=stealth",
+        edge_label_style::String = "pos=0.8, fill=none, draw=none, font=\\small, text=black",
         show_labels::Bool = true,
         # NEW: overrides for comparison highlighting
         node_overrides::Dict{String, String} = Dict{String, String}(),           # id => TikZ style string

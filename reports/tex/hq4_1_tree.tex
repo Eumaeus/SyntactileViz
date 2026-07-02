@@ -20,44 +20,44 @@
 \centering
 \begin{adjustbox}{max width=\textwidth}
 \begin{tikzpicture}[
-  every node/.style={draw, rounded corners, fill=gray!8, align=center, font=\small, minimum width=2.8cm, minimum height=0.9cm},
+  every node/.style={draw, rounded corners, fill=gray!8, align=center, font=\small, minimum width=2cm, minimum height=0.9cm},
   level distance=2.8cm,
   sibling distance=2.2cm,
   >=stealth,
 ]
-  \node[draw, rounded corners, fill=gray!8, align=center, font=\small, minimum width=2.8cm, minimum height=0.9cm] (n1) at (0.0cm, 0.0cm) {ROOT};
-  \node[draw, rounded corners, fill=gray!8, align=center, font=\small, minimum width=2.8cm, minimum height=0.9cm] (n3) at (0.0cm, -2.8cm) {γράψει};
-  \node[draw, rounded corners, fill=gray!8, align=center, font=\small, minimum width=2.8cm, minimum height=0.9cm] (n13) at (0.0cm, -5.6cm) {ἐὰν};
-  \node[draw, rounded corners, fill=gray!8, align=center, font=\small, minimum width=2.8cm, minimum height=0.9cm] (n11) at (8.8cm, -5.6cm) {βιβλίον};
-  \node[draw, rounded corners, fill=gray!8, align=center, font=\small, minimum width=2.8cm, minimum height=0.9cm] (n2) at (0.0cm, -8.399999999999999cm) {διδάξωσιν};
-  \node[draw, rounded corners, fill=gray!8, align=center, font=\small, minimum width=2.8cm, minimum height=0.9cm] (n6) at (8.8cm, -8.399999999999999cm) {καλὸν};
-  \node[draw, rounded corners, fill=gray!8, align=center, font=\small, minimum width=2.8cm, minimum height=0.9cm] (n14) at (11.0cm, -8.399999999999999cm) {περὶ};
-  \node[draw, rounded corners, fill=gray!8, align=center, font=\small, minimum width=2.8cm, minimum height=0.9cm] (n16) at (0.0cm, -11.2cm) {μοῦσαι};
-  \node[draw, rounded corners, fill=gray!8, align=center, font=\small, minimum width=2.8cm, minimum height=0.9cm] (n7) at (2.2cm, -11.2cm) {εὖ};
-  \node[draw, rounded corners, fill=gray!8, align=center, font=\small, minimum width=2.8cm, minimum height=0.9cm] (n12) at (4.4cm, -11.2cm) {ποιητὴν};
-  \node[draw, rounded corners, fill=gray!8, align=center, font=\small, minimum width=2.8cm, minimum height=0.9cm] (n10) at (11.0cm, -11.2cm) {θυσιῶν};
-  \node[draw, rounded corners, fill=gray!8, align=center, font=\small, minimum width=2.8cm, minimum height=0.9cm] (n5) at (0.0cm, -14.0cm) {αἱ};
-  \node[draw, rounded corners, fill=gray!8, align=center, font=\small, minimum width=2.8cm, minimum height=0.9cm] (n9) at (4.4cm, -14.0cm) {ἀγαθὸν};
-  \node[draw, rounded corners, fill=gray!8, align=center, font=\small, minimum width=2.8cm, minimum height=0.9cm] (n17) at (6.6000000000000005cm, -14.0cm) {τὸν};
-  \node[draw, rounded corners, fill=gray!8, align=center, font=\small, minimum width=2.8cm, minimum height=0.9cm] (n15) at (11.0cm, -14.0cm) {τῶν};
-  \node[draw, rounded corners, fill=gray!8, align=center, font=\small, minimum width=2.8cm, minimum height=0.9cm] (n4) at (13.2cm, -14.0cm) {ἐν};
-  \node[draw, rounded corners, fill=gray!8, align=center, font=\small, minimum width=2.8cm, minimum height=0.9cm] (n8) at (13.2cm, -16.799999999999997cm) {ἀγορᾷ};
-  \draw[->, thick, >=stealth] (n1) -- node[midway, above, fill=none, draw=none, font=\tiny, text=black] {Unit Verb} (n3);
-  \draw[->, thick, >=stealth] (n3) -- node[midway, above, fill=none, draw=none, font=\tiny, text=black] {Unit Adverbial} (n13);
-  \draw[->, thick, >=stealth] (n13) -- node[midway, above, fill=none, draw=none, font=\tiny, text=black] {Unit Verb} (n2);
-  \draw[->, thick, >=stealth] (n2) -- node[midway, above, fill=none, draw=none, font=\tiny, text=black] {Subject} (n16);
-  \draw[->, thick, >=stealth] (n16) -- node[midway, above, fill=none, draw=none, font=\tiny, text=black] {Article} (n5);
-  \draw[->, thick, >=stealth] (n2) -- node[midway, above, fill=none, draw=none, font=\tiny, text=black] {Adverbial} (n7);
-  \draw[->, thick, >=stealth] (n2) -- node[midway, above, fill=none, draw=none, font=\tiny, text=black] {Direct Object} (n12);
-  \draw[->, thick, >=stealth] (n12) -- node[midway, above, fill=none, draw=none, font=\tiny, text=black] {Attribute} (n9);
-  \draw[->, thick, >=stealth] (n12) -- node[midway, above, fill=none, draw=none, font=\tiny, text=black] {Article} (n17);
-  \draw[->, thick, >=stealth] (n3) -- node[midway, above, fill=none, draw=none, font=\tiny, text=black] {Direct Object} (n11);
-  \draw[->, thick, >=stealth] (n11) -- node[midway, above, fill=none, draw=none, font=\tiny, text=black] {Attribute} (n6);
-  \draw[->, thick, >=stealth] (n11) -- node[midway, above, fill=none, draw=none, font=\tiny, text=black] {Preposition} (n14);
-  \draw[->, thick, >=stealth] (n14) -- node[midway, above, fill=none, draw=none, font=\tiny, text=black] {Object of Prep.} (n10);
-  \draw[->, thick, >=stealth] (n10) -- node[midway, above, fill=none, draw=none, font=\tiny, text=black] {Article} (n15);
-  \draw[->, thick, >=stealth] (n10) -- node[midway, above, fill=none, draw=none, font=\tiny, text=black] {Preposition} (n4);
-  \draw[->, thick, >=stealth] (n4) -- node[midway, above, fill=none, draw=none, font=\tiny, text=black] {Object of Prep.} (n8);
+  \node[draw, rounded corners, fill=gray!8, align=center, font=\small, minimum width=2cm, minimum height=0.9cm] (n1) at (0.0cm, 0.0cm) {ROOT};
+  \node[draw, rounded corners, fill=gray!8, align=center, font=\small, minimum width=2cm, minimum height=0.9cm] (n3) at (0.0cm, -2.8cm) {γράψει};
+  \node[draw, rounded corners, fill=gray!8, align=center, font=\small, minimum width=2cm, minimum height=0.9cm] (n13) at (0.0cm, -5.6cm) {ἐὰν};
+  \node[draw, rounded corners, fill=gray!8, align=center, font=\small, minimum width=2cm, minimum height=0.9cm] (n11) at (8.8cm, -5.6cm) {βιβλίον};
+  \node[draw, rounded corners, fill=gray!8, align=center, font=\small, minimum width=2cm, minimum height=0.9cm] (n2) at (0.0cm, -8.399999999999999cm) {διδάξωσιν};
+  \node[draw, rounded corners, fill=gray!8, align=center, font=\small, minimum width=2cm, minimum height=0.9cm] (n6) at (8.8cm, -8.399999999999999cm) {καλὸν};
+  \node[draw, rounded corners, fill=gray!8, align=center, font=\small, minimum width=2cm, minimum height=0.9cm] (n14) at (11.0cm, -8.399999999999999cm) {περὶ};
+  \node[draw, rounded corners, fill=gray!8, align=center, font=\small, minimum width=2cm, minimum height=0.9cm] (n16) at (0.0cm, -11.2cm) {μοῦσαι};
+  \node[draw, rounded corners, fill=gray!8, align=center, font=\small, minimum width=2cm, minimum height=0.9cm] (n7) at (2.2cm, -11.2cm) {εὖ};
+  \node[draw, rounded corners, fill=gray!8, align=center, font=\small, minimum width=2cm, minimum height=0.9cm] (n12) at (4.4cm, -11.2cm) {ποιητὴν};
+  \node[draw, rounded corners, fill=gray!8, align=center, font=\small, minimum width=2cm, minimum height=0.9cm] (n10) at (11.0cm, -11.2cm) {θυσιῶν};
+  \node[draw, rounded corners, fill=gray!8, align=center, font=\small, minimum width=2cm, minimum height=0.9cm] (n5) at (0.0cm, -14.0cm) {αἱ};
+  \node[draw, rounded corners, fill=gray!8, align=center, font=\small, minimum width=2cm, minimum height=0.9cm] (n9) at (4.4cm, -14.0cm) {ἀγαθὸν};
+  \node[draw, rounded corners, fill=gray!8, align=center, font=\small, minimum width=2cm, minimum height=0.9cm] (n17) at (6.6000000000000005cm, -14.0cm) {τὸν};
+  \node[draw, rounded corners, fill=gray!8, align=center, font=\small, minimum width=2cm, minimum height=0.9cm] (n15) at (11.0cm, -14.0cm) {τῶν};
+  \node[draw, rounded corners, fill=gray!8, align=center, font=\small, minimum width=2cm, minimum height=0.9cm] (n4) at (13.2cm, -14.0cm) {ἐν};
+  \node[draw, rounded corners, fill=gray!8, align=center, font=\small, minimum width=2cm, minimum height=0.9cm] (n8) at (13.2cm, -16.799999999999997cm) {ἀγορᾷ};
+  \draw[->, thick, draw=lightgray, >=stealth] (n1) -- node[midway, above, pos=0.8, fill=none, draw=none, font=\small, text=black] {Unit Verb} (n3);
+  \draw[->, thick, draw=lightgray, >=stealth] (n3) -- node[midway, above, pos=0.8, fill=none, draw=none, font=\small, text=black] {Unit Adverbial} (n13);
+  \draw[->, thick, draw=lightgray, >=stealth] (n13) -- node[midway, above, pos=0.8, fill=none, draw=none, font=\small, text=black] {Unit Verb} (n2);
+  \draw[->, thick, draw=lightgray, >=stealth] (n2) -- node[midway, above, pos=0.8, fill=none, draw=none, font=\small, text=black] {Subject} (n16);
+  \draw[->, thick, draw=lightgray, >=stealth] (n16) -- node[midway, above, pos=0.8, fill=none, draw=none, font=\small, text=black] {Article} (n5);
+  \draw[->, thick, draw=lightgray, >=stealth] (n2) -- node[midway, above, pos=0.8, fill=none, draw=none, font=\small, text=black] {Adverbial} (n7);
+  \draw[->, thick, draw=lightgray, >=stealth] (n2) -- node[midway, above, pos=0.8, fill=none, draw=none, font=\small, text=black] {Direct Object} (n12);
+  \draw[->, thick, draw=lightgray, >=stealth] (n12) -- node[midway, above, pos=0.8, fill=none, draw=none, font=\small, text=black] {Attribute} (n9);
+  \draw[->, thick, draw=lightgray, >=stealth] (n12) -- node[midway, above, pos=0.8, fill=none, draw=none, font=\small, text=black] {Article} (n17);
+  \draw[->, thick, draw=lightgray, >=stealth] (n3) -- node[midway, above, pos=0.8, fill=none, draw=none, font=\small, text=black] {Direct Object} (n11);
+  \draw[->, thick, draw=lightgray, >=stealth] (n11) -- node[midway, above, pos=0.8, fill=none, draw=none, font=\small, text=black] {Attribute} (n6);
+  \draw[->, thick, draw=lightgray, >=stealth] (n11) -- node[midway, above, pos=0.8, fill=none, draw=none, font=\small, text=black] {Preposition} (n14);
+  \draw[->, thick, draw=lightgray, >=stealth] (n14) -- node[midway, above, pos=0.8, fill=none, draw=none, font=\small, text=black] {Object of Prep.} (n10);
+  \draw[->, thick, draw=lightgray, >=stealth] (n10) -- node[midway, above, pos=0.8, fill=none, draw=none, font=\small, text=black] {Article} (n15);
+  \draw[->, thick, draw=lightgray, >=stealth] (n10) -- node[midway, above, pos=0.8, fill=none, draw=none, font=\small, text=black] {Preposition} (n4);
+  \draw[->, thick, draw=lightgray, >=stealth] (n4) -- node[midway, above, pos=0.8, fill=none, draw=none, font=\small, text=black] {Object of Prep.} (n8);
 \end{tikzpicture}
 \end{adjustbox}
 
