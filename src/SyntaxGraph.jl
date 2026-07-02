@@ -33,6 +33,7 @@ struct SyntaxGraph
     analysis_urn::String
     sentence_text::String
     editor::String
+    ordered_token_ids::Vector{String}   # NEW
 end
 
 # ============================================
@@ -48,9 +49,11 @@ function build_syntax_graph(analysis::Analysis)::SyntaxGraph
     edges = [SyntaxEdge(r.source, r.target, r.relation) for r in analysis.relations]
     vu_dict = Dict(vu.id => vu for vu in analysis.verbal_units)
 
-    editor = analysis.editor
+    # NEW: preserve the order tokens appear in the CEX / sentence
+    ordered_token_ids = [t.id for t in analysis.tokens if t.id != "root"]
 
-    SyntaxGraph(nodes, edges, vu_dict, analysis.analysis_urn, analysis.sentence_text, editor)
+    SyntaxGraph(nodes, edges, vu_dict, analysis.analysis_urn, 
+                analysis.sentence_text, analysis.editor, ordered_token_ids)
 end
 
 # ============================================

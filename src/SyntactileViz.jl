@@ -4,11 +4,13 @@ include("CEXParser.jl")
 include("SyntaxGraph.jl")
 include("Visualization.jl")   # ← move this up
 include("Comparison.jl")
+include("TikzExport.jl")
 
 using .CEXParser
 using .SyntaxGraph
 using .Comparison
 using .Visualization
+using .TikzExport
 using Dates
 
 export parse_cex, Analysis, Token, VerbalUnit, SyntacticRelation
@@ -25,6 +27,10 @@ export ComparisonResult, compare_syntax_graphs, report_comparison, diff_summary,
 
 # Visualization
 export draw_syntax_tree, save_syntax_tree
+
+# TikZ
+export tikz_dependency_code, save_tikz_dependency
+
 
 # Convenience function (moved here from Comparison module)
 function compare_cex_files(path1::String, path2::String)

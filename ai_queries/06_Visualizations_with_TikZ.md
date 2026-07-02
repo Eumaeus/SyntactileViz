@@ -79,3 +79,9 @@ Years ago, I experimented with LaTeX visualizations of graphs. I did not get ver
 ~~~
 
 But I am open to anything that can get the job done, and I will certainly heed your advice!
+
+---
+
+Conversation at: <>
+
+And I should have mentoned earlier that an option for a more traditional tree-graph would also be nice to have. Something similar to what we're creating with Makie.
