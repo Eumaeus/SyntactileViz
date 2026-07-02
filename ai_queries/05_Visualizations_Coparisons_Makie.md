@@ -188,3 +188,20 @@ in expression starting at stdin:
 ~~~
 
 All new changes are in the repo.
+
+---
+
+Conversation at: <https://x.com/i/grok/share/b93c126a898c45a788662080dfb87b2a>
+
+Wonderful! I had to edit some `using` lines, since Comparison is now using Makie also, but it works perfectly, and the graphs look great! I'll have fun experimenting with different colors.
+
+I am delighted!
+
+I think we should *not* take time now to try to make the layout compact. There is no way we're ever going to get a side-by-side comparison on a single piece of paper, and I like having plenty of room so the edge labels are clear. 
+
+If we could make the edge-labels even easier to read, that would be a plus. Giving them a little more space, between the edge-arrow and the label text would help. 
+
+Must the nodes' background be a circle? A nice rounded rectangle that fits the text would look best, but perhaps that is not possible in Makie?
+
+These are nit-picks, though. What you have given me is stunning.
+

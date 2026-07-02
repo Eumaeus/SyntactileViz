@@ -13,7 +13,7 @@ using GraphMakie
 using Graphs
 using NetworkLayout
 
-export draw_syntax_tree, save_syntax_tree
+export draw_syntax_tree, save_syntax_tree, plot_syntax_tree!
 
 """
     syntaxgraph_to_digraph(g::SyntaxGraph.SyntaxGraph; reverse_direction::Bool = true)
@@ -140,70 +140,6 @@ function save_syntax_tree(g::SyntaxGraph.SyntaxGraph, path::String; format::Symb
     return path
 end
 
-"""
-    draw_syntax_comparison(comp::Comparison.ComparisonResult;
-                           highlight_diffs::Bool = true,
-                           size = (2200, 900))
 
-Side-by-side Makie visualization of two syntax analyses.
-Differing tokens are highlighted in color.
-"""
-function draw_syntax_comparison(comp::Comparison.ComparisonResult;
-                                highlight_diffs::Bool = true,
-                                size = (2200, 900))
-    g1 = comp.g1
-    g2 = comp.g2
-
-    node_overrides = Dict{String, Symbol}()
-
-    if highlight_diffs
-        for (nid, _, _) in comp.label_diff
-            node_overrides[nid] = :orange
-        end
-        for (nid, _, _) in comp.head_diff
-            node_overrides[nid] = :salmon
-        end
-    end
-
-    fig = Figure(size = size)
-
-    # Header
-    Label(fig[0, 1:2],
-          "Syntactic Analysis Comparison\n$(g1.sentence_text)",
-          fontsize = 18, halign = :center, tellwidth = false)
-
-    # Left panel
-    ax1 = Axis(fig[1, 1];
-               title = "Analysis 1: $(g1.editor)\nUAS: $(round(comp.uas*100, digits=1))%  |  LAS: $(round(comp.las*100, digits=1))%",
-               titlesize = 14)
-    plot_syntax_tree!(ax1, g1; node_color_overrides = node_overrides)
-
-    # Right panel
-    ax2 = Axis(fig[1, 2];
-               title = "Analysis 2: $(g2.editor)\nUAS: $(round(comp.uas*100, digits=1))%  |  LAS: $(round(comp.las*100, digits=1))%",
-               titlesize = 14)
-    plot_syntax_tree!(ax2, g2; node_color_overrides = node_overrides)
-
-    # Legend
-    Label(fig[2, 1:2],
-          "Orange = label change (minor diff)   •   Salmon = head change (major diff)   •   Gold = root, Plum = ellipsis",
-          fontsize = 11, halign = :center)
-
-    return fig
-end
-
-"""
-    save_syntax_comparison(comp::Comparison.ComparisonResult, path::String;
-                           format::Symbol = :pdf, kwargs...)
-
-Convenience wrapper to generate and save the side-by-side comparison figure.
-"""
-function save_syntax_comparison(comp::Comparison.ComparisonResult, path::String;
-                                format::Symbol = :pdf, kwargs...)
-    fig = draw_syntax_comparison(comp; kwargs...)
-    save(path, fig)
-    @info "Saved comparison visualization → $path"
-    return path
-end
 
 end # module Visualization

@@ -21,7 +21,7 @@ export pretty_print, get_subgraph_for_vu, get_verbal_units_sorted
 export get_primary_verbal_unit
 
 # Comparison
-export ComparisonResult, compare_syntax_graphs, report_comparison, diff_summary, export_comparison_markdown
+export ComparisonResult, compare_syntax_graphs, report_comparison, diff_summary, export_comparison_markdown, draw_syntax_comparison, save_syntax_comparison
 
 # Visualization
 export draw_syntax_tree, save_syntax_tree
