@@ -230,11 +230,19 @@ function tikz_hierarchical_tree_code(g::SyntaxGraph.SyntaxGraph;
 end
 
 function save_tikz_tree(g::SyntaxGraph.SyntaxGraph, path::String;
-                        preamble::String = default_preamble,
-                        use_adjustbox::Bool = true,
-                        adjustbox_options::String = "max width=\\textwidth")
-    code = tikz_hierarchical_tree_code(g)
-    
+        preamble::String = default_preamble,
+        use_adjustbox::Bool = true,
+        adjustbox_options::String = "max width=\\textwidth",
+        # NEW override parameters
+        node_overrides::Dict{String, String} = Dict{String, String}(),
+        edge_overrides::Dict{Tuple{String,String}, String} = Dict{Tuple{String,String}, String}(),
+        show_labels::Bool = true)
+
+    code = tikz_hierarchical_tree_code(g;
+        node_overrides = node_overrides,
+        edge_overrides = edge_overrides,
+        show_labels = show_labels)
+
     content = if use_adjustbox
         """
         \\begin{adjustbox}{$adjustbox_options}
@@ -259,10 +267,6 @@ function save_tikz_tree(g::SyntaxGraph.SyntaxGraph, path::String;
     write(path, full)
     return path
 end
-
-
-
-
 
 
 end # module

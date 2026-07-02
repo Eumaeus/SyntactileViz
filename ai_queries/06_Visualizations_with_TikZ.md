@@ -281,3 +281,16 @@ Conversation at: <https://x.com/i/grok/share/44de3199009e4ce8998560ade90bfcbf>.
 Terrific. Everything compiles.
 
 Do we need to update `save_tikz_tree()` as well, to take the parameterized overrides?
+
+---
+
+Absolutely perfect. Thank you!!!
+
+I have checked everything in. I've already got `\\usepackage{adjustbox}
+` in `default_preamble`.
+
+I will have to step away, but I think you've gotten me ready to move to the high-level comparison function.
+
+I will be back shortly!
+
+Conversation at: <https://x.com/i/grok/share/d39c4bf7664642ad86c0bccf4cdc7471>

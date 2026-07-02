@@ -13,7 +13,7 @@ save_tikz_tree(g, "reports/tex/hq4_1_tree.tex")
 
 # Testing overrides
 
-# With edge highlighting (example)
+# Dependency with edge highlighting (example)
 overrides = Dict(
     ("urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.8", "urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.3") => "red, thick",
     ("urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.10", "urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.1")  => "orange, dashed"
@@ -21,3 +21,12 @@ overrides = Dict(
 
 save_tikz_dependency(g, "reports/tex/override_hq4_1_dependency.tex"; 
                      edge_overrides = overrides)
+
+# Tree with overrides
+
+node_overrides = Dict("urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.8" => "fill=green!20, draw=green")
+edge_overrides = Dict(("urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.10", "urn:cts:fuTeaching:blackwell.hq.2026:4.1.token.1") => "red, thick")
+
+save_tikz_tree(g, "reports/tex/override_my_tree.tex";
+    node_overrides = node_overrides,
+    edge_overrides = edge_overrides)
