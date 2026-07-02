@@ -2,7 +2,9 @@ module TikzExport
 
 import ..SyntaxGraph
 
-export tikz_dependency_code, save_tikz_dependency, save_tikz_tree, tikz_hierarchical_tree_code
+export tikz_dependency_code, save_tikz_dependency, save_tikz_tree, tikz_hierarchical_tree_code, tikz_dependency_comparison
+
+
 
 
 
@@ -268,5 +270,119 @@ function save_tikz_tree(g::SyntaxGraph.SyntaxGraph, path::String;
     return path
 end
 
+# ============================================================
+# Dual-arc dependency comparison (one graph above, one below)
+# ============================================================
+
+"""
+    tikz_dual_dependency_comparison(g1, g2; 
+        head_diff = Set{String}(), label_diff = Set{String}(),
+        node_overrides = Dict{String,String}(),
+        g1_name = "Analysis 1", g2_name = "Analysis 2",
+        node_spacing = 2.5)
+
+Generates a single TikZ picture with:
+- Nodes on a baseline (color-coded if diffs provided)
+- g1 arcs arcing **above** the sentence (blue base)
+- g2 arcs arcing **below** the sentence (teal base)
+- Arcs belonging to differing tokens drawn in red
+
+Pass the `head_diff` and `label_diff` sets from a `ComparisonResult`
+for automatic highlighting.
+"""
+function tikz_dual_dependency_comparison(g1::SyntaxGraph.SyntaxGraph, 
+                                         g2::SyntaxGraph.SyntaxGraph;
+                                         head_diff::Set{String} = Set{String}(),
+                                         label_diff::Set{String} = Set{String}(),
+                                         node_overrides::Dict{String,String} = Dict{String,String}(),
+                                         g1_name::String = "Analysis 1",
+                                         g2_name::String = "Analysis 2",
+                                         node_spacing::Float64 = 2.5)
+
+    ordered_ids = filter(id -> haskey(g1.nodes, id) && !startswith(id, "root"), 
+                         g1.ordered_token_ids)
+    n = length(ordered_ids)
+    isempty(ordered_ids) && return "% No tokens to visualize"
+    id_to_idx = Dict(id => i for (i, id) in enumerate(ordered_ids))
+
+    # Merge any explicit node_overrides with diff colors
+    node_colors = copy(node_overrides)
+    for id in head_diff
+        node_colors[id] = get(node_colors, id, "salmon!85!white")
+    end
+    for id in label_diff
+        node_colors[id] = get(node_colors, id, "orange!75!white")
+    end
+
+    tikz = """
+\\begin{tikzpicture}[
+    every node/.style={font=\\footnotesize, minimum width=1.8em, minimum height=0.9em,
+                       draw=black!40, align=center, inner sep=2pt},
+    arc g1/.style={->, thick, blue!75, shorten >=1pt, shorten <=1pt},
+    arc g2/.style={->, thick, teal!75, shorten >=1pt, shorten <=1pt},
+    diff arc/.style={->, thick, red!85, shorten >=1pt, shorten <=1pt},
+    label/.style={font=\\scriptsize}
+]
+\\node[font=\\bfseries, above] at ($(n*node_spacing/2), 3.2) {Dependency Comparison};
+\\node[font=\\small] at ($(n*node_spacing/2), 2.4) {$g1_name (above, blue) vs $g2_name (below, teal)};
+\\node[font=\\tiny] at ($(n*node_spacing/2), 1.85) {Green = agree • Orange = label diff • Salmon = head diff • Red arcs = differences};
+"""
+
+    # Nodes
+    for (i, id) in enumerate(ordered_ids)
+        text = escape_latex(g1.nodes[id].text)
+        col = get(node_colors, id, "white")
+        tikz *= "  \\node[fill=$col] (n$i) at ($(i * node_spacing), 0) {\\strut $text};\n"
+    end
+
+    # g1 arcs — ABOVE
+    tikz *= "\n% === g1 arcs (ABOVE) ===\n"
+    for e in g1.edges
+        head_id, dep_id = e.source, e.target
+        haskey(id_to_idx, dep_id) && haskey(id_to_idx, head_id) || continue
+        i_dep, i_head = id_to_idx[dep_id], id_to_idx[head_id]
+        label = escape_latex(e.label)
+        is_diff = dep_id ∈ head_diff || dep_id ∈ label_diff
+        style = is_diff ? "diff arc" : "arc g1"
+
+        out_a = i_head > i_dep ? 55 : 125
+        in_a  = i_head > i_dep ? 125 : 55
+        tikz *= "  \\draw[$style] (n$i_dep) to [out=$out_a, in=$in_a, looseness=1.35] (n$i_head);\n"
+        if !isempty(label)
+            mid = (i_dep + i_head) * node_spacing / 2
+            tikz *= "  \\node[label, above] at ($mid, 1.05) {$label};\n"
+        end
+    end
+
+    # g2 arcs — BELOW
+    tikz *= "\n% === g2 arcs (BELOW) ===\n"
+    for e in g2.edges
+        head_id, dep_id = e.source, e.target
+        haskey(id_to_idx, dep_id) && haskey(id_to_idx, head_id) || continue
+        i_dep, i_head = id_to_idx[dep_id], id_to_idx[head_id]
+        label = escape_latex(e.label)
+        is_diff = dep_id ∈ head_diff || dep_id ∈ label_diff
+        style = is_diff ? "diff arc" : "arc g2"
+
+        out_a = i_head > i_dep ? -55 : -125
+        in_a  = i_head > i_dep ? -125 : -55
+        tikz *= "  \\draw[$style] (n$i_dep) to [out=$out_a, in=$in_a, looseness=1.35] (n$i_head);\n"
+        if !isempty(label)
+            mid = (i_dep + i_head) * node_spacing / 2
+            tikz *= "  \\node[label, below] at ($mid, -1.05) {$label};\n"
+        end
+    end
+
+    tikz *= "\\end{tikzpicture}\n"
+    return tikz
+end
+
+function save_tikz_dual_dependency_comparison(g1, g2, path::String; kwargs...)
+    code = tikz_dual_dependency_comparison(g1, g2; kwargs...)
+    open(path, "w") do io
+        write(io, code)
+    end
+    path
+end
 
 end # module

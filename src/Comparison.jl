@@ -13,7 +13,9 @@ using Printf
 using Dates
 
 export ComparisonResult, compare_syntax_graphs, report_comparison, diff_summary, export_comparison_markdown
-export draw_syntax_comparison, save_syntax_comparison
+export draw_syntax_comparison, save_syntax_comparison, tikz_dependency_comparison
+
+
 
 # ============================================================
 # Result struct
@@ -316,6 +318,21 @@ function draw_syntax_comparison(comp::ComparisonResult;
           fontsize = 11, halign = :center)
 
     return fig
+end
+
+"""
+    tikz_dependency_comparison(comp::ComparisonResult; kwargs...)
+
+Convenience wrapper that calls the dual-arc TikZ function using the diff information
+already computed in the `ComparisonResult`.
+"""
+function tikz_dependency_comparison(comp::ComparisonResult; kwargs...)
+    TikzExport.tikz_dual_dependency_comparison(
+        comp.g1, comp.g2;
+        head_diff = Set(comp.head_diff),
+        label_diff = Set(comp.label_diff),
+        kwargs...
+    )
 end
 
 """
