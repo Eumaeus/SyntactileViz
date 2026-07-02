@@ -5,11 +5,14 @@ import ..SyntaxGraph
 export tikz_dependency_code, save_tikz_dependency, save_tikz_tree, tikz_hierarchical_tree_code
 
 
+
 const default_preamble = """
 \\documentclass{article}
 \\usepackage{fontspec}
 \\usepackage{tikz}
 \\usepackage{tikz-dependency}
+\\usepackage{adjustbox}
+
 
 % === Your polytonic Greek setup (customize with your purchased fonts) ===
 \\defaultfontfeatures{Ligatures=TeX}
@@ -67,14 +70,27 @@ end
 
 function save_tikz_dependency(g::SyntaxGraph.SyntaxGraph, path::String; 
                               preamble::String = default_preamble,
-                              code = tikz_dependency_code(g))
+                              use_adjustbox::Bool = true,
+                              adjustbox_options::String = "max width=\\textwidth")
+    code = tikz_dependency_code(g)
+    
+    content = if use_adjustbox
+        """
+        \\begin{adjustbox}{$adjustbox_options}
+        $code
+        \\end{adjustbox}
+        """
+    else
+        code
+    end
+
     full = """
     $preamble
 
     \\begin{document}
     \\begin{figure}[ht]
     \\centering
-    $code
+    $content
     \\caption{$(g.editor) — $(g.sentence_text)}
     \\end{figure}
     \\end{document}
@@ -82,6 +98,7 @@ function save_tikz_dependency(g::SyntaxGraph.SyntaxGraph, path::String;
     write(path, full)
     return path
 end
+
 
 
 # =====================================================
@@ -102,27 +119,25 @@ function tikz_hierarchical_tree_code(g::SyntaxGraph.SyntaxGraph;
         edge_style::String = "->, thick, >=stealth",
         show_labels::Bool = true)
 
-    # Build children lists (head → dependents)
+    # --- Build children (head → dependents) ---
     children = Dict{String, Vector{String}}()
-    for node_id in keys(g.nodes)
-        children[node_id] = String[]
+    for id in keys(g.nodes)
+        children[id] = String[]
     end
-    for e in g.edges
-        if e.target != "root"
-            push!(children[e.target], e.source)
-        end
-    end
-    # Also attach direct children of root
     for e in g.edges
         if e.target == "root"
             push!(children["root"], e.source)
+        elseif haskey(children, e.target)
+            push!(children[e.target], e.source)
         end
     end
 
-    # Simple layout: assign (level, x_index) to every node
+    # --- Safe node names + layout ---
+    all_ids = collect(keys(g.nodes))
+    id_to_node = Dict(id => "n$i" for (i, id) in enumerate(all_ids))
+
     node_level = Dict{String, Int}()
     node_x     = Dict{String, Float64}()
-    node_parent = Dict{String, String}()
 
     function assign_positions(node_id::String, level::Int, x_start::Float64)
         node_level[node_id] = level
@@ -135,19 +150,18 @@ function tikz_hierarchical_tree_code(g::SyntaxGraph.SyntaxGraph;
 
         width = 0.0
         x = x_start
-        for (i, kid) in enumerate(kids)
-            node_parent[kid] = node_id
+        step = parse(Float64, replace(sibling_distance, "cm" => ""))
+        for kid in kids
             w = assign_positions(kid, level + 1, x)
             width += w
-            x += w * parse(Float64, replace(sibling_distance, "cm" => ""))
+            x += w * step
         end
         return max(1.0, width)
     end
 
-    # Start from root
     assign_positions("root", 0, 0.0)
 
-    # Generate TikZ code
+    # --- Generate TikZ ---
     lines = String[]
     push!(lines, "\\begin{tikzpicture}[")
 
@@ -157,27 +171,28 @@ function tikz_hierarchical_tree_code(g::SyntaxGraph.SyntaxGraph;
     push!(lines, "  >=stealth,")
     push!(lines, "]")
 
-    # Nodes
-    for (id, level) in sort(collect(node_level), by = x -> (x[2], node_x[x[1]]))
-        text = id == "root" ? "ROOT" : escape_latex(g.nodes[id].text)
-        x = node_x[id]
-        y = -level * parse(Float64, replace(level_distance, "cm" => ""))
-        push!(lines, "  \\node (n_$id) at ($(x)cm, $(y)cm) {$text};")
+    # Nodes (safe names, correct Greek text)
+    for (id, lvl) in sort(collect(node_level), by = x -> (x[2], get(node_x, x[1], 0.0)))
+        text = (id == "root") ? "ROOT" : escape_latex(g.nodes[id].text)
+        x = get(node_x, id, 0.0)
+        y = -lvl * parse(Float64, replace(level_distance, "cm" => ""))
+        nodename = id_to_node[id]
+        push!(lines, "  \\node ($nodename) at ($(x)cm, $(y)cm) {$text};")
     end
 
-    # Edges + labels
+    # Edges
     for e in g.edges
         if e.target == "root"
-            parent_id = "root"
-            child_id  = e.source
+            parent_id, child_id = "root", e.source
         else
-            parent_id = e.target
-            child_id  = e.source
+            parent_id, child_id = e.target, e.source
         end
 
-        if haskey(node_level, parent_id) && haskey(node_level, child_id)
+        if haskey(id_to_node, parent_id) && haskey(id_to_node, child_id)
+            pnode = id_to_node[parent_id]
+            cnode = id_to_node[child_id]
             label = show_labels ? "node[midway, above, font=\\tiny, red!70!black] {$(e.label)}" : ""
-            push!(lines, "  \\draw[$edge_style] (n_$parent_id) -- $label (n_$child_id);")
+            push!(lines, "  \\draw[$edge_style] ($pnode) -- $label ($cnode);")
         end
     end
 
@@ -186,15 +201,28 @@ function tikz_hierarchical_tree_code(g::SyntaxGraph.SyntaxGraph;
 end
 
 function save_tikz_tree(g::SyntaxGraph.SyntaxGraph, path::String;
-    preamble::String = default_preamble,
-    code = tikz_hierarchical_tree_code(g))
+                        preamble::String = default_preamble,
+                        use_adjustbox::Bool = true,
+                        adjustbox_options::String = "max width=\\textwidth")
+    code = tikz_hierarchical_tree_code(g)
+    
+    content = if use_adjustbox
+        """
+        \\begin{adjustbox}{$adjustbox_options}
+        $code
+        \\end{adjustbox}
+        """
+    else
+        code
+    end
+
     full = """
     $preamble
 
     \\begin{document}
     \\begin{figure}[ht]
     \\centering
-    $code
+    $content
     \\caption{Hierarchical tree — $(g.editor) — $(g.sentence_text)}
     \\end{figure}
     \\end{document}
@@ -202,6 +230,10 @@ function save_tikz_tree(g::SyntaxGraph.SyntaxGraph, path::String;
     write(path, full)
     return path
 end
+
+
+
+
 
 
 end # module

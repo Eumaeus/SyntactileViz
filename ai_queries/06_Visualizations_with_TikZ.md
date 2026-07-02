@@ -219,3 +219,10 @@ or any of the other lines like that.
 And if I am reading this correct, is this script usign the node-id (the CTS-URN) instead of the node-text in the graph? Or am I mistaken (quite likely).
 
 Everything, including the `.tex` output, is checked into the repo.
+
+----
+
+Conversation at: <https://x.com/i/grok/share/cea2ff9afda3439793ff8ad8ecb64b9a>
+
+Yes, if you could update the save_tikz_dependency and save_tikz_tree functions to automatically include an adjustbox wrapper (with a toggle), that would be really helpful.
+
