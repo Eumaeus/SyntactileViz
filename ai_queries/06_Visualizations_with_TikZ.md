@@ -235,3 +235,15 @@ Everything is up-to-date in the repo.
 The "dependency" graph looks amazing and resized nicely.
 
 The "tree" graph looks good, but the edge-labels appear as dark maroon boxes with no visible text in them. I'm thinking that this is simply a matter of adjusting `edge_style`?
+
+---
+
+That worked beautifully!
+
+I have fiddled with the formatting a little, and I am completely delighted with what you have given to me! This is amazing!
+
+I've checked everything in, and will spend a little time making graphs of other sentences and seeing how they come out. 
+
+Incredible progress before breakfast! I cannot express my gratitude for this help.
+
+Conversation at: <https://x.com/i/grok/share/39de56b98ca04ebf8b3052656290228f>

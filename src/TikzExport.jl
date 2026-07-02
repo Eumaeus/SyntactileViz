@@ -115,8 +115,9 @@ Uses simple level-based positioning (good results for typical sentence length).
 function tikz_hierarchical_tree_code(g::SyntaxGraph.SyntaxGraph;
         level_distance::String = "2.8cm",
         sibling_distance::String = "2.2cm",
-        node_style::String = "draw, rounded corners, fill=gray!8, align=center, font=\\small, minimum width=2.8cm, minimum height=0.9cm",
-        edge_style::String = "->, thick, >=stealth",
+        node_style::String = "draw, rounded corners, fill=gray!8, align=center, font=\\small, minimum width=2cm, minimum height=0.9cm",
+        edge_style::String = "->, draw=lightgray, thick, >=stealth",
+        edge_label_style::String = "pos=0.9, fill=none, draw=none, font=\\small, text=black",
         show_labels::Bool = true)
 
     # --- Build children (head → dependents) ---
@@ -171,7 +172,7 @@ function tikz_hierarchical_tree_code(g::SyntaxGraph.SyntaxGraph;
     push!(lines, "  >=stealth,")
     push!(lines, "]")
 
-    # Nodes (safe names, correct Greek text)
+    # Nodes
     for (id, lvl) in sort(collect(node_level), by = x -> (x[2], get(node_x, x[1], 0.0)))
         text = (id == "root") ? "ROOT" : escape_latex(g.nodes[id].text)
         x = get(node_x, id, 0.0)
@@ -180,7 +181,7 @@ function tikz_hierarchical_tree_code(g::SyntaxGraph.SyntaxGraph;
         push!(lines, "  \\node ($nodename) at ($(x)cm, $(y)cm) {$text};")
     end
 
-    # Edges
+    # Edges + labels (now with proper label styling)
     for e in g.edges
         if e.target == "root"
             parent_id, child_id = "root", e.source
@@ -191,8 +192,12 @@ function tikz_hierarchical_tree_code(g::SyntaxGraph.SyntaxGraph;
         if haskey(id_to_node, parent_id) && haskey(id_to_node, child_id)
             pnode = id_to_node[parent_id]
             cnode = id_to_node[child_id]
-            label = show_labels ? "node[midway, above, font=\\tiny, red!70!black] {$(e.label)}" : ""
-            push!(lines, "  \\draw[$edge_style] ($pnode) -- $label ($cnode);")
+            if show_labels
+                label = "node[midway, above, $edge_label_style] {$(e.label)}"
+                push!(lines, "  \\draw[$edge_style] ($pnode) -- $label ($cnode);")
+            else
+                push!(lines, "  \\draw[$edge_style] ($pnode) -- ($cnode);")
+            end
         end
     end
 
