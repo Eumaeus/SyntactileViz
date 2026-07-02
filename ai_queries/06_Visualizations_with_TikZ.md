@@ -171,3 +171,10 @@ in expression starting at stdin:
 
 
 And I should have mentoned earlier that an option for a more traditional tree-graph would also be nice to have. It looks like your code allows this with the `theme` parameter on `tikz_dependency_code()`. Something similar to what we're creating with Makie.
+
+---
+
+Conversation at: <https://x.com/i/grok/share/e6e78b8a1a49455cbc8a248b3295de12>
+
+That compiled! Thanks! I'll make a test-script to see what we get!
+

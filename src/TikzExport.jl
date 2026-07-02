@@ -1,6 +1,6 @@
 module TikzExport
 
-using ..SyntaxGraph
+import ..SyntaxGraph
 
 export tikz_dependency_code, save_tikz_dependency
 
