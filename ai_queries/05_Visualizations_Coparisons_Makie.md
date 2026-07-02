@@ -186,3 +186,5 @@ in expression starting at /Users/cblackwell/Dropbox/CITE/grok/SyntactileViz/src/
 in expression starting at stdin:
 ➜  SyntactileViz git:(main) ✗ 
 ~~~
+
+All new changes are in the repo.
