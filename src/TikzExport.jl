@@ -288,43 +288,43 @@ for automatic highlighting.
 """
 function tikz_dual_dependency_comparison(g1::SyntaxGraph.SyntaxGraph, 
                                          g2::SyntaxGraph.SyntaxGraph;
-                                         preamble::String = default_preamble,
-                                         head_diff::Set{String} = Set{String}(),
-                                         label_diff::Set{String} = Set{String}(),
+                                         head_diff::AbstractVector = String[],
+                                         label_diff::AbstractVector = String[],
                                          node_overrides::Dict{String,String} = Dict{String,String}(),
-                                         g1_name::String = "Analysis 1",
-                                         g2_name::String = "Analysis 2",
+                                         g1_name::String = g1.editor,
+                                         g2_name::String = g2.editor,
                                          node_spacing::Float64 = 2.5)
+
+    # Normalize diff sets (handles both Vector{String} and Vector{Tuple})
+    head_set   = Set{String}(first(d) for d in head_diff)
+    label_set  = Set{String}(first(d) for d in label_diff)
 
     ordered_ids = filter(id -> haskey(g1.nodes, id) && !startswith(id, "root"), 
                          g1.ordered_token_ids)
     n = length(ordered_ids)
-    isempty(ordered_ids) && return "% No tokens to visualize"
+    isempty(ordered_ids) && return "% No tokens"
     id_to_idx = Dict(id => i for (i, id) in enumerate(ordered_ids))
 
-    # Better names
-    g1_name = replace(g1.editor, "_" => " ")
-    g2_name = replace(g2.editor, "_" => " ")
-
-    # Merge any explicit node_overrides with diff colors
+    # Node coloring
     node_colors = copy(node_overrides)
-    for id in head_diff
+    for id in head_set
         node_colors[id] = get(node_colors, id, "salmon!85!white")
     end
-    for id in label_diff
+    for id in label_set
         node_colors[id] = get(node_colors, id, "orange!75!white")
     end
 
     tikz = """
 \\begin{tikzpicture}[
-    every node/.style={font=\\footnotesize, minimum width=1.8em, minimum height=0.9em, draw=none, align=center, inner sep=2pt},
+    every node/.style={font=\\footnotesize, minimum width=1.8em, minimum height=0.9em, 
+                       draw=none, align=center, inner sep=2pt},
     arc g1/.style={->, thick, blue!75, shorten >=1pt, shorten <=1pt},
     arc g2/.style={->, thick, teal!75, shorten >=1pt, shorten <=1pt},
     diff arc/.style={->, thick, red!85, shorten >=1pt, shorten <=1pt},
     label/.style={font=\\scriptsize}
 ]
 \\node[font=\\bfseries, above] at ($(n*node_spacing/2), 7.2) {Dependency Comparison};
-\\node[font=\\small] at ($(n*node_spacing/2), 6.4) {$(g1_name) (above, blue) vs $g2_name (below, teal)};
+\\node[font=\\small] at ($(n*node_spacing/2), 6.4) {$(g1_name) (above, blue) vs $(g2_name) (below, teal)};
 \\node[font=\\tiny] at ($(n*node_spacing/2), 5.85) {Green = agree • Orange = label diff • Salmon = head diff • Red arcs = differences};
 """
 
@@ -335,75 +335,107 @@ function tikz_dual_dependency_comparison(g1::SyntaxGraph.SyntaxGraph,
         tikz *= "  \\node[fill=$col] (n$i) at ($(i * node_spacing), 0) {\\strut $text};\n"
     end
 
-    # g1 arcs — ABOVE
+    # ===================== g1 arcs (ABOVE) =====================
     tikz *= "\n% === g1 arcs (ABOVE) ===\n"
     for e in g1.edges
         head_id, dep_id = e.source, e.target
         haskey(id_to_idx, dep_id) && haskey(id_to_idx, head_id) || continue
         i_dep, i_head = id_to_idx[dep_id], id_to_idx[head_id]
         label = escape_latex(e.label)
-        is_diff = dep_id ∈ head_diff || dep_id ∈ label_diff
+
+        is_diff = dep_id ∈ head_set || dep_id ∈ label_set
         style = is_diff ? "diff arc" : "arc g1"
+        is_g1 = true
 
         out_a = i_head > i_dep ? 55 : 125
         in_a  = i_head > i_dep ? 125 : 55
         tikz *= "  \\draw[$style] (n$i_dep) to [out=$out_a, in=$in_a, looseness=1.35] (n$i_head);\n"
+
         if !isempty(label)
             mid_x = (i_dep + i_head) * node_spacing / 2
             distance = abs(i_head - i_dep)
-            # Dynamic vertical offset — longer arcs get labels farther away
-            y_offset = 0.6 + (distance * 0.8)
-
-            if occursin("g1", style) || occursin("arc g1", style)
-                tikz *= "  \\node[label, above] at ($mid_x, $y_offset) {$label};\n"
-            else
-                tikz *= "  \\node[label, below] at ($mid_x, -$y_offset) {$label};\n"
-            end
+            y_offset = 0.65 + (distance * 0.75)
+            tikz *= "  \\node[label, above] at ($mid_x, $y_offset) {$label};\n"
         end
     end
 
-    # g2 arcs — BELOW
+    # ===================== g2 arcs (BELOW) =====================
     tikz *= "\n% === g2 arcs (BELOW) ===\n"
     for e in g2.edges
         head_id, dep_id = e.source, e.target
         haskey(id_to_idx, dep_id) && haskey(id_to_idx, head_id) || continue
         i_dep, i_head = id_to_idx[dep_id], id_to_idx[head_id]
         label = escape_latex(e.label)
-        is_diff = dep_id ∈ head_diff || dep_id ∈ label_diff
+
+        is_diff = dep_id ∈ head_set || dep_id ∈ label_set
         style = is_diff ? "diff arc" : "arc g2"
+        is_g1 = false
 
         out_a = i_head > i_dep ? -55 : -125
         in_a  = i_head > i_dep ? -125 : -55
         tikz *= "  \\draw[$style] (n$i_dep) to [out=$out_a, in=$in_a, looseness=1.35] (n$i_head);\n"
+
         if !isempty(label)
             mid_x = (i_dep + i_head) * node_spacing / 2
             distance = abs(i_head - i_dep)
-            # Dynamic vertical offset — longer arcs get labels farther away
-            y_offset = 0.6 + (distance * 0.8)
-
-            if occursin("g1", style) || occursin("arc g1", style)
-                tikz *= "  \\node[label, above] at ($mid_x, $y_offset) {$label};\n"
-            else
-                tikz *= "  \\node[label, below] at ($mid_x, -$y_offset) {$label};\n"
-            end
-         end
+            y_offset = 0.65 + (distance * 0.75)
+            tikz *= "  \\node[label, below] at ($mid_x, -$y_offset) {$label};\n"
+        end
     end
 
     tikz *= "\\end{tikzpicture}\n"
+    return tikz
+end
 
-    fullTex = """
-    $preamble
-    \\begin{document}
-    \\begin{figure}[ht]
-    \\centering
-    \\begin{adjustbox}{max width=\\textwidth}
-    $tikz
-    \\end{adjustbox}
-    \\caption{Comparison: $(g1.sentence_text)}
-    \\end{figure}
-    \\end{document}
-    """
-    return fullTex
+# Convenience overload for ComparisonResult
+function tikz_dual_dependency_comparison(comp::ComparisonResult; kwargs...)
+    tikz_dual_dependency_comparison(
+        comp.g1, comp.g2;
+        head_diff  = comp.head_diff,
+        label_diff = comp.label_diff,
+        g1_name    = comp.g1.editor,
+        g2_name    = comp.g2.editor,
+        kwargs...
+    )
+end
+
+# Save functions
+function save_tikz_dual_dependency_comparison(g1, g2, path::String; kwargs...)
+    content = tikz_dual_dependency_comparison(g1, g2; kwargs...)
+    full = """
+$(default_preamble)
+
+\\begin{document}
+\\begin{figure}[ht]
+\\centering
+\\begin{adjustbox}{max width=\\textwidth}
+$content
+\\end{adjustbox}
+\\caption{Comparison: $(g1.sentence_text)}
+\\end{figure}
+\\end{document}
+"""
+    write(path, full)
+    return path
+end
+
+function save_tikz_dual_dependency_comparison(comp::ComparisonResult, path::String; kwargs...)
+    content = tikz_dual_dependency_comparison(comp; kwargs...)
+    full = """
+$(default_preamble)
+
+\\begin{document}
+\\begin{figure}[ht]
+\\centering
+\\begin{adjustbox}{max width=\\textwidth}
+$content
+\\end{adjustbox}
+\\caption{Comparison: $(comp.g1.sentence_text)}
+\\end{figure}
+\\end{document}
+"""
+    write(path, full)
+    return path
 end
 
 function save_tikz_dual_dependency_comparison(g1, g2, path::String; kwargs...)
