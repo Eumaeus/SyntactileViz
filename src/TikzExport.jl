@@ -1,6 +1,9 @@
 module TikzExport
 
 import ..SyntaxGraph
+import ..Comparison
+
+
 
 export tikz_dependency_code, save_tikz_dependency, save_tikz_tree, tikz_hierarchical_tree_code, tikz_dependency_comparison, tikz_dual_dependency_comparison, save_tikz_dual_dependency_comparison
 
@@ -388,7 +391,7 @@ function tikz_dual_dependency_comparison(g1::SyntaxGraph.SyntaxGraph,
 end
 
 # Convenience overload for ComparisonResult
-function tikz_dual_dependency_comparison(comp::ComparisonResult; kwargs...)
+function tikz_dual_dependency_comparison(comp::Comparison.ComparisonResult; kwargs...)
     tikz_dual_dependency_comparison(
         comp.g1, comp.g2;
         head_diff  = comp.head_diff,
@@ -400,8 +403,8 @@ function tikz_dual_dependency_comparison(comp::ComparisonResult; kwargs...)
 end
 
 # Save functions
-function save_tikz_dual_dependency_comparison(g1, g2, path::String; kwargs...)
-    content = tikz_dual_dependency_comparison(g1, g2; kwargs...)
+function save_tikz_dual_dependency_comparison(comp::Comparison.ComparisonResult, path::String; kwargs...)
+    content = tikz_dual_dependency_comparison(comp; kwargs...)
     full = """
 $(default_preamble)
 
@@ -411,7 +414,7 @@ $(default_preamble)
 \\begin{adjustbox}{max width=\\textwidth}
 $content
 \\end{adjustbox}
-\\caption{Comparison: $(g1.sentence_text)}
+\\caption{Comparison: $(comp.g1.sentence_text)}
 \\end{figure}
 \\end{document}
 """
