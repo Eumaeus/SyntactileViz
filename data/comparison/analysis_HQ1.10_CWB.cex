@@ -1,0 +1,51 @@
+#!citelibrary
+name#Ancient Greek Syntax Analysis
+urn#urn:cite2:analyzer:analysis:2025-06-13-ae0e53d5-90b3-4efa-aece-1eedfa83c60c
+text#urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.1-1.10.token.16
+editor#CWB
+date#2026-07-02
+
+#!citedata
+sentence#ctsurn#text
+urn:cite2:analyzer:analysis:2025-06-13-ae0e53d5-90b3-4efa-aece-1eedfa83c60c#urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.1-1.10.token.16#τὰ τῶν θεῶν δῶρα πέμπει ὁ τοῦ ἀνθρώπου ἀδελφὸς ἐκ τῆς οἰκίας εἰς τὰς νήσους .
+
+#!citedata
+tokenId#text#verbalUnitIds
+root#ROOT#
+urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.1#τὰ#VU1
+urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.2#τῶν#VU1
+urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.3#θεῶν#VU1
+urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.4#δῶρα#VU1
+urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.5#πέμπει#VU1
+urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.6#ὁ#VU1
+urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.7#τοῦ#VU1
+urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.8#ἀνθρώπου#VU1
+urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.9#ἀδελφὸς#VU1
+urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.10#ἐκ#VU1
+urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.11#τῆς#VU1
+urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.12#οἰκίας#VU1
+urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.13#εἰς#VU1
+urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.14#τὰς#VU1
+urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.15#νήσους#VU1
+
+#!citedata
+unitId#syntacticType#semanticType#level
+VU1#Independent Clause#Transitive#1
+
+#!citerelations
+source#target#relation
+urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.5#root#Unit Verb
+urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.9#urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.5#Subject
+urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.6#urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.9#Article
+urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.8#urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.9#Attribute
+urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.7#urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.8#Article
+urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.4#urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.5#Direct Object
+urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.1#urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.4#Article
+urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.3#urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.4#Attribute
+urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.2#urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.3#Article
+urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.10#urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.5#Preposition
+urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.12#urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.10#Object of Prep.
+urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.11#urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.12#Article
+urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.13#urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.5#Preposition
+urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.15#urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.13#Object of Prep.
+urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.14#urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.15#Article

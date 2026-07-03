@@ -1,14 +1,14 @@
 # Syntactic Analysis Comparison Report
 
-**Generated:** 2026-07-02 00:01
+**Generated:** 2026-07-02 21:59
 
-**Sentence:** θυσίαν ἀγάγωμεν θεοῖς τοῖς Ἀθηναίους ἐν ἐκείνῃ τῇ μάχῃ σώσασιν ὅπως καὶ νῦν ἐθέλωσι πάντες οἱ θεοὶ τὴν δημοκρατίαν φυλάττειν .
+**Sentence:** τὰ τῶν θεῶν δῶρα πέμπει ὁ τοῦ ἀνθρώπου ἀδελφὸς ἐκ τῆς οἰκίας εἰς τὰς νήσους .
 
-**Analysis 1:** Christopher_Blackwell  
-urn:cite2:analyzer:analysis:2025-06-13-71b14619-0261-4ee0-90ae-00a9ecd76cef
+**Analysis 1:** CWB  
+urn:cite2:analyzer:analysis:2025-06-13-ae0e53d5-90b3-4efa-aece-1eedfa83c60c
 
-**Analysis 2:** Able_Student  
-urn:cite2:analyzer:analysis:2025-06-13-71b14619-0261-4ee0-90ae-00a9ecd76cef
+**Analysis 2:** Bad_Student  
+urn:cite2:analyzer:analysis:2025-06-13-ae0e53d5-90b3-4efa-aece-1eedfa83c60c
 
 ---
 
@@ -16,80 +16,76 @@ urn:cite2:analyzer:analysis:2025-06-13-71b14619-0261-4ee0-90ae-00a9ecd76cef
 
 | Metric | Value |
 |--------|-------:|
-| UAS    | 90.0% |
-| LAS    | 90.0% |
-| Tokens | 20 |
+| UAS    | 80.0% |
+| LAS    | 66.7% |
+| Tokens | 15 |
 
 ## Differences
 
+### Minor Differences (same head, different label)
+
+- **ἀδελφὸς**: `"Subject"` vs `"Direct Object"`
+- **δῶρα**: `"Direct Object"` vs `"Subject"`
+
 ### Major Differences (different head)
 
-- **θεοῖς**: head `"ἀγάγωμεν"` vs `"θυσίαν"`
-- **καὶ**: head `"νῦν"` vs `"ἐθέλωσι"`
+- **οἰκίας**: head `"ἐκ"` vs `"εἰς"`
+- **ἐκ**: head `"πέμπει"` vs `"δῶρα"`
+- **νήσους**: head `"εἰς"` vs `"ἐκ"`
 
 ### Verbal Unit Comparison
 
-- **VUs in Analysis 1**: 3
-- **VUs in Analysis 2**: 3
+- **VUs in Analysis 1**: 1
+- **VUs in Analysis 2**: 1
 
 ---
 
 ## Tree Views
 
-### Analysis 1 – Christopher_Blackwell
+### Analysis 1 – CWB
 
 ```text
-Syntax Tree — θυσίαν ἀγάγωμεν θεοῖς τοῖς Ἀθηναίους ἐν ἐκείνῃ τῇ μάχῃ σώσασιν ὅπως καὶ νῦν ἐθέλωσι πάντες οἱ θεοὶ τὴν δημοκρατίαν φυλάττειν .
+Syntax Tree — τὰ τῶν θεῶν δῶρα πέμπει ὁ τοῦ ἀνθρώπου ἀδελφὸς ἐκ τῆς οἰκίας εἰς τὰς νήσους .
 ======================================================================
 ROOT (root)
-  └── Unit Verb ←   ἀγάγωμεν (urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.2) [VU1]
-    └── Direct Object ←     θυσίαν (urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.1) [VU1]
-    └── Adverbial ←     θεοῖς (urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.3) [primary=VU1]
-      └── Article ←       τοῖς (urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.4) [primary=VU1]
-        └── Unit Participle ←         σώσασιν (urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.10) [primary=VU1]
-          └── Direct Object ←           Ἀθηναίους (urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.5) [primary=VU1]
-          └── Preposition ←           ἐν (urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.6) [primary=VU1]
-            └── Object of Prep. ←             μάχῃ (urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.9) [primary=VU1]
-              └── Article ←               τῇ (urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.8) [primary=VU1]
-              └── Attribute ←               ἐκείνῃ (urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.7) [primary=VU1]
-    └── Unit Adverbial ←     ὅπως (urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.11) [VU3]
-      └── Unit Verb ←       ἐθέλωσι (urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.14) [VU3]
-        └── Adverbial ←         νῦν (urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.13) [VU3]
-          └── Adverbial ←           καὶ (urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.12) [VU3]
-        └── Subject ←         θεοὶ (urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.17) [VU3]
-          └── Attribute ←           πάντες (urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.15) [VU3]
-          └── Article ←           οἱ (urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.16) [VU3]
-        └── Auxiliary Infinitive ←         φυλάττειν (urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.20) [VU3]
-          └── Direct Object ←           δημοκρατίαν (urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.19) [VU3]
-            └── Article ←             τὴν (urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.18) [VU3]
+  └── Unit Verb ←   πέμπει (urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.5) [VU1]
+    └── Subject ←     ἀδελφὸς (urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.9) [VU1]
+      └── Article ←       ὁ (urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.6) [VU1]
+      └── Attribute ←       ἀνθρώπου (urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.8) [VU1]
+        └── Article ←         τοῦ (urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.7) [VU1]
+    └── Direct Object ←     δῶρα (urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.4) [VU1]
+      └── Article ←       τὰ (urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.1) [VU1]
+      └── Attribute ←       θεῶν (urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.3) [VU1]
+        └── Article ←         τῶν (urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.2) [VU1]
+    └── Preposition ←     ἐκ (urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.10) [VU1]
+      └── Object of Prep. ←       οἰκίας (urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.12) [VU1]
+        └── Article ←         τῆς (urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.11) [VU1]
+    └── Preposition ←     εἰς (urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.13) [VU1]
+      └── Object of Prep. ←       νήσους (urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.15) [VU1]
+        └── Article ←         τὰς (urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.14) [VU1]
 ```
 
-### Analysis 2 – Able_Student
+### Analysis 2 – Bad_Student
 
 ```text
-Syntax Tree — θυσίαν ἀγάγωμεν θεοῖς τοῖς Ἀθηναίους ἐν ἐκείνῃ τῇ μάχῃ σώσασιν ὅπως καὶ νῦν ἐθέλωσι πάντες οἱ θεοὶ τὴν δημοκρατίαν φυλάττειν .
+Syntax Tree — τὰ τῶν θεῶν δῶρα πέμπει ὁ τοῦ ἀνθρώπου ἀδελφὸς ἐκ τῆς οἰκίας εἰς τὰς νήσους .
 ======================================================================
 ROOT (root)
-  └── Unit Verb ←   ἀγάγωμεν (urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.2) [VU1]
-    └── Direct Object ←     θυσίαν (urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.1) [VU1]
-      └── Attribute ←       θεοῖς (urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.3) [primary=VU1]
-        └── Article ←         τοῖς (urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.4) [primary=VU1]
-          └── Unit Participle ←           σώσασιν (urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.10) [primary=VU1]
-            └── Direct Object ←             Ἀθηναίους (urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.5) [primary=VU1]
-            └── Preposition ←             ἐν (urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.6) [primary=VU1]
-              └── Object of Prep. ←               μάχῃ (urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.9) [primary=VU1]
-                └── Article ←                 τῇ (urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.8) [primary=VU1]
-                └── Attribute ←                 ἐκείνῃ (urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.7) [primary=VU1]
-    └── Unit Adverbial ←     ὅπως (urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.11) [VU3]
-      └── Unit Verb ←       ἐθέλωσι (urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.14) [VU3]
-        └── Adverbial ←         καὶ (urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.12) [VU3]
-        └── Adverbial ←         νῦν (urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.13) [VU3]
-        └── Subject ←         θεοὶ (urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.17) [VU3]
-          └── Attribute ←           πάντες (urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.15) [VU3]
-          └── Article ←           οἱ (urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.16) [VU3]
-        └── Auxiliary Infinitive ←         φυλάττειν (urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.20) [VU3]
-          └── Direct Object ←           δημοκρατίαν (urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.19) [VU3]
-            └── Article ←             τὴν (urn:cts:fuTeaching:blackwell.hq.2026:8.2.token.18) [VU3]
+  └── Unit Verb ←   πέμπει (urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.5) [VU1]
+    └── Direct Object ←     ἀδελφὸς (urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.9) [VU1]
+      └── Article ←       ὁ (urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.6) [VU1]
+      └── Attribute ←       ἀνθρώπου (urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.8) [VU1]
+        └── Article ←         τοῦ (urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.7) [VU1]
+    └── Subject ←     δῶρα (urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.4) [VU1]
+      └── Article ←       τὰ (urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.1) [VU1]
+      └── Attribute ←       θεῶν (urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.3) [VU1]
+        └── Article ←         τῶν (urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.2) [VU1]
+      └── Preposition ←       ἐκ (urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.10) [VU1]
+        └── Object of Prep. ←         νήσους (urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.15) [VU1]
+          └── Article ←           τὰς (urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.14) [VU1]
+    └── Preposition ←     εἰς (urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.13) [VU1]
+      └── Object of Prep. ←       οἰκίας (urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.12) [VU1]
+        └── Article ←         τῆς (urn:cts:fuTeaching:blackwell.hq.2026:1.10.token.11) [VU1]
 ```
 
 ---

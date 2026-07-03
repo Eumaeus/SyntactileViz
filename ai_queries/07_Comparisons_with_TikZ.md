@@ -152,3 +152,25 @@ And in the TikZ Dependency files from a single analysis, the edge-labels are nic
 I wasn't able to locate where in the older code we set those for the single-analysis graphs. Maybe that is the default, that we are overriding for the dual-comparison?
 
 Thanks for your ongoing help with this!
+
+---
+
+Conversation at: <https://x.com/i/grok/share/25fe6f4e78ea4a3488471dda1cc21560>
+
+This is looking really good. The customization of edge-labels, proportionate to edge-length, works well!
+
+I am not seeing color-coding on edges that differ from one analysis to the other.
+
+I am testing with `scripts/12_TikZ_Comparison.jl`, which loads two syntax-graphs that I made to be significantly different. Our Makie visualization works well, and the reporting from `Comparisons.jl` gives an evaluation of:
+
+~~~
+UAS (Unlabeled Attachment Score) :   80.0%
+LAS (Labeled Attachment Score)   :   66.7%
+~~~
+
+The TikZ Dependency graph looks great, but isn't showing the differences.
+
+All code, and the example script, and its output, are checked into the repository: <https://github.com/Eumaeus/SyntactileViz>.
+
+
+
