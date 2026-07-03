@@ -310,7 +310,7 @@ function tikz_dual_dependency_comparison(g1::SyntaxGraph.SyntaxGraph,
     # Node coloring
     node_colors = copy(node_overrides)
     for id in head_set
-        node_colors[id] = get(node_colors, id, "salmon!85!white")
+        node_colors[id] = get(node_colors, id, "pink!85!white")
     end
     for id in label_set
         node_colors[id] = get(node_colors, id, "orange!75!white")

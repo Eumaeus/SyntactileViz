@@ -16,7 +16,7 @@ using Printf
 using Dates
 
 export ComparisonResult, compare_syntax_graphs, report_comparison, diff_summary, export_comparison_markdown
-export draw_syntax_comparison, save_syntax_comparison, tikz_dependency_comparison, save_tikz_dual_dependency_comparison
+export draw_syntax_comparison, save_syntax_comparison, save_tikz_dual_dependency_comparison
 
 
 
@@ -292,11 +292,14 @@ function draw_syntax_comparison(comp::ComparisonResult;
             node_overrides[nid] = :orange
         end
         for (nid, _, _) in comp.head_diff
-            node_overrides[nid] = :salmon
+            node_overrides[nid] = :pink
         end
     end
 
     fig = Figure(size = size)
+
+    g1_editor = replace(g1.editor, "_" => " ")
+    g2_editor = replace(g2.editor, "_" => " ")
 
     # Header
     Label(fig[0, 1:2],
@@ -305,13 +308,13 @@ function draw_syntax_comparison(comp::ComparisonResult;
 
     # Left panel
     ax1 = Axis(fig[1, 1];
-               title = "Analysis 1: $(g1.editor)\nUAS: $(round(comp.uas*100, digits=1))%  |  LAS: $(round(comp.las*100, digits=1))%",
+               title = "Analysis 1: $(g1_editor)\nUAS: $(round(comp.uas*100, digits=1))%  |  LAS: $(round(comp.las*100, digits=1))%",
                titlesize = 14)
     Visualization.plot_syntax_tree!(ax1, g1; node_color_overrides = node_overrides)
 
     # Right panel
     ax2 = Axis(fig[1, 2];
-               title = "Analysis 2: $(g2.editor)\nUAS: $(round(comp.uas*100, digits=1))%  |  LAS: $(round(comp.las*100, digits=1))%",
+               title = "Analysis 2: $(g2_editor)\nUAS: $(round(comp.uas*100, digits=1))%  |  LAS: $(round(comp.las*100, digits=1))%",
                titlesize = 14)
     Visualization.plot_syntax_tree!(ax2, g2; node_color_overrides = node_overrides)
 
@@ -323,33 +326,20 @@ function draw_syntax_comparison(comp::ComparisonResult;
     return fig
 end
 
-"""
-    tikz_dependency_comparison(comp::ComparisonResult; kwargs...)
 
-Convenience wrapper that calls the dual-arc TikZ function using the diff information
-already computed in the `ComparisonResult`.
-"""
-function tikz_dependency_comparison(comp::ComparisonResult; kwargs...)
-    TikzExport.tikz_dual_dependency_comparison(
-        comp.g1, comp.g2;
-        head_diff   = Set(first(t) for t in comp.head_diff),
-        label_diff  = Set(first(t) for t in comp.label_diff),
-        kwargs...
-    )
-end
 
 """
     tikz_dual_dependency_comparison(comp::ComparisonResult; kwargs...)
 
-Convenience method that accepts a `ComparisonResult` and forwards to TikzExport.
+High-level convenience function. Use this or `save_tikz_dual_dependency_comparison`.
 """
 function tikz_dual_dependency_comparison(comp::ComparisonResult; kwargs...)
     TikzExport.tikz_dual_dependency_comparison(
         comp.g1, comp.g2;
         head_diff  = comp.head_diff,
         label_diff = comp.label_diff,
-        g1_name    = comp.g1.editor,
-        g2_name    = comp.g2.editor,
+        g1_name    = replace(comp.g1.editor, "_" => " "),
+        g2_name    = replace(comp.g2.editor, "_" => " "),
         kwargs...
     )
 end
@@ -357,7 +347,7 @@ end
 """
     save_tikz_dual_dependency_comparison(comp::ComparisonResult, path::String; kwargs...)
 
-Saves a dual-arc TikZ comparison directly from a `ComparisonResult`.
+Recommended way to save a dual-arc TikZ comparison.
 """
 function save_tikz_dual_dependency_comparison(comp::ComparisonResult, path::String; kwargs...)
     content = tikz_dual_dependency_comparison(comp; kwargs...)
