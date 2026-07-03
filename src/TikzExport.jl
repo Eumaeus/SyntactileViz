@@ -288,7 +288,6 @@ Generates a single TikZ picture with:
 Pass the `head_diff` and `label_diff` sets from a `ComparisonResult`
 for automatic highlighting.
 """
-#=
 function tikz_dual_dependency_comparison(g1::SyntaxGraph.SyntaxGraph, 
                                          g2::SyntaxGraph.SyntaxGraph;
                                          head_diff::AbstractVector = String[],
@@ -389,7 +388,6 @@ function tikz_dual_dependency_comparison(g1::SyntaxGraph.SyntaxGraph,
     tikz *= "\\end{tikzpicture}\n"
     return tikz
 end
-=#
 
 # Convenience overload for ComparisonResult
 #=
