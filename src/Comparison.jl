@@ -339,6 +339,46 @@ function tikz_dependency_comparison(comp::ComparisonResult; kwargs...)
 end
 
 """
+    tikz_dual_dependency_comparison(comp::ComparisonResult; kwargs...)
+
+Convenience method that accepts a `ComparisonResult` and forwards to TikzExport.
+"""
+function tikz_dual_dependency_comparison(comp::ComparisonResult; kwargs...)
+    TikzExport.tikz_dual_dependency_comparison(
+        comp.g1, comp.g2;
+        head_diff  = comp.head_diff,
+        label_diff = comp.label_diff,
+        g1_name    = comp.g1.editor,
+        g2_name    = comp.g2.editor,
+        kwargs...
+    )
+end
+
+"""
+    save_tikz_dual_dependency_comparison(comp::ComparisonResult, path::String; kwargs...)
+
+Saves a dual-arc TikZ comparison directly from a `ComparisonResult`.
+"""
+function save_tikz_dual_dependency_comparison(comp::ComparisonResult, path::String; kwargs...)
+    content = tikz_dual_dependency_comparison(comp; kwargs...)
+    full = """
+$(TikzExport.default_preamble)
+
+\\begin{document}
+\\begin{figure}[ht]
+\\centering
+\\begin{adjustbox}{max width=\\textwidth}
+$content
+\\end{adjustbox}
+\\caption{Comparison: $(comp.g1.sentence_text)}
+\\end{figure}
+\\end{document}
+"""
+    write(path, full)
+    return path
+end
+
+"""
     save_syntax_comparison(comp::ComparisonResult, path::String;
                            format::Symbol = :pdf, kwargs...)
 

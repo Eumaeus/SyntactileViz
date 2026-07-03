@@ -31,7 +31,6 @@ export draw_syntax_tree, save_syntax_tree
 # TikZ
 export tikz_dependency_code, save_tikz_dependency, save_tikz_tree, tikz_hierarchical_tree_code, tikz_dependency_comparison, tikz_dual_dependency_comparison, save_tikz_dual_dependency_comparison
 
-
 # Convenience function (moved here from Comparison module)
 function compare_cex_files(path1::String, path2::String)
     a1 = parse_cex(path1)

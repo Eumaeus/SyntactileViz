@@ -12,9 +12,4 @@ g2 = build_syntax_graph(a2)
 
 
 comp = compare_syntax_graphs(g1, g2)
-
-# Generate TikZ code
-tikz = tikz_dual_dependency_comparison(comp)
-
-# Or save directly (recommended)
-save_tikz_dual_dependency_comparison(comp, "my_comparison.tex")
+save_tikz_dual_dependency_comparison(comp, "reports/tex/tikz_comparison.tex")

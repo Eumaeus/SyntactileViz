@@ -351,4 +351,46 @@ in expression starting at /Users/cblackwell/Dropbox/CITE/grok/SyntactileViz/scri
 
 ~~~
 
+---
 
+Conversation at: <https://x.com/i/grok/share/f3d686a9db294862855374d294623c52>
+
+Everything is checked into the repository at: <https://github.com/Eumaeus/SyntactileViz>
+
+After a few rounds of editing both `src/TikzExport.jl` and `src/Comparison.jl`, I think the two files have become messy and chaotic.
+
+I have commended out the `save_tikz_dual_dependency_comparison()` functions in `src/TikzExport.jl`, and have only one function by that name in `src/Comparison.jl`.
+
+Running `scripts/12_TikZ_Comparison.jl` throws this error:
+
+~~~
+
+SyntactileViz git:(main) ✗ julia --project=. scripts/12_TikZ_Comparison.jl
+Precompiling SyntactileViz finished.
+  1 dependency successfully precompiled in 5 seconds. 294 already precompiled.
+ERROR: LoadError: UndefVarError: `tikz_dual_dependency_comparison` not defined in `SyntactileViz.TikzExport`
+Suggestion: check for spelling errors or missing imports.
+Stacktrace:
+ [1] getproperty
+   @ ./Base_compiler.jl:47 [inlined]
+ [2] tikz_dual_dependency_comparison(comp::ComparisonResult; kwargs::@Kwargs{})
+   @ SyntactileViz.Comparison ~/Dropbox/CITE/grok/SyntactileViz/src/Comparison.jl:347
+ [3] tikz_dual_dependency_comparison
+   @ ~/Dropbox/CITE/grok/SyntactileViz/src/Comparison.jl:346 [inlined]
+ [4] save_tikz_dual_dependency_comparison(comp::ComparisonResult, path::String; kwargs::@Kwargs{})
+   @ SyntactileViz.Comparison ~/Dropbox/CITE/grok/SyntactileViz/src/Comparison.jl:363
+ [5] save_tikz_dual_dependency_comparison(comp::ComparisonResult, path::String)
+   @ SyntactileViz.Comparison ~/Dropbox/CITE/grok/SyntactileViz/src/Comparison.jl:362
+ [6] top-level scope
+   @ ~/Dropbox/CITE/grok/SyntactileViz/scripts/12_TikZ_Comparison.jl:15
+ [7] include(mod::Module, _path::String)
+   @ Base ./Base.jl:306
+ [8] exec_options(opts::Base.JLOptions)
+   @ Base ./client.jl:317
+ [9] _start()
+   @ Base ./client.jl:550
+in expression starting at /Users/cblackwell/Dropbox/CITE/grok/SyntactileViz/scripts/12_TikZ_Comparison.jl:15
+➜  SyntactileViz git:(main) ✗ ➜  
+
+
+~~~

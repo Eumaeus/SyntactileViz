@@ -1,11 +1,10 @@
 module TikzExport
 
 import ..SyntaxGraph
-import ..Comparison
 
 
 
-export tikz_dependency_code, save_tikz_dependency, save_tikz_tree, tikz_hierarchical_tree_code, tikz_dependency_comparison, tikz_dual_dependency_comparison, save_tikz_dual_dependency_comparison
+export tikz_dependency_code, save_tikz_dependency, save_tikz_tree, tikz_hierarchical_tree_code, tikz_dependency_comparison, tikz_dual_dependency_comparison
 
 const default_preamble = """
 \\documentclass{article}
@@ -289,6 +288,7 @@ Generates a single TikZ picture with:
 Pass the `head_diff` and `label_diff` sets from a `ComparisonResult`
 for automatic highlighting.
 """
+#=
 function tikz_dual_dependency_comparison(g1::SyntaxGraph.SyntaxGraph, 
                                          g2::SyntaxGraph.SyntaxGraph;
                                          head_diff::AbstractVector = String[],
@@ -389,8 +389,10 @@ function tikz_dual_dependency_comparison(g1::SyntaxGraph.SyntaxGraph,
     tikz *= "\\end{tikzpicture}\n"
     return tikz
 end
+=#
 
 # Convenience overload for ComparisonResult
+#=
 function tikz_dual_dependency_comparison(comp::Comparison.ComparisonResult; kwargs...)
     tikz_dual_dependency_comparison(
         comp.g1, comp.g2;
@@ -401,8 +403,10 @@ function tikz_dual_dependency_comparison(comp::Comparison.ComparisonResult; kwar
         kwargs...
     )
 end
+=#
 
 # Save functions
+#=
 function save_tikz_dual_dependency_comparison(comp::Comparison.ComparisonResult, path::String; kwargs...)
     content = tikz_dual_dependency_comparison(comp; kwargs...)
     full = """
@@ -421,7 +425,9 @@ $content
     write(path, full)
     return path
 end
+=#
 
+#=
 function save_tikz_dual_dependency_comparison(comp::ComparisonResult, path::String; kwargs...)
     content = tikz_dual_dependency_comparison(comp; kwargs...)
     full = """
@@ -440,7 +446,9 @@ $content
     write(path, full)
     return path
 end
+=#
 
+#=
 function save_tikz_dual_dependency_comparison(g1, g2, path::String; kwargs...)
     code = tikz_dual_dependency_comparison(g1, g2; kwargs...)
     open(path, "w") do io
@@ -448,5 +456,6 @@ function save_tikz_dual_dependency_comparison(g1, g2, path::String; kwargs...)
     end
     path
 end
+=#
 
 end # module
