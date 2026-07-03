@@ -394,3 +394,13 @@ in expression starting at /Users/cblackwell/Dropbox/CITE/grok/SyntactileViz/scri
 
 
 ~~~
+
+---
+
+Conversation at: <https://x.com/i/grok/share/50973a1b489149208ec46bcfae66547c>
+
+And everything works!
+
+That was a good day's work. I love this TikZ Dual Comparison export. Thank you so much for bearing with me through all the little problems!
+
+I've checked everything into the repository.
