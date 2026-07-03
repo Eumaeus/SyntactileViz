@@ -17,7 +17,6 @@
 
 \begin{document}
 \begin{figure}[ht]
-\centering
 \begin{adjustbox}{max width=\textwidth}
 \begin{tikzpicture}[
     every node/.style={font=\footnotesize, minimum width=1.8em, minimum height=0.9em, 
@@ -27,9 +26,12 @@
     diff arc/.style={->, thick, red!85, shorten >=1pt, shorten <=1pt},
     label/.style={font=\scriptsize}
 ]
-\node[font=\bfseries, above] at (18.75, 7.2) {Dependency Comparison};
-\node[font=\small] at (18.75, 6.4) {CWB (above, blue) vs Bad Student (below, teal)};
-\node[font=\tiny] at (18.75, 5.85) {Green = agree • Orange = label diff • Salmon = head diff • Red arcs = differences};
+\node[font=\bfseries, above] at (18.75, 8.0) {Dependency Comparison};
+\node[font=\small] at (18.75, 7.7) {CWB (above, blue) vs Bad Student (below, teal)};
+\node[font=\tiny] at (18.75, 7.2) {Green = agree • Orange = label diff • Salmon = head diff • Red arcs = differences};
+
+\centering
+
   \node[fill=white] (n1) at (2.5, 0) {\strut τὰ};
   \node[fill=white] (n2) at (5.0, 0) {\strut τῶν};
   \node[fill=white] (n3) at (7.5, 0) {\strut θεῶν};

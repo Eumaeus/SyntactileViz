@@ -1,0 +1,48 @@
+\documentclass{article}
+\usepackage{fontspec}
+\usepackage{tikz}
+\usepackage{tikz-dependency}
+\usepackage{adjustbox}
+
+
+% === Your polytonic Greek setup (customize with your purchased fonts) ===
+\defaultfontfeatures{Ligatures=TeX}
+\setmainfont{ArnoPro-Regular}          % e.g. Brill, IFAO, or your professional font
+% \newfontfamily\greekfont[Script=Greek]{YourGreekFontHere}
+\newfontfamily\greekfont[Script=Greek]{Arno Pro}
+
+% \usepackage{polyglossia}
+% \setotherlanguage[variant=ancient]{greek}
+
+
+\begin{document}
+\begin{figure}[ht]
+\centering
+\begin{adjustbox}{max width=\textwidth}
+\begin{dependency}[theme = simple]
+   \begin{deptext}[column sep=1.2em]
+      οἱ \& ἓξ \& ἀδελφοὶ \& χρυσοῦ \& στέφανον \& ἐκ \& τῆς \& χώρας \& ἔπεμπον \& παρὰ \& τὸν \& Ὅμηρον \& καὶ \& τὸν \& Ὁμήρου \& ἀδελφόν \\
+   \end{deptext}
+   \deproot{9}{Unit Verb}
+   \depedge{9}{3}{Subj.}
+   \depedge{3}{2}{Adj.}
+   \depedge{2}{1}{Article}
+   \depedge{9}{5}{Obj. Verb}
+   \depedge{5}{4}{Adj.}
+   \depedge{9}{6}{Prep.}
+   \depedge{6}{8}{Obj. of Prep}
+   \depedge{8}{7}{Article}
+   \depedge{9}{10}{Prep.}
+   \depedge{10}{12}{Obj. of Prep}
+   \depedge{10}{16}{Obj. of Prep}
+   \depedge{12}{13}{Conj.}
+   \depedge{16}{13}{Conj.}
+   \depedge{12}{11}{Article}
+   \depedge{16}{14}{Article}
+   \depedge{16}{15}{Adj.}
+\end{dependency}
+\end{adjustbox}
+
+\caption{Christopher Blackwell — οἱ ἓξ ἀδελφοὶ χρυσοῦ στέφανον ἐκ τῆς χώρας ἔπεμπον παρὰ τὸν Ὅμηρον καὶ τὸν Ὁμήρου ἀδελφόν .}
+\end{figure}
+\end{document}

@@ -75,7 +75,7 @@ end
 
 function escape_latex(s::String)
     # Minimal escaping — Greek text is almost always fine
-    replace(s, "&" => "\\&", "%" => "\\%", "_" => "\\_")
+    replace(s, "&" => "\\&", "%" => "\\%", "_" => " ")
 end
 
 function save_tikz_dependency(g::SyntaxGraph.SyntaxGraph, path::String; 
@@ -103,7 +103,7 @@ function save_tikz_dependency(g::SyntaxGraph.SyntaxGraph, path::String;
     \\begin{figure}[ht]
     \\centering
     $content
-    \\caption{$(g.editor) — $(g.sentence_text)}
+    \\caption{$(escape_latex(g.editor)) — $(g.sentence_text)}
     \\end{figure}
     \\end{document}
     """
@@ -260,7 +260,7 @@ function save_tikz_tree(g::SyntaxGraph.SyntaxGraph, path::String;
     \\begin{figure}[ht]
     \\centering
     $content
-    \\caption{Hierarchical tree — $(g.editor) — $(g.sentence_text)}
+    \\caption{Hierarchical tree — $(escape_latex(g.editor)) — $(g.sentence_text)}
     \\end{figure}
     \\end{document}
     """
@@ -325,9 +325,9 @@ function tikz_dual_dependency_comparison(g1::SyntaxGraph.SyntaxGraph,
     diff arc/.style={->, thick, red!85, shorten >=1pt, shorten <=1pt},
     label/.style={font=\\scriptsize}
 ]
-\\node[font=\\bfseries, above] at ($(n*node_spacing/2), 7.2) {Dependency Comparison};
-\\node[font=\\small] at ($(n*node_spacing/2), 6.4) {$(g1_name) (above, blue) vs $(g2_name) (below, teal)};
-\\node[font=\\tiny] at ($(n*node_spacing/2), 5.85) {Green = agree • Orange = label diff • Salmon = head diff • Red arcs = differences};
+\\node[font=\\bfseries, above] at ($(n*node_spacing/2), 8.0) {Dependency Comparison};
+\\node[font=\\small] at ($(n*node_spacing/2), 7.7) {$(g1_name) (above, blue) vs $(g2_name) (below, teal)};
+\\node[font=\\tiny] at ($(n*node_spacing/2), 7.2) {Green = agree • Orange = label diff • Salmon = head diff • Red arcs = differences};
 """
 
     # Nodes
