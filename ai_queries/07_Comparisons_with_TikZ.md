@@ -172,5 +172,22 @@ The TikZ Dependency graph looks great, but isn't showing the differences.
 
 All code, and the example script, and its output, are checked into the repository: <https://github.com/Eumaeus/SyntactileViz>.
 
+---
+
+Thanks for this!
+
+I would love a bug-fix that does what you offer!
+
+> Would you like me to give you a cleaned-up version of tikz_dual_dependency_comparison that:
+> - Fixes the label-side logic for diff arcs
+> - Makes the function a bit more robust
+> - Adds a proper save_tikz_dual_dependency_comparison(comp, path) that works nicely with ComparisonResult
+
+I have updated—and checked into the repo—the file `scripts/12_TikZ_Comparison.jl`. The code runs without error.
+
+But the helper-function `tikz_dependency_comparison()` doesn't have provision for saving the output, as `TikzExport.save_tikz_dual_dependency_comparison()` does. Or am I missing something?
+
+
+
 
 
