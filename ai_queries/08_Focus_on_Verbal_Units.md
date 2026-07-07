@@ -30,3 +30,49 @@ We can't rely on the verbal unit's ID, though, because students can create them 
 Second, I would like a visualization to go with the markdown-report. Ideally using TikZ, with colors to show how the two analyses define and assign tokens to verbal units, along with some key to `level`, `semantic type` and `syntactic type`.
 
 The trick with colors will be to distinguish adjacent verbal-units, as well as containing and contained verbal units. Again, it seems that other projects must do this all the time, but I have not ever tried.
+
+Thanks for being there to continue this INCREDIBLY PRODUCTIVE collaboration!
+
+---
+
+In the CEX files, there is an explicit association of tokens to verbal units:
+
+If we look at this file, `reports/grading/submissions/unit_10/hq_10_01_diffs.cex` (In GitHub), we have this block, that gives a token-urn, the token's text, and a comma-delimited listing of the VUs to which it belongs.
+
+~~~
+
+#!citedata
+tokenId#text#verbalUnitIds
+root#ROOT#
+urn:cts:fuTeaching:blackwell.hq.2026:10.1.token.1#ἐν#VU2
+urn:cts:fuTeaching:blackwell.hq.2026:10.1.token.2#ταῖς#VU1,VU2
+urn:cts:fuTeaching:blackwell.hq.2026:10.1.token.3#πόλεσι#VU1,VU2
+urn:cts:fuTeaching:blackwell.hq.2026:10.1.token.4#ταῖς#VU1,VU2
+…
+~~~
+
+The Verbal Units are defined in this block:
+
+~~~
+#!citedata
+unitId#syntacticType#semanticType#level
+VU1#Attributive Participle#Intransitive#2
+VU2#Independent Clause#Linking#1
+VU3#Circumstantial Participle#Transitive#2
+VU4#Independent Clause#Transitive#1
+VU5#Subordinate Clause#Intransitive#2
+~~~
+
+Does that help?
+
+Conversation at: <https://x.com/i/grok/share/3d79ae6e0d0645b49883a12c234197ac>
+
+---
+
+Your plan is excellent, especially the risk-aware staging!
+
+By all means, let's do the first option:
+
+> Just the textual comparison (compare_verbal_units + enhanced section in export_comparison_markdown) using the token-set matching described above. This is the highest-value, lowest-risk addition right now.
+
+Thank you!
