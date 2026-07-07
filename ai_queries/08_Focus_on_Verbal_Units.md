@@ -76,3 +76,21 @@ By all means, let's do the first option:
 > Just the textual comparison (compare_verbal_units + enhanced section in export_comparison_markdown) using the token-set matching described above. This is the highest-value, lowest-risk addition right now.
 
 Thank you!
+
+---
+
+Conversation at: <https://x.com/i/grok/share/3e0279445d4b49288af0444612aa9cad>
+
+Thank you! This looks great. Let me add those changes in and test what we have. I'll be back with a report!
+
+---
+
+Okay… I ran the new code and got a good report. Thanks!
+
+I would like a token-by-token assignment report. And if possible, perhaps in the report, a brief explanation for the reader about:
+
+- UAS
+- LAS
+- Jaccard
+
+This is great! Everything is up-to-date in the repo.

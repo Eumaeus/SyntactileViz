@@ -8,16 +8,14 @@ using NetworkLayout
 using ..SyntaxGraph
 using ..CEXParser
 using ..Visualization
-using ..TikzExport          # ← ADD THIS LINE
-
-
+using ..TikzExport        
 
 using Printf
 using Dates
 
-export ComparisonResult, compare_syntax_graphs, report_comparison, diff_summary, export_comparison_markdown
+export ComparisonResult, compare_syntax_graphs, report_comparison, diff_summary, 
+       export_comparison_markdown, compare_verbal_units, VerbalUnitComparison
 export draw_syntax_comparison, save_syntax_comparison, save_tikz_dual_dependency_comparison
-
 
 
 # ============================================================
@@ -33,6 +31,102 @@ struct ComparisonResult
     agreeing::Vector{String}
     label_diff::Vector{Tuple{String, String, String}}
     head_diff::Vector{Tuple{String, String, String}}
+end
+
+# ============================================================
+# Verbal Unit Comparison
+# ============================================================
+
+struct VerbalUnitComparison
+    g1_vu_count::Int
+    g2_vu_count::Int
+    matched::Vector{NamedTuple{(:g1_id, :g2_id, :jaccard, :g1_level, :g2_level, 
+                                 :g1_syntactic, :g2_syntactic, :g1_semantic, :g2_semantic), 
+                                Tuple{String,String,Float64,Int,Int,String,String,String,String}}}
+    unmatched_g1::Vector{String}
+    unmatched_g2::Vector{String}
+end
+
+"""
+    compare_verbal_units(g1, g2; jaccard_threshold=0.65)
+
+Compares verbal units between two SyntaxGraphs using token-set overlap
+(Jaccard similarity). This avoids relying on arbitrary VU IDs.
+
+Returns a VerbalUnitComparison with matched pairs (including property comparison)
+and unmatched VUs on each side.
+"""
+function compare_verbal_units(g1::SyntaxGraph, g2::SyntaxGraph; 
+                              jaccard_threshold::Float64 = 0.65)
+
+    # Helper: get set of token IDs belonging to a verbal unit
+    function get_vu_token_set(g::SyntaxGraph, vu_id::String)
+        nodes = get_tokens_in_vu(g, vu_id)
+        return Set(n.id for n in nodes)
+    end
+
+    # Jaccard similarity
+    function jaccard(s1::Set, s2::Set)
+        inter = length(intersect(s1, s2))
+        union_size = length(union(s1, s2))
+        return union_size == 0 ? 0.0 : inter / union_size
+    end
+
+    # Build token sets for all VUs
+    vus1 = collect(keys(g1.verbal_units))
+    vus2 = collect(keys(g2.verbal_units))
+
+    sets1 = Dict(vu => get_vu_token_set(g1, vu) for vu in vus1)
+    sets2 = Dict(vu => get_vu_token_set(g2, vu) for vu in vus2)
+
+    matched = NamedTuple[]
+    used_g2 = Set{String}()
+
+    for vu1 in vus1
+        best_score = 0.0
+        best_vu2 = ""
+        
+        for vu2 in vus2
+            if vu2 in used_g2
+                continue
+            end
+            score = jaccard(sets1[vu1], sets2[vu2])
+            if score > best_score
+                best_score = score
+                best_vu2 = vu2
+            end
+        end
+
+        if best_score >= jaccard_threshold && !isempty(best_vu2)
+            push!(used_g2, best_vu2)
+            
+            vu1_obj = g1.verbal_units[vu1]
+            vu2_obj = g2.verbal_units[best_vu2]
+            
+            push!(matched, (
+                g1_id      = vu1,
+                g2_id      = best_vu2,
+                jaccard    = round(best_score, digits=3),
+                g1_level   = vu1_obj.level,
+                g2_level   = vu2_obj.level,
+                g1_syntactic = vu1_obj.syntactic_type,
+                g2_syntactic = vu2_obj.syntactic_type,
+                g1_semantic  = vu1_obj.semantic_type,
+                g2_semantic  = vu2_obj.semantic_type
+            ))
+        end
+    end
+
+    unmatched_g1 = setdiff(vus1, [m.g1_id for m in matched])
+    unmatched_g2 = setdiff(vus2, [m.g2_id for m in matched])
+
+    return VerbalUnitComparison(
+        length(vus1),
+        length(vus2),
+        matched,
+        unmatched_g1,
+        unmatched_g2
+    )
 end
 
 # ============================================================
@@ -230,18 +324,48 @@ function export_comparison_markdown(comp::ComparisonResult, filepath::String;
                 write(io, "\n")
             end
 
-            # Verbal Unit section
+                        # === Verbal Unit Comparison (enhanced) ===
             write(io, "### Verbal Unit Comparison\n\n")
-            vus1 = Set(keys(g1.verbal_units))
-            vus2 = Set(keys(g2.verbal_units))
-            only_g1 = setdiff(vus1, vus2)
-            only_g2 = setdiff(vus2, vus1)
 
-            write(io, "- **VUs in Analysis 1**: $(length(vus1))\n")
-            write(io, "- **VUs in Analysis 2**: $(length(vus2))\n")
-            if !isempty(only_g1) write(io, "- Only in Analysis 1: $(collect(only_g1))\n") end
-            if !isempty(only_g2) write(io, "- Only in Analysis 2: $(collect(only_g2))\n") end
-            write(io, "\n")
+            vu_comp = compare_verbal_units(g1, g2)
+
+            write(io, "- **Analysis 1**: $(vu_comp.g1_vu_count) verbal units\n")
+            write(io, "- **Analysis 2**: $(vu_comp.g2_vu_count) verbal units\n")
+            write(io, "- **Matched** (Jaccard ≥ 0.65): $(length(vu_comp.matched))\n")
+            write(io, "- **Only in Analysis 1**: $(length(vu_comp.unmatched_g1))\n")
+            write(io, "- **Only in Analysis 2**: $(length(vu_comp.unmatched_g2))\n\n")
+
+            if !isempty(vu_comp.matched)
+                write(io, "#### Matched Verbal Units\n\n")
+                write(io, "| VU1 | VU2 | Jaccard | Level | Syntactic Type | Semantic Type |\n")
+                write(io, "|-----|-----|---------|-------|----------------|---------------|\n")
+
+                for m in vu_comp.matched
+                    level_str = m.g1_level == m.g2_level ? "$(m.g1_level)" : "$(m.g1_level) vs $(m.g2_level)"
+                    write(io, "| $(m.g1_id) | $(m.g2_id) | $(m.jaccard) | $(level_str) | ")
+                    write(io, "$(m.g1_syntactic) vs $(m.g2_syntactic) | ")
+                    write(io, "$(m.g1_semantic) vs $(m.g2_semantic) |\n")
+                end
+                write(io, "\n")
+            end
+
+            if !isempty(vu_comp.unmatched_g1)
+                write(io, "#### Unmatched in Analysis 1\n\n")
+                for vu in vu_comp.unmatched_g1
+                    obj = g1.verbal_units[vu]
+                    write(io, "- **$(vu)** — Level $(obj.level), $(obj.syntactic_type), $(obj.semantic_type)\n")
+                end
+                write(io, "\n")
+            end
+
+            if !isempty(vu_comp.unmatched_g2)
+                write(io, "#### Unmatched in Analysis 2\n\n")
+                for vu in vu_comp.unmatched_g2
+                    obj = g2.verbal_units[vu]
+                    write(io, "- **$(vu)** — Level $(obj.level), $(obj.syntactic_type), $(obj.semantic_type)\n")
+                end
+                write(io, "\n")
+            end
         end
 
         # Inside export_comparison_markdown, the tree capture becomes:
