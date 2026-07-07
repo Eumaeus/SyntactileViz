@@ -21,6 +21,7 @@ export get_tokens_in_vu, get_verbal_units_of_node
 export print_graph_summary
 export pretty_print, get_subgraph_for_vu, get_verbal_units_sorted
 export get_primary_verbal_unit
+export get_editor, get_urn
 
 # Comparison
 export ComparisonResult, compare_syntax_graphs, report_comparison, diff_summary, export_comparison_markdown, draw_syntax_comparison, save_syntax_comparison

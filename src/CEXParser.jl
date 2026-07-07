@@ -1,6 +1,6 @@
 module CEXParser
 
-export Token, VerbalUnit, SyntacticRelation, Analysis, parse_cex
+export Token, VerbalUnit, SyntacticRelation, Analysis, parse_cex, get_editor, get_urn
 
 struct Token
     id::String
@@ -184,6 +184,16 @@ function parse_citedata_block!(header::AbstractString, data_lines::Vector{String
             end
         end
     end
+end
+
+function get_editor(path::String)::AbstractString
+    analysis = parse_cex(path)
+    return analysis.editor
+end
+
+function get_urn(path::String)::AbstractString
+    analysis = parse_cex(path)
+    return analysis.sentence_urn
 end
 
 end # module CEXParser
