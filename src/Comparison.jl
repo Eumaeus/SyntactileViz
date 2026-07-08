@@ -14,7 +14,10 @@ using Printf
 using Dates
 
 export ComparisonResult, compare_syntax_graphs, report_comparison, diff_summary, 
-       export_comparison_markdown, compare_verbal_units, VerbalUnitComparison
+       export_comparison_markdown, compare_verbal_units, VerbalUnitComparison,
+       tikz_dual_dependency_comparison, save_tikz_dual_dependency_comparison,
+       tikz_verbal_unit_comparison, save_tikz_verbal_unit_comparison
+
 export draw_syntax_comparison, save_syntax_comparison, save_tikz_dual_dependency_comparison
 
 
@@ -483,6 +486,72 @@ function tikz_dual_dependency_comparison(comp::ComparisonResult; kwargs...)
         g2_name    = replace(comp.g2.editor, "_" => " "),
         kwargs...
     )
+end
+
+"""
+    tikz_verbal_unit_comparison(comp::ComparisonResult; ...)
+
+Side-by-side verbal unit visualization for two analyses.
+Uses the same color palette where VUs were matched by `compare_verbal_units`.
+"""
+function tikz_verbal_unit_comparison(comp::ComparisonResult; kwargs...)
+    # For now we generate two independent visualizations.
+    # Future improvement: align colors using matched VUs from compare_verbal_units.
+    left  = TikzExport.tikz_verbal_unit_linear(comp.g1; kwargs...)
+    right = TikzExport.tikz_verbal_unit_linear(comp.g2; kwargs...)
+
+    return """
+\\begin{tabular}{@{}p{0.48\\textwidth}p{0.48\\textwidth}@{}}
+\\centering
+\\textbf{$(replace(comp.g1.editor, "_" => " "))} \\\\[0.3em]
+$left
+&
+\\centering
+\\textbf{$(replace(comp.g2.editor, "_" => " "))} \\\\[0.3em]
+$right
+\\end{tabular}
+"""
+end
+
+
+"""
+    save_tikz_verbal_unit_comparison(comp::ComparisonResult, path::String; ...)
+
+Saves a standalone .tex file with side-by-side verbal unit visualizations
+for two analyses.
+"""
+function save_tikz_verbal_unit_comparison(comp::ComparisonResult, path::String;
+        preamble::String = TikzExport.default_preamble,
+        use_adjustbox::Bool = true,
+        adjustbox_options::String = "max width=\\textwidth",
+        show_legend::Bool = true)
+
+    content = tikz_verbal_unit_comparison(comp; 
+        show_legend = show_legend)
+
+    wrapped = if use_adjustbox
+        """
+        \\begin{adjustbox}{$adjustbox_options}
+        $content
+        \\end{adjustbox}
+        """
+    else
+        content
+    end
+
+    full = """
+    $preamble
+
+    \\begin{document}
+    \\begin{figure}[ht]
+    \\centering
+    $wrapped
+    \\caption{Verbal Unit Comparison — $(comp.g1.sentence_text)}
+    \\end{figure}
+    \\end{document}
+    """
+    write(path, full)
+    return path
 end
 
 """

@@ -106,3 +106,46 @@ Without troubling you, I have been scripting out a workflow to take a directory 
 This is going to be great… a huge motivator for my students, something specific and methodical, with a satisfying payoff and detailed feedback. Much better than, "Go read some sentences and try to do a good job."
 
 A million thanks! 
+
+Conversation at: <https://x.com/i/grok/share/61b2c30065a940b4a45a15faa75c84ee>
+
+---
+
+Okay… This might be the last step for this, lest reporting get ridiculously over-the-top. 
+
+Let's do two visualizations of Verbal Units.
+
+The first, for a single analysis: Using TeX (which results in really pretty typography), let's present the sentence's tokens, in their sentence-order, color-coded by Verbal Unit, with a key to each VU's `level`, `semantic type` and `syntactic type`.
+
+Then, if this is possible, let's do one for analysis-comparison. 
+
+The TeX exports you have given me all look terrific. The trick here, which you mentioned earlier, is to ensure constrasting color-coding for adjacent VUs, and for contained VUs. 
+
+We can assume that if one VU's tokens are contained inside another's, then the contained tokens are also part of the containing VU. For example, the tokens that belong to a participle-clause inside a main clause can be assumed also to belong to the main clause.
+
+If that is an incoherent explanation of what I am hoping to get, please let me know, and I will try to be more clear.
+
+---
+
+Conversation at: <https://x.com/i/grok/share/67933287e27f48298adb5b884677cfe1>
+
+Wonderful. You understand me perfectly.
+
+Your **Option A** seems best:
+
+> Option A (recommended by me):
+
+> Color primarily by the primary / most containing VU (the one returned by get_primary_verbal_unit, usually the lowest level). Then use a secondary visual cue (underline color, border style, or small colored bar) for any additional VUs the token belongs to.
+
+And while you have access to all the files at <https://github.com/Eumaeus/SyntactileViz> and can judge best, it seems that keeping this in `Comparisons.jl` might be the least disruptive.
+
+Everything is in GitHub and up-to-date.
+
+---
+
+Let's go ahead with the `save…` function.
+
+---
+
+Great! I am making these changes. Do I need to update the `exports` in `src/SyntactileViz.jl`?
+

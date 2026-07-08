@@ -3,8 +3,11 @@ module TikzExport
 import ..SyntaxGraph
 
 
+export tikz_dependency_code, save_tikz_dependency, save_tikz_tree, 
+       tikz_hierarchical_tree_code, tikz_dependency_comparison, 
+       tikz_dual_dependency_comparison,
+       tikz_verbal_unit_linear, save_tikz_verbal_unit_linear
 
-export tikz_dependency_code, save_tikz_dependency, save_tikz_tree, tikz_hierarchical_tree_code, tikz_dependency_comparison, tikz_dual_dependency_comparison
 
 const default_preamble = """
 \\documentclass{article}
@@ -389,71 +392,143 @@ function tikz_dual_dependency_comparison(g1::SyntaxGraph.SyntaxGraph,
     return tikz
 end
 
-# Convenience overload for ComparisonResult
-#=
-function tikz_dual_dependency_comparison(comp::Comparison.ComparisonResult; kwargs...)
-    tikz_dual_dependency_comparison(
-        comp.g1, comp.g2;
-        head_diff  = comp.head_diff,
-        label_diff = comp.label_diff,
-        g1_name    = comp.g1.editor,
-        g2_name    = comp.g2.editor,
-        kwargs...
-    )
-end
-=#
+# ============================================================
+# Verbal Unit Linear Visualization (single analysis)
+# ============================================================
 
-# Save functions
-#=
-function save_tikz_dual_dependency_comparison(comp::Comparison.ComparisonResult, path::String; kwargs...)
-    content = tikz_dual_dependency_comparison(comp; kwargs...)
-    full = """
-$(default_preamble)
-
-\\begin{document}
-\\begin{figure}[ht]
-\\centering
-\\begin{adjustbox}{max width=\\textwidth}
-$content
-\\end{adjustbox}
-\\caption{Comparison: $(comp.g1.sentence_text)}
-\\end{figure}
-\\end{document}
 """
-    write(path, full)
-    return path
-end
-=#
+    tikz_verbal_unit_linear(g::SyntaxGraph; ...)
 
-#=
-function save_tikz_dual_dependency_comparison(comp::ComparisonResult, path::String; kwargs...)
-    content = tikz_dual_dependency_comparison(comp; kwargs...)
-    full = """
-$(default_preamble)
-
-\\begin{document}
-\\begin{figure}[ht]
-\\centering
-\\begin{adjustbox}{max width=\\textwidth}
-$content
-\\end{adjustbox}
-\\caption{Comparison: $(comp.g1.sentence_text)}
-\\end{figure}
-\\end{document}
+Generates TikZ code for a linear, color-coded view of verbal units.
+- Primary color (background) comes from the most containing VU (lowest level).
+- Secondary VUs are shown with a distinct border/underline.
+- Nesting is visualized with layered colored backgrounds.
 """
-    write(path, full)
-    return path
-end
-=#
+function tikz_verbal_unit_linear(g::SyntaxGraph;
+        column_sep::String = "0.9em",
+        palette::Vector{String} = ["blue!70", "red!70", "green!65", "orange!80", 
+                                   "purple!70", "teal!70", "brown!70", "cyan!70"],
+        show_legend::Bool = true)
 
-#=
-function save_tikz_dual_dependency_comparison(g1, g2, path::String; kwargs...)
-    code = tikz_dual_dependency_comparison(g1, g2; kwargs...)
-    open(path, "w") do io
-        write(io, code)
+    ordered_ids = g.ordered_token_ids
+    if isempty(ordered_ids)
+        return "% Empty graph"
     end
-    path
+
+    # Assign colors to VUs consistently (by level then id)
+    all_vus = sort(collect(keys(g.verbal_units)), by = vu -> (g.verbal_units[vu].level, vu))
+    color_map = Dict{String, String}()
+    for (i, vu) in enumerate(all_vus)
+        color_map[vu] = palette[mod1(i, length(palette))]
+    end
+
+    texts = [escape_latex(g.nodes[id].text) for id in ordered_ids]
+    deptext_line = join(texts, " \\& ")
+
+    lines = String[]
+    push!(lines, "\\begin{tikzpicture}")
+    push!(lines, "  \\begin{deptext}[column sep=$column_sep]")
+    push!(lines, "    $deptext_line \\\\")
+    push!(lines, "  \\end{deptext}")
+
+    # Draw background rectangles for each VU (most containing first)
+    for vu in sort(all_vus, by = vu -> g.verbal_units[vu].level)
+        nodes_in_vu = get_tokens_in_vu(g, vu)
+        if isempty(nodes_in_vu) continue end
+
+        # Find indices in the ordered list
+        indices = [findfirst(==(n.id), ordered_ids) for n in nodes_in_vu if n.id in ordered_ids]
+        if isempty(indices) continue end
+
+        min_idx = minimum(indices)
+        max_idx = maximum(indices)
+
+        col = color_map[vu]
+        # Light background + colored border for nesting visibility
+        push!(lines, "  \\draw[$(col)!25, fill=$(col)!12, rounded corners=3pt, line width=0.8pt] " *
+              "([xshift=-0.3em]deptext-1-$(min_idx).north west) rectangle " *
+              "([xshift=0.3em]deptext-1-$(max_idx).south east);")
+    end
+
+    # Individual word nodes with primary color + secondary cue
+    for (i, id) in enumerate(ordered_ids)
+        node = g.nodes[id]
+        primary_vu = get_primary_verbal_unit(g, id)
+        primary_color = get(color_map, primary_vu, "gray!50")
+
+        # Check for additional VUs
+        all_vus_for_token = get_verbal_units_of_node(g, id)
+        has_secondary = length(all_vus_for_token) > 1
+
+        extra = ""
+        if has_secondary
+            # Use color of first non-primary VU for border
+            secondary_vus = filter(v -> v != primary_vu, all_vus_for_token)
+            if !isempty(secondary_vus)
+                sec_color = get(color_map, secondary_vus[1], primary_color)
+                extra = ", draw=$sec_color, line width=1.2pt"
+            end
+        end
+
+        push!(lines, "  \\node[draw, fill=$(primary_color)!20, rounded corners=2pt, " *
+              "inner sep=2pt, font=\\small$(extra)] at (deptext-1-$(i)) {$(escape_latex(node.text))};")
+    end
+
+    push!(lines, "\\end{tikzpicture}")
+
+    # Legend
+    if show_legend
+        push!(lines, "")
+        push!(lines, "\\vspace{0.4em}")
+        push!(lines, "\\begin{tabular}{@{}ll@{}}")
+        for vu in all_vus
+            col = color_map[vu]
+            obj = g.verbal_units[vu]
+            swatch = "\\colorbox{$(col)!25}{\\rule{0.9cm}{0.45cm}}"
+            push!(lines, "  $swatch & \\textbf{$(vu)} (Level $(obj.level)): $(obj.syntactic_type) — $(obj.semantic_type) \\\\")
+        end
+        push!(lines, "\\end{tabular}")
+    end
+
+    return join(lines, "\n")
 end
-=#
+
+"""
+    save_tikz_verbal_unit_linear(g::SyntaxGraph, path::String; ...)
+
+Saves a standalone .tex file with a linear, color-coded verbal unit visualization.
+"""
+function save_tikz_verbal_unit_linear(g::SyntaxGraph, path::String;
+        preamble::String = default_preamble,
+        use_adjustbox::Bool = true,
+        adjustbox_options::String = "max width=\\textwidth",
+        show_legend::Bool = true)
+
+    code = tikz_verbal_unit_linear(g; show_legend = show_legend)
+
+    content = if use_adjustbox
+        """
+        \\begin{adjustbox}{$adjustbox_options}
+        $code
+        \\end{adjustbox}
+        """
+    else
+        code
+    end
+
+    full = """
+    $preamble
+
+    \\begin{document}
+    \\begin{figure}[ht]
+    \\centering
+    $content
+    \\caption{Verbal Units — $(escape_latex(g.editor)) — $(g.sentence_text)}
+    \\end{figure}
+    \\end{document}
+    """
+    write(path, full)
+    return path
+end
 
 end # module

@@ -5,13 +5,23 @@ using Makie
 Revise.revise()
 
 
-unit = "unit_01"
+unit = "unit_10"
+key_dir = "reports/grading/keys/"
 
 output_files = "reports/grading/student_reports/$(unit)/"
-key_file = "reports/grading/keys/$(unit)/hq_01_01.cex"
 submissions_dir = "reports/grading/submissions/$(unit)/"
-student_file = "reports/grading/submissions/$(unit)/hq_10_01_diffs.cex"
 
+
+#student_file = "reports/grading/submissions/$(unit)/hq_10_01_diffs.cex"
+#key_file = "reports/grading/keys/$(unit)/hq_01_01.cex"
+
+#=
+
+1. Get dictionary of key-file-path, urn.
+2. Read files in Submissions-directory, making tuple of key-file + submission-file.
+3. Generate reports.
+
+=#
 
 function generate_reports(output_files::String, key_file::String, student_file::String)
 
@@ -49,7 +59,8 @@ function generate_reports(output_files::String, key_file::String, student_file::
 	println("Generating Report…")
 
 	# report_comparison(comp, show_details = true, show_tree = false)
-	export_comparison_markdown(comp, show_details = true, show_tree = true, "$(output_files)$(output_prefix)report.md")
+	# export_comparison_markdown(comp, show_details = true, show_tree = true, "$(output_files)$(output_prefix)report.md")
+	export_comparison_markdown(comp, "$(output_files)$(output_prefix)report.md"; show_token_vu_assignments = true)
 
 	println("Generating Stress Visualization…")
 
@@ -102,18 +113,70 @@ function generate_reports(output_files::String, key_file::String, student_file::
 	println("================================")
 end
 
-# Get Student Submissions
+#= 
+	Get Keys: get_keys(key_dir::String)::Dict{String,String}
 
-all_files = readdir(submissions_dir)
+	Recursively look at all .cex files in key_dir, making a 
+	dictionary of sentence-token-urn => filepath
+=#
 
-all_subs = filter(all_files) do f 
-	contains(f, ".cex")
+function get_keys(key_dir::String)::Dict{String, String}
+	index = Dict{String,String}()
+	for (dir, _, files) in walkdir(key_dir)	
+		for f in files
+			if endswith(lowercase(f), ".cex")
+				urn = get_urn(joinpath(dir, f))
+				if !haskey(index, urn)
+					index[urn] = joinpath(dir, f)
+				end
+			end
+		end
+	end
+	return index
 end
 
-for f in all_subs 
-	generate_reports(output_files, key_file, "$(submissions_dir)$(f)")
+#=
+	get_submissions(submissions_dir::String, key_dict::Dict{String, String})::(String, String)
+
+	Recursively searches all .cex file starting at submissions_dir,
+	matches them with keys (reported by get_keys)
+
+=#
+
+function get_submissions(submissions_dir::String, key_dict::Dict{String, String})::Vector{Tuple{String, String}}
+
+	file_tuples = Tuple{String, String}[]
+
+	for (dir, _, files) in walkdir(submissions_dir)	
+		for f in files
+			if endswith(lowercase(f), ".cex")
+				sub_urn = get_urn(joinpath(dir, f))
+				if haskey(key_dict, sub_urn)
+					key_file = key_dict[sub_urn] 
+					sub_file = joinpath(dir, f)
+					push!(file_tuples, (key_file, sub_file))
+				else
+					println("No key found for: $(joinpath(dir, f))")
+				end
+			end
+		end
+	end
+
+	return file_tuples
+
 end
 
+# Get Keys
+keyDict = get_keys(key_dir)
+
+# Get submissions with keys: Tuple(key, submission)
+subs = get_submissions(submissions_dir, keyDict)
+
+for sub in subs 
+	key_file = sub[1]
+	student_file = sub[2]
+	generate_reports(output_files, key_file, student_file)
+end
 
 
 

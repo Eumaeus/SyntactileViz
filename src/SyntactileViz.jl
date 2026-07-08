@@ -24,13 +24,13 @@ export get_primary_verbal_unit
 export get_editor, get_urn
 
 # Comparison
-export ComparisonResult, compare_syntax_graphs, report_comparison, diff_summary, export_comparison_markdown, draw_syntax_comparison, save_syntax_comparison
+export ComparisonResult, compare_syntax_graphs, report_comparison, diff_summary, export_comparison_markdown, draw_syntax_comparison, save_syntax_comparison,compare_verbal_units, VerbalUnitComparison, tikz_verbal_unit_comparison, save_tikz_verbal_unit_comparison
 
 # Visualization
 export draw_syntax_tree, save_syntax_tree
 
 # TikZ
-export tikz_dependency_code, save_tikz_dependency, save_tikz_tree, tikz_hierarchical_tree_code, tikz_dependency_comparison, tikz_dual_dependency_comparison, save_tikz_dual_dependency_comparison
+export tikz_dependency_code, save_tikz_dependency, save_tikz_tree, tikz_hierarchical_tree_code, tikz_dependency_comparison, tikz_dual_dependency_comparison, save_tikz_dual_dependency_comparison, tikz_verbal_unit_linear, save_tikz_verbal_unit_linear
 
 # Convenience function (moved here from Comparison module)
 function compare_cex_files(path1::String, path2::String)
