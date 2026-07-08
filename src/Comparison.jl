@@ -492,7 +492,7 @@ end
     tikz_verbal_unit_comparison(comp::ComparisonResult; ...)
 
 Returns TikZ code for two verbal unit visualizations stacked vertically.
-Uses \\centering (instead of center environment) for compatibility with adjustbox.
+Compatible with adjustbox (uses \\vspace instead of \\\\[...]).
 """
 function tikz_verbal_unit_comparison(comp::ComparisonResult; show_legend::Bool = true)
     top    = TikzExport.tikz_verbal_unit_linear(comp.g1; show_legend = show_legend)
@@ -503,14 +503,29 @@ function tikz_verbal_unit_comparison(comp::ComparisonResult; show_legend::Bool =
 
     return """
 \\centering
-\\textbf{$g1_name}\\\\[0.5em]
+\\textbf{$g1_name}
+
+\\vspace{0.5em}
+\\begin{figure}[ht]
+\\centering
+\\begin{adjustbox}{max width=\\textwidth}
 $top
+\\end{adjustbox}
+\\end{figure}
 
 \\vspace{1.0em}
 
 \\centering
-\\textbf{$g2_name}\\\\[0.5em]
+\\textbf{$g2_name}
+
+\\vspace{0.5em}
+\\begin{figure}[ht]
+\\centering
+\\begin{adjustbox}{max width=\\textwidth}
 $bottom
+\\end{adjustbox}
+\\caption{Verbal Unit Comparison — $(escape_latex(comp.g1.sentence_text))}
+\\end{figure}
 """
 end
 
@@ -545,13 +560,8 @@ function save_tikz_verbal_unit_comparison(comp::ComparisonResult, path::String;
 \\newfontfamily\\greekfont[Script=Greek]{Arno Pro}
 
 \\begin{document}
-\\begin{figure}[ht]
 \\centering
-\\begin{adjustbox}{max width=\\textwidth}
 $content
-\\end{adjustbox}
-\\caption{Verbal Unit Comparison — $(escape_latex(comp.g1.sentence_text))}
-\\end{figure}
 \\end{document}
 """
     write(path, full)
