@@ -10,3 +10,5 @@ comp = compare_cex_files(
 
 
 export_comparison_markdown(comp, "reports/comparison_report.md")
+
+export_comparison_markdown(comp, "reports/report_detailed.md"; show_token_vu_assignments = true)

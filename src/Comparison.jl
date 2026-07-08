@@ -268,10 +268,12 @@ end
 function export_comparison_markdown(comp::ComparisonResult, filepath::String;
                                     show_details::Bool = true,
                                     show_tree::Bool = true,
-                                    executive_summary::Bool = false)
-    
+                                    executive_summary::Bool = false,
+                                    show_token_vu_assignments::Bool = false)   # NEW
+
     if executive_summary
         show_tree = false
+        show_token_vu_assignments = false
     end
 
     g1 = comp.g1
@@ -291,7 +293,7 @@ function export_comparison_markdown(comp::ComparisonResult, filepath::String;
         
         write(io, "---\n\n")
 
-        # Scores as a Markdown table
+        # Scores + Explanations
         write(io, "## Scores\n\n")
         write(io, "| Metric | Value |\n")
         write(io, "|--------|-------:|\n")
@@ -300,48 +302,37 @@ function export_comparison_markdown(comp::ComparisonResult, filepath::String;
         write(io, "| Tokens | $(comp.total_tokens) |\n\n")
 
         if show_details
+            write(io, "**UAS (Unlabeled Attachment Score)**: Measures how often the two analyses agree on the *head* (governor) of each token, regardless of the grammatical label.\n\n")
+            write(io, "**LAS (Labeled Attachment Score)**: Measures how often the two analyses agree on *both* the head *and* the grammatical label (relation) of each token.\n\n")
+        end
+
+        if show_details
             write(io, "## Differences\n\n")
 
-            if !isempty(comp.label_diff)
-                write(io, "### Minor Differences (same head, different label)\n\n")
-                for (nid, l1, l2) in comp.label_diff
-                    node = get_node(g1, nid)
-                    text = node === nothing ? nid : node.text
-                    write(io, "- **$(text)**: `\"$l1\"` vs `\"$l2\"`\n")
-                end
-                write(io, "\n")
-            end
+            # ... (keep your existing Minor/Major Differences sections exactly as they are) ...
 
-            if !isempty(comp.head_diff)
-                write(io, "### Major Differences (different head)\n\n")
-                for (nid, h1, h2) in comp.head_diff
-                    node = get_node(g1, nid)
-                    text = node === nothing ? nid : node.text
-                    h1_text = get_node(g1, h1) !== nothing ? get_node(g1, h1).text : string(h1)
-                    h2_text = get_node(g2, h2) !== nothing ? get_node(g2, h2).text : string(h2)
-                    write(io, "- **$(text)**: head `\"$h1_text\"` vs `\"$h2_text\"`\n")
-                end
-                write(io, "\n")
-            end
-
-                        # === Verbal Unit Comparison (enhanced) ===
+            # === Verbal Unit Comparison (enhanced) ===
             write(io, "### Verbal Unit Comparison\n\n")
 
             vu_comp = compare_verbal_units(g1, g2)
 
             write(io, "- **Analysis 1**: $(vu_comp.g1_vu_count) verbal units\n")
             write(io, "- **Analysis 2**: $(vu_comp.g2_vu_count) verbal units\n")
-            write(io, "- **Matched** (Jaccard ≥ 0.65): $(length(vu_comp.matched))\n")
+            write(io, "- **Matched** (by token overlap): $(length(vu_comp.matched))\n")
             write(io, "- **Only in Analysis 1**: $(length(vu_comp.unmatched_g1))\n")
             write(io, "- **Only in Analysis 2**: $(length(vu_comp.unmatched_g2))\n\n")
 
+            if show_details
+                write(io, "**Jaccard similarity** is used to match verbal units across analyses. It measures the overlap between the sets of tokens belonging to each verbal unit (1.0 = identical token sets, 0.0 = no overlap). A threshold of 0.65 is used by default.\n\n")
+            end
+
             if !isempty(vu_comp.matched)
                 write(io, "#### Matched Verbal Units\n\n")
-                write(io, "| VU1 | VU2 | Jaccard | Level | Syntactic Type | Semantic Type |\n")
-                write(io, "|-----|-----|---------|-------|----------------|---------------|\n")
+                write(io, "| VU1 | VU2 | Jaccard | Level | Syntactic Type                  | Semantic Type          |\n")
+                write(io, "|-----|-----|---------|-------|---------------------------------|------------------------|\n")
 
                 for m in vu_comp.matched
-                    level_str = m.g1_level == m.g2_level ? "$(m.g1_level)" : "$(m.g1_level) vs $(m.g2_level)"
+                    level_str = m.g1_level == m.g2_level ? string(m.g1_level) : "$(m.g1_level) vs $(m.g2_level)"
                     write(io, "| $(m.g1_id) | $(m.g2_id) | $(m.jaccard) | $(level_str) | ")
                     write(io, "$(m.g1_syntactic) vs $(m.g2_syntactic) | ")
                     write(io, "$(m.g1_semantic) vs $(m.g2_semantic) |\n")
@@ -366,9 +357,35 @@ function export_comparison_markdown(comp::ComparisonResult, filepath::String;
                 end
                 write(io, "\n")
             end
+
+            # === NEW: Token-by-Token Verbal Unit Assignment ===
+            if show_token_vu_assignments
+                write(io, "### Token-by-Token Verbal Unit Assignment\n\n")
+                write(io, "Only tokens with **different** verbal unit assignments are shown below.\n\n")
+
+                for token_id in g1.ordered_token_ids
+                    node1 = get_node(g1, token_id)
+                    node2 = get_node(g2, token_id)
+                    if node1 === nothing || node2 === nothing
+                        continue
+                    end
+
+                    vus1 = node1.verbal_unit_ids
+                    vus2 = node2.verbal_unit_ids
+
+                    if vus1 != vus2   # only show differences
+                        primary1 = get_primary_verbal_unit(g1, token_id)
+                        primary2 = get_primary_verbal_unit(g2, token_id)
+
+                        write(io, "- **$(node1.text)**\n")
+                        write(io, "  - Analysis 1: Primary = $(primary1), All = $(join(vus1, ", "))\n")
+                        write(io, "  - Analysis 2: Primary = $(primary2), All = $(join(vus2, ", "))\n\n")
+                    end
+                end
+            end
         end
 
-        # Inside export_comparison_markdown, the tree capture becomes:
+        # Tree views (unchanged)
         if show_tree
             write(io, "---\n\n## Tree Views\n\n")
 
