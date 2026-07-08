@@ -396,12 +396,11 @@ end
     tikz_verbal_unit_linear(g::SyntaxGraph.SyntaxGraph; ...)
 
 Generates a clean linear TikZ visualization of verbal units.
-Uses plain TikZ nodes (more reliable than deptext for background rectangles).
 """
 function tikz_verbal_unit_linear(g::SyntaxGraph.SyntaxGraph;
         x_step::Float64 = 1.4,
-        palette::Vector{String} = ["blue!70", "red!70", "green!65", "orange!80", 
-                                   "purple!70", "teal!70", "brown!70", "cyan!70"],
+        palette::Vector{String} = ["blue", "red", "green", "orange", 
+                                   "purple", "teal", "brown", "cyan"],
         show_legend::Bool = true)
 
     ordered_ids = g.ordered_token_ids
@@ -409,9 +408,10 @@ function tikz_verbal_unit_linear(g::SyntaxGraph.SyntaxGraph;
         return "% Empty graph"
     end
 
-    # Color assignment (by level, then id)
+    # Assign colors (by level, then id)
     all_vus = sort(collect(keys(g.verbal_units)), 
                    by = vu -> (g.verbal_units[vu].level, vu))
+    
     color_map = Dict{String, String}()
     for (i, vu) in enumerate(all_vus)
         color_map[vu] = palette[mod1(i, length(palette))]
@@ -420,7 +420,7 @@ function tikz_verbal_unit_linear(g::SyntaxGraph.SyntaxGraph;
     lines = String[]
     push!(lines, "\\begin{tikzpicture}[node distance=0.6cm]")
 
-    # --- Draw background rectangles for each VU (most containing first) ---
+    # Background rectangles for each VU (most containing first)
     for vu in sort(all_vus, by = vu -> g.verbal_units[vu].level)
         nodes_in_vu = SyntaxGraph.get_tokens_in_vu(g, vu)
         isempty(nodes_in_vu) && continue
@@ -436,17 +436,18 @@ function tikz_verbal_unit_linear(g::SyntaxGraph.SyntaxGraph;
         max_idx = maximum(indices)
 
         col = color_map[vu]
-        # Light fill + colored border for nesting visibility
-        push!(lines, "  \\draw[$(col)!30, fill=$(col)!15, rounded corners=4pt, line width=0.9pt] " *
-              "($(min_idx*x_step - 0.35)cm, 0.55cm) rectangle " *
-              "($(max_idx*x_step + 0.35)cm, -0.55cm);")
+
+        # Light background + colored border
+        push!(lines, "  \\draw[$(col)!35, fill=$(col)!12, rounded corners=4pt, line width=0.9pt] " *
+              "($(min_idx*x_step - 0.35)cm, 0.6cm) rectangle " *
+              "($(max_idx*x_step + 0.35)cm, -0.6cm);")
     end
 
-    # --- Draw the word nodes ---
+    # Word nodes
     for (i, id) in enumerate(ordered_ids)
         node = g.nodes[id]
         primary_vu = SyntaxGraph.get_primary_verbal_unit(g, id)
-        primary_color = get(color_map, primary_vu, "gray!50")
+        primary_color = get(color_map, primary_vu, "gray")
 
         all_vus_for_token = SyntaxGraph.get_verbal_units_of_node(g, id)
         has_secondary = length(all_vus_for_token) > 1
@@ -456,19 +457,19 @@ function tikz_verbal_unit_linear(g::SyntaxGraph.SyntaxGraph;
             secondary = filter(v -> v != primary_vu, all_vus_for_token)
             if !isempty(secondary)
                 sec_color = get(color_map, secondary[1], primary_color)
-                extra_style = ", draw=$sec_color, line width=1.1pt"
+                extra_style = ", draw=$(sec_color)!80, line width=1.2pt"
             end
         end
 
         x = (i - 1) * x_step
-        push!(lines, "  \\node[draw, fill=$(primary_color)!22, rounded corners=3pt, " *
-              "inner sep=3pt, font=\\small$(extra_style)] (w$i) at ($(x)cm, 0) " *
+        push!(lines, "  \\node[draw, fill=$(primary_color)!25, rounded corners=3pt, " *
+              "inner sep=3.5pt, font=\\small$(extra_style)] (w$i) at ($(x)cm, 0) " *
               "{$(escape_latex(node.text))};")
     end
 
     push!(lines, "\\end{tikzpicture}")
 
-    # --- Legend ---
+    # Legend
     if show_legend
         push!(lines, "")
         push!(lines, "\\vspace{0.5em}")

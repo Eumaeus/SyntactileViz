@@ -292,3 +292,20 @@ l.23 ...8cm, 0.55cm) rectangle (18.55cm, -0.55cm);
 ~~~
 
 I have checked everything into the repo.
+
+Conversation at: <https://x.com/i/grok/share/d79f2a9f7544407080eb35b1311003e2>
+
+---
+
+Wow. Runs and compiles perfectly. Beautiful!
+
+Now I'll move on to testing the comparison code!
+
+---
+
+The comparison code ran cleanly and compiled with only "overfull textbox" errors!
+
+The resulting PDF overruns the page, and the text on the legend kind of piles up, colliding.
+
+I am *not* expecting a comparison like this to fit onto a standard printed page. Can we have the page-size adjust to fit the width of the visualization? 
+
