@@ -491,27 +491,28 @@ end
 """
     tikz_verbal_unit_comparison(comp::ComparisonResult; ...)
 
-Side-by-side verbal unit visualization for two analyses.
-Uses the same color palette where VUs were matched by `compare_verbal_units`.
+Returns TikZ code for two verbal unit visualizations stacked vertically
+(one above the other).
 """
 function tikz_verbal_unit_comparison(comp::ComparisonResult; show_legend::Bool = true)
-    top = TikzExport.tikz_verbal_unit_linear(comp.g1; show_legend = show_legend)
+    top    = TikzExport.tikz_verbal_unit_linear(comp.g1; show_legend = show_legend)
     bottom = TikzExport.tikz_verbal_unit_linear(comp.g2; show_legend = show_legend)
 
+    g1_name = replace(comp.g1.editor, "_" => " ")
+    g2_name = replace(comp.g2.editor, "_" => " ")
+
     return """
-\\begin{tabular}{@{}c@{}}
-\\centering
-\\textbf{$(replace(comp.g1.editor, "_" => " "))} \\\\[0.4em]
+\\begin{center}
+\\textbf{$g1_name}\\\\[0.5em]
 $top
-\\end{tabular}
+\\end{center}
 
-\\vspace{1.2em}
+\\vspace{1.0em}
 
-\\begin{tabular}{@{}c@{}}
-\\centering
-\\textbf{$(replace(comp.g2.editor, "_" => " "))} \\\\[0.4em]
+\\begin{center}
+\\textbf{$g2_name}\\\\[0.5em]
 $bottom
-\\end{tabular}
+\\end{center}
 """
 end
 
@@ -539,7 +540,7 @@ function save_tikz_verbal_unit_comparison(comp::ComparisonResult, path::String;
 \\usepackage{tikz}
 \\usepackage{tikz-dependency}
 \\usepackage{adjustbox}
-\\usepackage[landscape, paperwidth=100cm, paperheight=18cm, margin=1.5cm]{geometry}
+\\usepackage[landscape, paperwidth=400cm, paperheight=18cm, margin=1.5cm]{geometry}
 
 % === Your polytonic Greek setup ===
 \\defaultfontfeatures{Ligatures=TeX}

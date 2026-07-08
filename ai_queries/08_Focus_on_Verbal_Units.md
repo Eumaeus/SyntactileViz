@@ -343,3 +343,20 @@ l.19 \textbf{Editor One} \\[
 ~~~
 
 Everything is up-to-date in the repo.
+
+---
+
+The stacking looks good, but we're still spilling off the side of the page. I've tried editing this line:
+
+`\\usepackage[landscape, paperwidth=400cm, paperheight=18cm, margin=1.5cm]{geometry} `
+
+…to extreme widths, but it doesn't seem to matter.
+
+In other contexts, we've wrapped the content with an `adjustbox`, like this:
+
+~~~
+\\begin{adjustbox}{max width=\\textwidth}
+$content
+\\end{adjustbox}
+~~~
+
