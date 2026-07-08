@@ -491,8 +491,8 @@ end
 """
     tikz_verbal_unit_comparison(comp::ComparisonResult; ...)
 
-Returns TikZ code for two verbal unit visualizations stacked vertically
-(one above the other).
+Returns TikZ code for two verbal unit visualizations stacked vertically.
+Uses \\centering (instead of center environment) for compatibility with adjustbox.
 """
 function tikz_verbal_unit_comparison(comp::ComparisonResult; show_legend::Bool = true)
     top    = TikzExport.tikz_verbal_unit_linear(comp.g1; show_legend = show_legend)
@@ -502,17 +502,15 @@ function tikz_verbal_unit_comparison(comp::ComparisonResult; show_legend::Bool =
     g2_name = replace(comp.g2.editor, "_" => " ")
 
     return """
-\\begin{center}
+\\centering
 \\textbf{$g1_name}\\\\[0.5em]
 $top
-\\end{center}
 
 \\vspace{1.0em}
 
-\\begin{center}
+\\centering
 \\textbf{$g2_name}\\\\[0.5em]
 $bottom
-\\end{center}
 """
 end
 
@@ -525,36 +523,33 @@ end
 """
     save_tikz_verbal_unit_comparison(comp::ComparisonResult, path::String; ...)
 
-Saves a wide landscape .tex file with side-by-side verbal unit visualizations.
-The page size automatically expands to fit the content.
+Saves the comparison with automatic scaling to fit the page width
+(using the same adjustbox approach that worked well for dependency visualizations).
 """
 function save_tikz_verbal_unit_comparison(comp::ComparisonResult, path::String;
         show_legend::Bool = true)
 
     content = tikz_verbal_unit_comparison(comp; show_legend = show_legend)
 
-    # Wide custom landscape page that grows with the diagram
-    wide_preamble = """
+    full = """
 \\documentclass{article}
 \\usepackage{fontspec}
 \\usepackage{tikz}
 \\usepackage{tikz-dependency}
 \\usepackage{adjustbox}
-\\usepackage[landscape, paperwidth=400cm, paperheight=18cm, margin=1.5cm]{geometry}
+\\usepackage[landscape, margin=1.2cm]{geometry}
 
 % === Your polytonic Greek setup ===
 \\defaultfontfeatures{Ligatures=TeX}
 \\setmainfont{ArnoPro-Regular}
 \\newfontfamily\\greekfont[Script=Greek]{Arno Pro}
-"""
-
-    full = """
-$wide_preamble
 
 \\begin{document}
 \\begin{figure}[ht]
 \\centering
+\\begin{adjustbox}{max width=\\textwidth}
 $content
+\\end{adjustbox}
 \\caption{Verbal Unit Comparison — $(escape_latex(comp.g1.sentence_text))}
 \\end{figure}
 \\end{document}

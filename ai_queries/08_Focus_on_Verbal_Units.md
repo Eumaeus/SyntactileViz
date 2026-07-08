@@ -360,3 +360,50 @@ $content
 \\end{adjustbox}
 ~~~
 
+Thanks for bearing with me. TeX stuff always seems to go like this, until one sorts it out and it looks great!
+
+---
+
+Now it doesn't like `\begin{center}`…
+
+~~~
+./verbal_units_comparison.aux)
+*geometry* driver: auto-detecting
+*geometry* detected driver: xetex
+
+! LaTeX Error: Not allowed in LR mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.17 \begin{center}
+                   
+? 
+~~~
+
+---
+
+Progress! 
+
+Everything, including the output at `reports/verbal_units_comparison.tex`, is checked in. We're getting this error from `xelatex` now…
+
+~~~
+*geometry* driver: auto-detecting
+*geometry* detected driver: xetex
+
+! LaTeX Error: Not allowed in LR mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.18 \textbf{Editor One}\\[
+                           0.5em]
+? ! Missing } inserted.
+<inserted text> 
+                }
+l.18 \textbf{Editor One}\\[
+                           0.5em]
+
+~~~
