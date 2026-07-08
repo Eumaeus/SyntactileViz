@@ -1,0 +1,52 @@
+\documentclass{article}
+\usepackage{fontspec}
+\usepackage{tikz}
+\usepackage{tikz-dependency}
+\usepackage{adjustbox}
+
+
+% === Your polytonic Greek setup (customize with your purchased fonts) ===
+\defaultfontfeatures{Ligatures=TeX}
+\setmainfont{ArnoPro-Regular}          % e.g. Brill, IFAO, or your professional font
+% \newfontfamily\greekfont[Script=Greek]{YourGreekFontHere}
+\newfontfamily\greekfont[Script=Greek]{Arno Pro}
+
+% \usepackage{polyglossia}
+% \setotherlanguage[variant=ancient]{greek}
+
+
+\begin{document}
+\begin{figure}[ht]
+\centering
+\begin{adjustbox}{max width=\textwidth}
+\begin{tikzpicture}
+  \begin{deptext}[column sep=0.9em]
+    τῇ \& βασιλέως \& θυγατρὶ \& ἐδήλου \& ὁ \& ποιητὴς \& τὰ \& ποιήματα \& τὰ \& περὶ \& τῆς \& φύσεως \& γεγραμμένα \\
+  \end{deptext}
+  \draw[blue!70!25, fill=blue!70!12, rounded corners=3pt, line width=0.8pt] ([xshift=-0.3em]deptext-1-1.north west) rectangle ([xshift=0.3em]deptext-1-13.south east);
+  \draw[red!70!25, fill=red!70!12, rounded corners=3pt, line width=0.8pt] ([xshift=-0.3em]deptext-1-7.north west) rectangle ([xshift=0.3em]deptext-1-13.south east);
+  \node[draw, fill=blue!70!20, rounded corners=2pt, inner sep=2pt, font=\small] at (deptext-1-1) {τῇ};
+  \node[draw, fill=blue!70!20, rounded corners=2pt, inner sep=2pt, font=\small] at (deptext-1-2) {βασιλέως};
+  \node[draw, fill=blue!70!20, rounded corners=2pt, inner sep=2pt, font=\small] at (deptext-1-3) {θυγατρὶ};
+  \node[draw, fill=blue!70!20, rounded corners=2pt, inner sep=2pt, font=\small] at (deptext-1-4) {ἐδήλου};
+  \node[draw, fill=blue!70!20, rounded corners=2pt, inner sep=2pt, font=\small] at (deptext-1-5) {ὁ};
+  \node[draw, fill=blue!70!20, rounded corners=2pt, inner sep=2pt, font=\small] at (deptext-1-6) {ποιητὴς};
+  \node[draw, fill=blue!70!20, rounded corners=2pt, inner sep=2pt, font=\small, draw=red!70, line width=1.2pt] at (deptext-1-7) {τὰ};
+  \node[draw, fill=blue!70!20, rounded corners=2pt, inner sep=2pt, font=\small, draw=red!70, line width=1.2pt] at (deptext-1-8) {ποιήματα};
+  \node[draw, fill=blue!70!20, rounded corners=2pt, inner sep=2pt, font=\small, draw=red!70, line width=1.2pt] at (deptext-1-9) {τὰ};
+  \node[draw, fill=blue!70!20, rounded corners=2pt, inner sep=2pt, font=\small, draw=red!70, line width=1.2pt] at (deptext-1-10) {περὶ};
+  \node[draw, fill=blue!70!20, rounded corners=2pt, inner sep=2pt, font=\small, draw=red!70, line width=1.2pt] at (deptext-1-11) {τῆς};
+  \node[draw, fill=blue!70!20, rounded corners=2pt, inner sep=2pt, font=\small, draw=red!70, line width=1.2pt] at (deptext-1-12) {φύσεως};
+  \node[draw, fill=blue!70!20, rounded corners=2pt, inner sep=2pt, font=\small, draw=red!70, line width=1.2pt] at (deptext-1-13) {γεγραμμένα};
+\end{tikzpicture}
+
+\vspace{0.4em}
+\begin{tabular}{@{}ll@{}}
+  \colorbox{blue!70!25}{\rule{0.9cm}{0.45cm}} & \textbf{VU1} (Level 1): Independent Clause — Transitive \\
+  \colorbox{red!70!25}{\rule{0.9cm}{0.45cm}} & \textbf{VU2} (Level 2): Attributive Participle — Intransitive \\
+\end{tabular}
+\end{adjustbox}
+
+\caption{Verbal Units — Christopher Blackwell — τῇ βασιλέως θυγατρὶ ἐδήλου ὁ ποιητὴς τὰ ποιήματα τὰ περὶ τῆς φύσεως γεγραμμένα .}
+\end{figure}
+\end{document}

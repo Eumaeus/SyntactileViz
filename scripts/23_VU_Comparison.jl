@@ -21,7 +21,7 @@ export_comparison_markdown(comp, "reports/comparison_report.md")
 export_comparison_markdown(comp, "reports/report_detailed.md"; show_token_vu_assignments = true)
 
 # Single analysis
-#save_tikz_verbal_unit_linear(g1, "reports/verbal_units.tex")
+save_tikz_verbal_unit_linear(g1, "reports/verbal_units.tex")
 
 # Comparison (side-by-side)
 #comp = compare_syntax_graphs(g1, g2)

@@ -392,19 +392,15 @@ function tikz_dual_dependency_comparison(g1::SyntaxGraph.SyntaxGraph,
     return tikz
 end
 
-# ============================================================
-# Verbal Unit Linear Visualization (single analysis)
-# ============================================================
-
 """
-    tikz_verbal_unit_linear(g::SyntaxGraph; ...)
+    tikz_verbal_unit_linear(g::SyntaxGraph.SyntaxGraph; ...)
 
 Generates TikZ code for a linear, color-coded view of verbal units.
 - Primary color (background) comes from the most containing VU (lowest level).
-- Secondary VUs are shown with a distinct border/underline.
+- Secondary VUs are shown with a distinct border.
 - Nesting is visualized with layered colored backgrounds.
 """
-function tikz_verbal_unit_linear(g::SyntaxGraph;
+function tikz_verbal_unit_linear(g::SyntaxGraph.SyntaxGraph;
         column_sep::String = "0.9em",
         palette::Vector{String} = ["blue!70", "red!70", "green!65", "orange!80", 
                                    "purple!70", "teal!70", "brown!70", "cyan!70"],
@@ -416,7 +412,9 @@ function tikz_verbal_unit_linear(g::SyntaxGraph;
     end
 
     # Assign colors to VUs consistently (by level then id)
-    all_vus = sort(collect(keys(g.verbal_units)), by = vu -> (g.verbal_units[vu].level, vu))
+    all_vus = sort(collect(keys(g.verbal_units)), 
+                   by = vu -> (g.verbal_units[vu].level, vu))
+    
     color_map = Dict{String, String}()
     for (i, vu) in enumerate(all_vus)
         color_map[vu] = palette[mod1(i, length(palette))]
@@ -433,18 +431,21 @@ function tikz_verbal_unit_linear(g::SyntaxGraph;
 
     # Draw background rectangles for each VU (most containing first)
     for vu in sort(all_vus, by = vu -> g.verbal_units[vu].level)
-        nodes_in_vu = get_tokens_in_vu(g, vu)
-        if isempty(nodes_in_vu) continue end
+        nodes_in_vu = SyntaxGraph.get_tokens_in_vu(g, vu)
+        if isempty(nodes_in_vu) 
+            continue 
+        end
 
-        # Find indices in the ordered list
-        indices = [findfirst(==(n.id), ordered_ids) for n in nodes_in_vu if n.id in ordered_ids]
-        if isempty(indices) continue end
+        indices = [findfirst(==(n.id), ordered_ids) for n in nodes_in_vu 
+                   if n.id in ordered_ids]
+        if isempty(indices) 
+            continue 
+        end
 
         min_idx = minimum(indices)
         max_idx = maximum(indices)
 
         col = color_map[vu]
-        # Light background + colored border for nesting visibility
         push!(lines, "  \\draw[$(col)!25, fill=$(col)!12, rounded corners=3pt, line width=0.8pt] " *
               "([xshift=-0.3em]deptext-1-$(min_idx).north west) rectangle " *
               "([xshift=0.3em]deptext-1-$(max_idx).south east);")
@@ -453,16 +454,14 @@ function tikz_verbal_unit_linear(g::SyntaxGraph;
     # Individual word nodes with primary color + secondary cue
     for (i, id) in enumerate(ordered_ids)
         node = g.nodes[id]
-        primary_vu = get_primary_verbal_unit(g, id)
+        primary_vu = SyntaxGraph.get_primary_verbal_unit(g, id)
         primary_color = get(color_map, primary_vu, "gray!50")
 
-        # Check for additional VUs
-        all_vus_for_token = get_verbal_units_of_node(g, id)
+        all_vus_for_token = SyntaxGraph.get_verbal_units_of_node(g, id)
         has_secondary = length(all_vus_for_token) > 1
 
         extra = ""
         if has_secondary
-            # Use color of first non-primary VU for border
             secondary_vus = filter(v -> v != primary_vu, all_vus_for_token)
             if !isempty(secondary_vus)
                 sec_color = get(color_map, secondary_vus[1], primary_color)
@@ -471,7 +470,8 @@ function tikz_verbal_unit_linear(g::SyntaxGraph;
         end
 
         push!(lines, "  \\node[draw, fill=$(primary_color)!20, rounded corners=2pt, " *
-              "inner sep=2pt, font=\\small$(extra)] at (deptext-1-$(i)) {$(escape_latex(node.text))};")
+              "inner sep=2pt, font=\\small$(extra)] at (deptext-1-$(i)) {" *
+              "$(escape_latex(node.text))};")
     end
 
     push!(lines, "\\end{tikzpicture}")
@@ -485,7 +485,8 @@ function tikz_verbal_unit_linear(g::SyntaxGraph;
             col = color_map[vu]
             obj = g.verbal_units[vu]
             swatch = "\\colorbox{$(col)!25}{\\rule{0.9cm}{0.45cm}}"
-            push!(lines, "  $swatch & \\textbf{$(vu)} (Level $(obj.level)): $(obj.syntactic_type) — $(obj.semantic_type) \\\\")
+            push!(lines, "  $swatch & \\textbf{$(vu)} (Level $(obj.level)): " *
+                  "$(obj.syntactic_type) — $(obj.semantic_type) \\\\")
         end
         push!(lines, "\\end{tabular}")
     end
@@ -498,7 +499,7 @@ end
 
 Saves a standalone .tex file with a linear, color-coded verbal unit visualization.
 """
-function save_tikz_verbal_unit_linear(g::SyntaxGraph, path::String;
+function save_tikz_verbal_unit_linear(g::SyntaxGraph.SyntaxGraph, path::String;
         preamble::String = default_preamble,
         use_adjustbox::Bool = true,
         adjustbox_options::String = "max width=\\textwidth",
