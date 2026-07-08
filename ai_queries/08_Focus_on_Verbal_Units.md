@@ -309,3 +309,10 @@ The resulting PDF overruns the page, and the text on the legend kind of piles up
 
 I am *not* expecting a comparison like this to fit onto a standard printed page. Can we have the page-size adjust to fit the width of the visualization? 
 
+---
+
+I made those changes to `src/Comparison.jl`. I've checked everything into the repo.
+
+The comparison PDF compiles from the .tex file, but it still seems that the PDF is being forced into letter-sized paper. Is `\\documentclass{article}` perhaps the problem? I am not good at TeX stuff.
+
+With the TikZ Dependency visualizations, XeLaTeX scaled the whole thing down to fit. Zooming on the resulting PDF revealed everything at high resolution.
