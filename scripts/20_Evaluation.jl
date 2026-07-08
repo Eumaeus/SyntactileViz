@@ -73,6 +73,14 @@ function generate_reports(output_files::String, key_file::String, student_file::
 	save_syntax_comparison(comp, "$(output_files)$(output_prefix)comparison_makie.pdf")
 
 
+	println("Generating Verbal Units Visualization")
+
+	save_tikz_verbal_unit_linear(submissionGraph, "$(output_files)$(output_prefix)verbal_units_graph.tex")
+
+	println("Generating Verbal Units Comparison")
+
+	save_tikz_verbal_unit_comparison(comp, "$(output_files)$(output_prefix)verbal_units_comparison.tex")
+
 	println("Generating Dependency Graph…")
 
 	save_tikz_dependency(submissionGraph, "$(output_files)$(output_prefix)tikz_dependency.tex")
@@ -93,9 +101,13 @@ function generate_reports(output_files::String, key_file::String, student_file::
 	run(`xelatex -interaction=batchmode -output-directory $(output_files) $(output_prefix)tree.tex`)
 	run(`xelatex -interaction=batchmode -output-directory $(output_files) $(output_prefix)tikz_comparison.tex`)
 	run(`xelatex -interaction=batchmode -output-directory $(output_files) $(output_prefix)tikz_dependency.tex`)
+
+	run(`xelatex -interaction=batchmode -output-directory $(output_files) $(output_prefix)verbal_units_comparison.tex`)
+	run(`xelatex -interaction=batchmode -output-directory $(output_files) $(output_prefix)verbal_units_graph.tex`)
+
 	run(`pandoc --metadata-file=/Users/cblackwell/cite/grok/Markdown_LaTeX/dv-defaults.yaml --pdf-engine=xelatex -o $(output_files)$(output_prefix)report.pdf $(output_files)$(output_prefix)report.md`)
 
-	run(`pdfunite $(output_files)$(output_prefix)tikz_dependency.pdf $(output_files)$(output_prefix)tree.pdf $(output_files)$(output_prefix)makie.pdf $(output_files)$(output_prefix)report.pdf $(output_files)$(output_prefix)comparison_makie.pdf $(output_files)$(output_prefix)tikz_comparison.pdf $(output_files)$(output_prefix)combined_report.pdf`)
+	run(`pdfunite $(output_files)$(output_prefix)tikz_dependency.pdf $(output_files)$(output_prefix)verbal_units_graph.pdf $(output_files)$(output_prefix)tree.pdf $(output_files)$(output_prefix)makie.pdf $(output_files)$(output_prefix)report.pdf $(output_files)$(output_prefix)verbal_units_comparison.pdf $(output_files)$(output_prefix)comparison_makie.pdf $(output_files)$(output_prefix)tikz_comparison.pdf $(output_files)$(output_prefix)combined_report.pdf`)
 
 
 	println("Cleaning Up…")
@@ -105,7 +117,7 @@ function generate_reports(output_files::String, key_file::String, student_file::
 	run(`sh -c "rm $(output_files)*.log"`)
 	run(`sh -c "rm $(output_files)*.tex"`)
 	#run(`sh -c "rm $(output_files)*.md"`)
-	run(`rm $(output_files)$(output_prefix)tikz_dependency.pdf $(output_files)$(output_prefix)tree.pdf $(output_files)$(output_prefix)makie.pdf $(output_files)$(output_prefix)report.pdf $(output_files)$(output_prefix)comparison_makie.pdf $(output_files)$(output_prefix)tikz_comparison.pdf`)
+	run(`rm $(output_files)$(output_prefix)tikz_dependency.pdf $(output_files)$(output_prefix)tree.pdf $(output_files)$(output_prefix)makie.pdf $(output_files)$(output_prefix)report.pdf $(output_files)$(output_prefix)comparison_makie.pdf $(output_files)$(output_prefix)tikz_comparison.pdf $(output_files)$(output_prefix)verbal_units_comparison.pdf $(output_files)$(output_prefix)verbal_units_graph.pdf`)
 
 	println("================================")
 	println("** Done **")
