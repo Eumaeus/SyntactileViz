@@ -3,22 +3,17 @@
 \usepackage{tikz}
 \usepackage{tikz-dependency}
 \usepackage{adjustbox}
+\usepackage[landscape, paperwidth=100cm, paperheight=18cm, margin=1.5cm]{geometry}
 
-
-% === Your polytonic Greek setup (customize with your purchased fonts) ===
+% === Your polytonic Greek setup ===
 \defaultfontfeatures{Ligatures=TeX}
-\setmainfont{ArnoPro-Regular}          % e.g. Brill, IFAO, or your professional font
-% \newfontfamily\greekfont[Script=Greek]{YourGreekFontHere}
+\setmainfont{ArnoPro-Regular}
 \newfontfamily\greekfont[Script=Greek]{Arno Pro}
-
-% \usepackage{polyglossia}
-% \setotherlanguage[variant=ancient]{greek}
 
 
 \begin{document}
 \begin{figure}[ht]
 \centering
-\begin{adjustbox}{max width=\textwidth}
 \begin{tabular}{@{}p{0.48\textwidth}p{0.48\textwidth}@{}}
 \centering
 \textbf{Christopher Blackwell} \\[0.3em]
@@ -72,8 +67,6 @@
   \colorbox{red!25}{\rule{1cm}{0.5cm}} & \textbf{VU3} (Level 1): Circumstantial Participle — Transitive \\
 \end{tabular}
 \end{tabular}
-
-\end{adjustbox}
 
 \caption{Verbal Unit Comparison — τῇ βασιλέως θυγατρὶ ἐδήλου ὁ ποιητὴς τὰ ποιήματα τὰ περὶ τῆς φύσεως γεγραμμένα .}
 \end{figure}

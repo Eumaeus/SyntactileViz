@@ -513,43 +513,49 @@ $right
 """
 end
 
+function escape_latex(s::String)
+    # Minimal escaping — Greek text is almost always fine
+    replace(s, "&" => "\\&", "%" => "\\%", "_" => " ")
+end
+
 
 """
     save_tikz_verbal_unit_comparison(comp::ComparisonResult, path::String; ...)
 
-Saves a standalone .tex file with side-by-side verbal unit visualizations
-for two analyses.
+Saves a wide landscape .tex file with side-by-side verbal unit visualizations.
+The page size automatically expands to fit the content.
 """
 function save_tikz_verbal_unit_comparison(comp::ComparisonResult, path::String;
-        preamble::String = TikzExport.default_preamble,
-        use_adjustbox::Bool = true,
-        adjustbox_options::String = "max width=\\textwidth",
         show_legend::Bool = true)
 
-    content = tikz_verbal_unit_comparison(comp; 
-        show_legend = show_legend)
+    content = tikz_verbal_unit_comparison(comp; show_legend = show_legend)
 
-    wrapped = if use_adjustbox
-        """
-        \\begin{adjustbox}{$adjustbox_options}
-        $content
-        \\end{adjustbox}
-        """
-    else
-        content
-    end
+    # Wide custom landscape page that grows with the diagram
+    wide_preamble = """
+\\documentclass{article}
+\\usepackage{fontspec}
+\\usepackage{tikz}
+\\usepackage{tikz-dependency}
+\\usepackage{adjustbox}
+\\usepackage[landscape, paperwidth=100cm, paperheight=18cm, margin=1.5cm]{geometry}
+
+% === Your polytonic Greek setup ===
+\\defaultfontfeatures{Ligatures=TeX}
+\\setmainfont{ArnoPro-Regular}
+\\newfontfamily\\greekfont[Script=Greek]{Arno Pro}
+"""
 
     full = """
-    $preamble
+$wide_preamble
 
-    \\begin{document}
-    \\begin{figure}[ht]
-    \\centering
-    $wrapped
-    \\caption{Verbal Unit Comparison — $(comp.g1.sentence_text)}
-    \\end{figure}
-    \\end{document}
-    """
+\\begin{document}
+\\begin{figure}[ht]
+\\centering
+$content
+\\caption{Verbal Unit Comparison — $(escape_latex(comp.g1.sentence_text))}
+\\end{figure}
+\\end{document}
+"""
     write(path, full)
     return path
 end

@@ -24,5 +24,5 @@ export_comparison_markdown(comp, "reports/report_detailed.md"; show_token_vu_ass
 save_tikz_verbal_unit_linear(g1, "reports/verbal_units.tex")
 
 # Comparison (side-by-side)
-#comp = compare_syntax_graphs(g1, g2)
-#save_tikz_verbal_unit_comparison(comp, "reports/verbal_units_comparison.tex")
+comp = compare_syntax_graphs(g1, g2)
+save_tikz_verbal_unit_comparison(comp, "reports/verbal_units_comparison.tex")
