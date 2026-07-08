@@ -395,13 +395,11 @@ end
 """
     tikz_verbal_unit_linear(g::SyntaxGraph.SyntaxGraph; ...)
 
-Generates TikZ code for a linear, color-coded view of verbal units.
-- Primary color (background) comes from the most containing VU (lowest level).
-- Secondary VUs are shown with a distinct border.
-- Nesting is visualized with layered colored backgrounds.
+Generates a clean linear TikZ visualization of verbal units.
+Uses plain TikZ nodes (more reliable than deptext for background rectangles).
 """
 function tikz_verbal_unit_linear(g::SyntaxGraph.SyntaxGraph;
-        column_sep::String = "0.9em",
+        x_step::Float64 = 1.4,
         palette::Vector{String} = ["blue!70", "red!70", "green!65", "orange!80", 
                                    "purple!70", "teal!70", "brown!70", "cyan!70"],
         show_legend::Bool = true)
@@ -411,47 +409,40 @@ function tikz_verbal_unit_linear(g::SyntaxGraph.SyntaxGraph;
         return "% Empty graph"
     end
 
-    # Assign colors to VUs consistently (by level then id)
+    # Color assignment (by level, then id)
     all_vus = sort(collect(keys(g.verbal_units)), 
                    by = vu -> (g.verbal_units[vu].level, vu))
-    
     color_map = Dict{String, String}()
     for (i, vu) in enumerate(all_vus)
         color_map[vu] = palette[mod1(i, length(palette))]
     end
 
-    texts = [escape_latex(g.nodes[id].text) for id in ordered_ids]
-    deptext_line = join(texts, " \\& ")
-
     lines = String[]
-    push!(lines, "\\begin{tikzpicture}")
-    push!(lines, "  \\begin{deptext}[column sep=$column_sep]")
-    push!(lines, "    $deptext_line \\\\")
-    push!(lines, "  \\end{deptext}")
+    push!(lines, "\\begin{tikzpicture}[node distance=0.6cm]")
 
-    # Draw background rectangles for each VU (most containing first)
+    # --- Draw background rectangles for each VU (most containing first) ---
     for vu in sort(all_vus, by = vu -> g.verbal_units[vu].level)
         nodes_in_vu = SyntaxGraph.get_tokens_in_vu(g, vu)
-        if isempty(nodes_in_vu) 
-            continue 
-        end
+        isempty(nodes_in_vu) && continue
 
-        indices = [findfirst(==(n.id), ordered_ids) for n in nodes_in_vu 
-                   if n.id in ordered_ids]
-        if isempty(indices) 
-            continue 
+        indices = Int[]
+        for n in nodes_in_vu
+            idx = findfirst(==(n.id), ordered_ids)
+            idx !== nothing && push!(indices, idx)
         end
+        isempty(indices) && continue
 
         min_idx = minimum(indices)
         max_idx = maximum(indices)
 
         col = color_map[vu]
-        push!(lines, "  \\draw[$(col)!25, fill=$(col)!12, rounded corners=3pt, line width=0.8pt] " *
-              "([xshift=-0.3em]deptext-1-$(min_idx).north west) rectangle " *
-              "([xshift=0.3em]deptext-1-$(max_idx).south east);")
+        # Light fill + colored border for nesting visibility
+        push!(lines, "  \\draw[$(col)!30, fill=$(col)!15, rounded corners=4pt, line width=0.9pt] " *
+              "($(min_idx*x_step - 0.35)cm, 0.55cm) rectangle " *
+              "($(max_idx*x_step + 0.35)cm, -0.55cm);")
     end
 
-    # Individual word nodes with primary color + secondary cue
+    # --- Draw the word nodes ---
     for (i, id) in enumerate(ordered_ids)
         node = g.nodes[id]
         primary_vu = SyntaxGraph.get_primary_verbal_unit(g, id)
@@ -460,31 +451,32 @@ function tikz_verbal_unit_linear(g::SyntaxGraph.SyntaxGraph;
         all_vus_for_token = SyntaxGraph.get_verbal_units_of_node(g, id)
         has_secondary = length(all_vus_for_token) > 1
 
-        extra = ""
+        extra_style = ""
         if has_secondary
-            secondary_vus = filter(v -> v != primary_vu, all_vus_for_token)
-            if !isempty(secondary_vus)
-                sec_color = get(color_map, secondary_vus[1], primary_color)
-                extra = ", draw=$sec_color, line width=1.2pt"
+            secondary = filter(v -> v != primary_vu, all_vus_for_token)
+            if !isempty(secondary)
+                sec_color = get(color_map, secondary[1], primary_color)
+                extra_style = ", draw=$sec_color, line width=1.1pt"
             end
         end
 
-        push!(lines, "  \\node[draw, fill=$(primary_color)!20, rounded corners=2pt, " *
-              "inner sep=2pt, font=\\small$(extra)] at (deptext-1-$(i)) {" *
-              "$(escape_latex(node.text))};")
+        x = (i - 1) * x_step
+        push!(lines, "  \\node[draw, fill=$(primary_color)!22, rounded corners=3pt, " *
+              "inner sep=3pt, font=\\small$(extra_style)] (w$i) at ($(x)cm, 0) " *
+              "{$(escape_latex(node.text))};")
     end
 
     push!(lines, "\\end{tikzpicture}")
 
-    # Legend
+    # --- Legend ---
     if show_legend
         push!(lines, "")
-        push!(lines, "\\vspace{0.4em}")
+        push!(lines, "\\vspace{0.5em}")
         push!(lines, "\\begin{tabular}{@{}ll@{}}")
         for vu in all_vus
             col = color_map[vu]
             obj = g.verbal_units[vu]
-            swatch = "\\colorbox{$(col)!25}{\\rule{0.9cm}{0.45cm}}"
+            swatch = "\\colorbox{$(col)!25}{\\rule{1cm}{0.5cm}}"
             push!(lines, "  $swatch & \\textbf{$(vu)} (Level $(obj.level)): " *
                   "$(obj.syntactic_type) — $(obj.semantic_type) \\\\")
         end
