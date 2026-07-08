@@ -43,38 +43,6 @@ urn:cite2:analyzer:analysis:2025-06-13-b0a12db9-bb69-471b-b75d-1931593a3b0c
 | VU1 | VU1 | 1.0 | 1 | Independent Clause vs Independent Clause | Transitive vs Transitive |
 | VU2 | VU3 | 0.714 | 2 vs 1 | Attributive Participle vs Circumstantial Participle | Intransitive vs Transitive |
 
-### Token-by-Token Verbal Unit Assignment
-
-Only tokens with **different** verbal unit assignments are shown below.
-
-- **τὰ**
-  - Analysis 1: Primary = VU1, All = VU1, VU2
-  - Analysis 2: Primary = VU1, All = VU1
-
-- **ποιήματα**
-  - Analysis 1: Primary = VU1, All = VU1, VU2
-  - Analysis 2: Primary = VU1, All = VU1
-
-- **τὰ**
-  - Analysis 1: Primary = VU1, All = VU1, VU2
-  - Analysis 2: Primary = VU1, All = VU1, VU3
-
-- **περὶ**
-  - Analysis 1: Primary = VU1, All = VU1, VU2
-  - Analysis 2: Primary = VU1, All = VU1, VU3
-
-- **τῆς**
-  - Analysis 1: Primary = VU1, All = VU1, VU2
-  - Analysis 2: Primary = VU1, All = VU1, VU3
-
-- **φύσεως**
-  - Analysis 1: Primary = VU1, All = VU1, VU2
-  - Analysis 2: Primary = VU1, All = VU1, VU3
-
-- **γεγραμμένα**
-  - Analysis 1: Primary = VU1, All = VU1, VU2
-  - Analysis 2: Primary = VU1, All = VU1, VU3
-
 ---
 
 ## Tree Views
