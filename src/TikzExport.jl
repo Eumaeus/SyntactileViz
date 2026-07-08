@@ -403,6 +403,8 @@ function tikz_verbal_unit_linear(g::SyntaxGraph.SyntaxGraph;
                                    "purple", "teal", "brown", "cyan"],
         show_legend::Bool = true)
 
+
+    adjustbox_options = "max width=\\textwidth"
     ordered_ids = g.ordered_token_ids
     if isempty(ordered_ids)
         return "% Empty graph"
@@ -418,6 +420,7 @@ function tikz_verbal_unit_linear(g::SyntaxGraph.SyntaxGraph;
     end
 
     lines = String[]
+    push!(lines, "\\begin{adjustbox}{$adjustbox_options}")
     push!(lines, "\\begin{tikzpicture}[node distance=0.6cm]")
 
     # Background rectangles for each VU (most containing first)
@@ -468,11 +471,13 @@ function tikz_verbal_unit_linear(g::SyntaxGraph.SyntaxGraph;
     end
 
     push!(lines, "\\end{tikzpicture}")
+    push!(lines, "\\end{adjustbox}")
 
     # Legend
     if show_legend
         push!(lines, "")
         push!(lines, "\\vspace{0.5em}")
+        push!(lines, "\\begin{adjustbox}{$adjustbox_options}")
         push!(lines, "\\begin{tabular}{@{}ll@{}}")
         for vu in all_vus
             col = color_map[vu]
@@ -482,6 +487,7 @@ function tikz_verbal_unit_linear(g::SyntaxGraph.SyntaxGraph;
                   "$(obj.syntactic_type) — $(obj.semantic_type) \\\\")
         end
         push!(lines, "\\end{tabular}")
+        push!(lines, "\\end{adjustbox}")
     end
 
     return join(lines, "\n")
@@ -501,11 +507,11 @@ function save_tikz_verbal_unit_linear(g::SyntaxGraph.SyntaxGraph, path::String;
     code = tikz_verbal_unit_linear(g; show_legend = show_legend)
 
     content = if use_adjustbox
-        """
-        \\begin{adjustbox}{$adjustbox_options}
-        $code
-        \\end{adjustbox}
-        """
+        # """
+        # \\begin{adjustbox}{$adjustbox_options}
+        """$code"""
+        # \\end{adjustbox}
+        # """
     else
         code
     end
