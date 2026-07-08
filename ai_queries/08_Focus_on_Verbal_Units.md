@@ -273,3 +273,22 @@ No pages of output.
 Transcript written on verbal_units.log.
 ➜  reports git:(main) ✗ 
 ~~~
+
+---
+
+Great! More progress. TeX is fiddly, though, and now we get:
+
+~~~
+
+
+! Package xcolor Error: Undefined color `30'.
+
+See the xcolor package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.23 ...8cm, 0.55cm) rectangle (18.55cm, -0.55cm);
+
+~~~
+
+I have checked everything into the repo.
