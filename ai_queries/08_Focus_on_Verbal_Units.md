@@ -237,3 +237,39 @@ in expression starting at /Users/cblackwell/Dropbox/CITE/grok/SyntactileViz/scri
 ➜  SyntactileViz git:(ma
 
 ~~~
+
+---
+
+I'm trying the script as you provided! Thanks! Let's see how this works first…
+
+---
+
+Progress!!!
+
+I had to add a qualifier to line 502 of :
+
+`function save_tikz_verbal_unit_linear(g::SyntaxGraph.SyntaxGraph, path::String;
+`
+
+But with that, both the code that worked earlier, generating the Markdown reports, and the new code in `scripts/23_VU_Comparison.jl` ran without complaint.
+
+I have committed to the repo the output of `save_tikz_verbal_unit_linear(g1, "reports/verbal_units.tex")`. It is at `reports/verbal_units.tex`.
+
+Compiling it with XeLaTeX (`➜  reports git:(main) ✗ xelatex verbal_units.tex`) throws the following error:
+
+~~~
+
+! Package pgf Error: No shape named `deptext-1-1' is known.
+
+See the pgf package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.26 ...t] ([xshift=-0.3em]deptext-1-1.north west)
+                                                   rectangle ([xshift=0.3em]...
+
+? x
+No pages of output.
+Transcript written on verbal_units.log.
+➜  reports git:(main) ✗ 
+~~~
