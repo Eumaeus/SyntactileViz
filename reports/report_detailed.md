@@ -1,13 +1,13 @@
 # Syntactic Analysis Comparison Report
 
-**Generated:** 2026-07-08 00:28
+**Generated:** 2026-07-08 00:37
 
 **Sentence:** τῇ βασιλέως θυγατρὶ ἐδήλου ὁ ποιητὴς τὰ ποιήματα τὰ περὶ τῆς φύσεως γεγραμμένα .
 
-**Analysis 1:** Christopher_Blackwell  
+**Analysis 1:** Editor_One  
 urn:cite2:analyzer:analysis:2025-06-13-b0a12db9-bb69-471b-b75d-1931593a3b0c
 
-**Analysis 2:** Christopher_Blackwell  
+**Analysis 2:** Editor_Two  
 urn:cite2:analyzer:analysis:2025-06-13-b0a12db9-bb69-471b-b75d-1931593a3b0c
 
 ---
@@ -79,7 +79,7 @@ Only tokens with **different** verbal unit assignments are shown below.
 
 ## Tree Views
 
-### Analysis 1 – Christopher_Blackwell
+### Analysis 1 – Editor_One
 
 ```text
 Syntax Tree — τῇ βασιλέως θυγατρὶ ἐδήλου ὁ ποιητὴς τὰ ποιήματα τὰ περὶ τῆς φύσεως γεγραμμένα .
@@ -100,7 +100,7 @@ ROOT (root)
       └── Adjectival ←       βασιλέως (urn:cts:fuTeaching:blackwell.hq.2026:10.2.token.2) [VU1]
 ```
 
-### Analysis 2 – Christopher_Blackwell
+### Analysis 2 – Editor_Two
 
 ```text
 Syntax Tree — τῇ βασιλέως θυγατρὶ ἐδήλου ὁ ποιητὴς τὰ ποιήματα τὰ περὶ τῆς φύσεως γεγραμμένα .

@@ -316,3 +316,8 @@ I made those changes to `src/Comparison.jl`. I've checked everything into the re
 The comparison PDF compiles from the .tex file, but it still seems that the PDF is being forced into letter-sized paper. Is `\\documentclass{article}` perhaps the problem? I am not good at TeX stuff.
 
 With the TikZ Dependency visualizations, XeLaTeX scaled the whole thing down to fit. Zooming on the resulting PDF revealed everything at high resolution.
+
+---
+
+Okay, it looks like the two visualations are on the same line. If we could stack them, one above the other, I think it would come out perfectly.
+

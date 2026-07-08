@@ -522,36 +522,33 @@ end
 """
     save_tikz_verbal_unit_comparison(comp::ComparisonResult, path::String; ...)
 
-Saves a wide landscape .tex file with side-by-side verbal unit visualizations.
-The page size automatically expands to fit the content.
+Saves a comparison visualization that automatically scales to fit a 
+standard landscape page (matching the behavior of the dependency visualizations).
 """
 function save_tikz_verbal_unit_comparison(comp::ComparisonResult, path::String;
         show_legend::Bool = true)
 
     content = tikz_verbal_unit_comparison(comp; show_legend = show_legend)
 
-    # Wide custom landscape page that grows with the diagram
-    wide_preamble = """
+    full = """
 \\documentclass{article}
 \\usepackage{fontspec}
 \\usepackage{tikz}
 \\usepackage{tikz-dependency}
 \\usepackage{adjustbox}
-\\usepackage[landscape, paperwidth=100cm, paperheight=18cm, margin=1.5cm]{geometry}
+\\usepackage[landscape, margin=1.2cm]{geometry}
 
 % === Your polytonic Greek setup ===
 \\defaultfontfeatures{Ligatures=TeX}
 \\setmainfont{ArnoPro-Regular}
 \\newfontfamily\\greekfont[Script=Greek]{Arno Pro}
-"""
-
-    full = """
-$wide_preamble
 
 \\begin{document}
 \\begin{figure}[ht]
 \\centering
+\\begin{adjustbox}{max width=\\textwidth}
 $content
+\\end{adjustbox}
 \\caption{Verbal Unit Comparison — $(escape_latex(comp.g1.sentence_text))}
 \\end{figure}
 \\end{document}
