@@ -149,3 +149,91 @@ Let's go ahead with the `save…` function.
 
 Great! I am making these changes. Do I need to update the `exports` in `src/SyntactileViz.jl`?
 
+---
+
+Okay, I made the changes (all checked into the repo at  <https://github.com/Eumaeus/SyntactileViz>). I'm getting the error, below.
+
+I am using the script `scripts/23_VU_Comparison.jl` to test. I have commented out the test-lines that would test the new code. 
+
+With the uncommented code, through:
+
+~~~
+
+export_comparison_markdown(comp, "reports/comparison_report.md")
+
+export_comparison_markdown(comp, "reports/report_detailed.md"; show_token_vu_assignments = true)
+~~~
+
+The script throws the error, below. Removing the two new functions from `src/TikzExport.jl`, the script will generate the lovely Markdown reports you helped with. I am not sure where the error lies.
+
+~~~
+
+➜  SyntactileViz git:(main) ✗ julia --project=. scripts/23_VU_Comparison.jl
+Info Given SyntactileViz was explicitly requested, output will be shown live 
+ERROR: LoadError: ArgumentError: invalid type for argument g in method definition for #tikz_verbal_unit_linear#31 at /Users/cblackwell/Dropbox/CITE/grok/SyntactileViz/src/TikzExport.jl:407
+Stacktrace:
+  [1] top-level scope
+    @ ~/Dropbox/CITE/grok/SyntactileViz/src/TikzExport.jl:399
+  [2] include(mapexpr::Function, mod::Module, _path::String)
+    @ Base ./Base.jl:307
+  [3] top-level scope
+    @ ~/Dropbox/CITE/grok/SyntactileViz/src/SyntactileViz.jl:6
+  [4] include(mod::Module, _path::String)
+    @ Base ./Base.jl:306
+  [5] include_package_for_output(pkg::Base.PkgId, input::String, depot_path::Vector{String}, dl_load_path::Vector{String}, load_path::Vector{String}, concrete_deps::Vector{Pair{Base.PkgId, UInt128}}, source::Nothing)
+    @ Base ./loading.jl:3028
+  [6] top-level scope
+    @ stdin:5
+  [7] eval(m::Module, e::Any)
+    @ Core ./boot.jl:489
+  [8] include_string(mapexpr::typeof(identity), mod::Module, code::String, filename::String)
+    @ Base ./loading.jl:2874
+  [9] include_string
+    @ ./loading.jl:2884 [inlined]
+ [10] exec_options(opts::Base.JLOptions)
+    @ Base ./client.jl:315
+ [11] _start()
+    @ Base ./client.jl:550
+in expression starting at /Users/cblackwell/Dropbox/CITE/grok/SyntactileViz/src/TikzExport.jl:1
+in expression starting at /Users/cblackwell/Dropbox/CITE/grok/SyntactileViz/src/SyntactileViz.jl:1
+in expression starting at stdin:5
+  ✗ SyntactileViz
+Precompiling SyntactileViz finished.
+  0 dependencies successfully precompiled in 4 seconds. 294 already precompiled.
+
+ERROR: LoadError: The following 1 direct dependency failed to precompile:
+
+SyntactileViz 
+
+Failed to precompile SyntactileViz [7a31ebc7-e5f0-4d97-940e-aa3fdd0bc38d] to "/Users/cblackwell/.julia/compiled/v1.12/SyntactileViz/jl_srzoBc".
+ERROR: LoadError: ArgumentError: invalid type for argument g in method definition for #tikz_verbal_unit_linear#31 at /Users/cblackwell/Dropbox/CITE/grok/SyntactileViz/src/TikzExport.jl:407
+Stacktrace:
+  [1] top-level scope
+    @ ~/Dropbox/CITE/grok/SyntactileViz/src/TikzExport.jl:399
+  [2] include(mapexpr::Function, mod::Module, _path::String)
+    @ Base ./Base.jl:307
+  [3] top-level scope
+    @ ~/Dropbox/CITE/grok/SyntactileViz/src/SyntactileViz.jl:6
+  [4] include(mod::Module, _path::String)
+    @ Base ./Base.jl:306
+  [5] include_package_for_output(pkg::Base.PkgId, input::String, depot_path::Vector{String}, dl_load_path::Vector{String}, load_path::Vector{String}, concrete_deps::Vector{Pair{Base.PkgId, UInt128}}, source::Nothing)
+    @ Base ./loading.jl:3028
+  [6] top-level scope
+    @ stdin:5
+  [7] eval(m::Module, e::Any)
+    @ Core ./boot.jl:489
+  [8] include_string(mapexpr::typeof(identity), mod::Module, code::String, filename::String)
+    @ Base ./loading.jl:2874
+  [9] include_string
+    @ ./loading.jl:2884 [inlined]
+ [10] exec_options(opts::Base.JLOptions)
+    @ Base ./client.jl:315
+ [11] _start()
+    @ Base ./client.jl:550
+in expression starting at /Users/cblackwell/Dropbox/CITE/grok/SyntactileViz/src/TikzExport.jl:1
+in expression starting at /Users/cblackwell/Dropbox/CITE/grok/SyntactileViz/src/SyntactileViz.jl:1
+in expression starting at stdin:
+in expression starting at /Users/cblackwell/Dropbox/CITE/grok/SyntactileViz/scripts/23_VU_Comparison.jl:2
+➜  SyntactileViz git:(ma
+
+~~~
