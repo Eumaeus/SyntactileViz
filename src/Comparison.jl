@@ -508,9 +508,7 @@ function tikz_verbal_unit_comparison(comp::ComparisonResult; show_legend::Bool =
 \\vspace{0.5em}
 \\begin{figure}[ht]
 \\centering
-\\begin{adjustbox}{max width=\\textwidth}
 $top
-\\end{adjustbox}
 \\end{figure}
 
 \\vspace{1.0em}
@@ -521,9 +519,7 @@ $top
 \\vspace{0.5em}
 \\begin{figure}[ht]
 \\centering
-\\begin{adjustbox}{max width=\\textwidth}
 $bottom
-\\end{adjustbox}
 \\caption{Verbal Unit Comparison — $(escape_latex(comp.g1.sentence_text))}
 \\end{figure}
 """
