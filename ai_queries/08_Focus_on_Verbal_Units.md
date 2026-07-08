@@ -321,3 +321,25 @@ With the TikZ Dependency visualizations, XeLaTeX scaled the whole thing down to 
 
 Okay, it looks like the two visualations are on the same line. If we could stack them, one above the other, I think it would come out perfectly.
 
+---
+
+I think we are close!
+
+Compiling gives this error:
+
+~~~
+*geometry* driver: auto-detecting
+*geometry* detected driver: xetex
+
+! LaTeX Error: Not allowed in LR mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.19 \textbf{Editor One} \\[
+                            0.4em]
+? 
+~~~
+
+Everything is up-to-date in the repo.

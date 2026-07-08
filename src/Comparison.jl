@@ -494,21 +494,23 @@ end
 Side-by-side verbal unit visualization for two analyses.
 Uses the same color palette where VUs were matched by `compare_verbal_units`.
 """
-function tikz_verbal_unit_comparison(comp::ComparisonResult; kwargs...)
-    # For now we generate two independent visualizations.
-    # Future improvement: align colors using matched VUs from compare_verbal_units.
-    left  = TikzExport.tikz_verbal_unit_linear(comp.g1; kwargs...)
-    right = TikzExport.tikz_verbal_unit_linear(comp.g2; kwargs...)
+function tikz_verbal_unit_comparison(comp::ComparisonResult; show_legend::Bool = true)
+    top = TikzExport.tikz_verbal_unit_linear(comp.g1; show_legend = show_legend)
+    bottom = TikzExport.tikz_verbal_unit_linear(comp.g2; show_legend = show_legend)
 
     return """
-\\begin{tabular}{@{}p{0.48\\textwidth}p{0.48\\textwidth}@{}}
+\\begin{tabular}{@{}c@{}}
 \\centering
-\\textbf{$(replace(comp.g1.editor, "_" => " "))} \\\\[0.3em]
-$left
-&
+\\textbf{$(replace(comp.g1.editor, "_" => " "))} \\\\[0.4em]
+$top
+\\end{tabular}
+
+\\vspace{1.2em}
+
+\\begin{tabular}{@{}c@{}}
 \\centering
-\\textbf{$(replace(comp.g2.editor, "_" => " "))} \\\\[0.3em]
-$right
+\\textbf{$(replace(comp.g2.editor, "_" => " "))} \\\\[0.4em]
+$bottom
 \\end{tabular}
 """
 end
@@ -522,33 +524,36 @@ end
 """
     save_tikz_verbal_unit_comparison(comp::ComparisonResult, path::String; ...)
 
-Saves a comparison visualization that automatically scales to fit a 
-standard landscape page (matching the behavior of the dependency visualizations).
+Saves a wide landscape .tex file with side-by-side verbal unit visualizations.
+The page size automatically expands to fit the content.
 """
 function save_tikz_verbal_unit_comparison(comp::ComparisonResult, path::String;
         show_legend::Bool = true)
 
     content = tikz_verbal_unit_comparison(comp; show_legend = show_legend)
 
-    full = """
+    # Wide custom landscape page that grows with the diagram
+    wide_preamble = """
 \\documentclass{article}
 \\usepackage{fontspec}
 \\usepackage{tikz}
 \\usepackage{tikz-dependency}
 \\usepackage{adjustbox}
-\\usepackage[landscape, margin=1.2cm]{geometry}
+\\usepackage[landscape, paperwidth=100cm, paperheight=18cm, margin=1.5cm]{geometry}
 
 % === Your polytonic Greek setup ===
 \\defaultfontfeatures{Ligatures=TeX}
 \\setmainfont{ArnoPro-Regular}
 \\newfontfamily\\greekfont[Script=Greek]{Arno Pro}
+"""
+
+    full = """
+$wide_preamble
 
 \\begin{document}
 \\begin{figure}[ht]
 \\centering
-\\begin{adjustbox}{max width=\\textwidth}
 $content
-\\end{adjustbox}
 \\caption{Verbal Unit Comparison — $(escape_latex(comp.g1.sentence_text))}
 \\end{figure}
 \\end{document}

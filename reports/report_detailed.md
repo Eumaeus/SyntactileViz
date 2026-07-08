@@ -1,6 +1,6 @@
 # Syntactic Analysis Comparison Report
 
-**Generated:** 2026-07-08 00:37
+**Generated:** 2026-07-08 00:46
 
 **Sentence:** τῇ βασιλέως θυγατρὶ ἐδήλου ὁ ποιητὴς τὰ ποιήματα τὰ περὶ τῆς φύσεως γεγραμμένα .
 

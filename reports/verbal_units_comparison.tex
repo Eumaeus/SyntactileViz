@@ -3,20 +3,20 @@
 \usepackage{tikz}
 \usepackage{tikz-dependency}
 \usepackage{adjustbox}
-\usepackage[landscape, margin=1.2cm]{geometry}
+\usepackage[landscape, paperwidth=100cm, paperheight=18cm, margin=1.5cm]{geometry}
 
 % === Your polytonic Greek setup ===
 \defaultfontfeatures{Ligatures=TeX}
 \setmainfont{ArnoPro-Regular}
 \newfontfamily\greekfont[Script=Greek]{Arno Pro}
 
+
 \begin{document}
 \begin{figure}[ht]
 \centering
-\begin{adjustbox}{max width=\textwidth}
-\begin{tabular}{@{}p{0.48\textwidth}p{0.48\textwidth}@{}}
+\begin{tabular}{@{}c@{}}
 \centering
-\textbf{Editor One} \\[0.3em]
+\textbf{Editor One} \\[0.4em]
 \begin{tikzpicture}[node distance=0.6cm]
   \draw[blue!35, fill=blue!12, rounded corners=4pt, line width=0.9pt] (1.0499999999999998cm, 0.6cm) rectangle (18.55cm, -0.6cm);
   \draw[red!35, fill=red!12, rounded corners=4pt, line width=0.9pt] (9.45cm, 0.6cm) rectangle (18.55cm, -0.6cm);
@@ -40,9 +40,13 @@
   \colorbox{blue!25}{\rule{1cm}{0.5cm}} & \textbf{VU1} (Level 1): Independent Clause — Transitive \\
   \colorbox{red!25}{\rule{1cm}{0.5cm}} & \textbf{VU2} (Level 2): Attributive Participle — Intransitive \\
 \end{tabular}
-&
+\end{tabular}
+
+\vspace{1.2em}
+
+\begin{tabular}{@{}c@{}}
 \centering
-\textbf{Editor Two} \\[0.3em]
+\textbf{Editor Two} \\[0.4em]
 \begin{tikzpicture}[node distance=0.6cm]
   \draw[blue!35, fill=blue!12, rounded corners=4pt, line width=0.9pt] (1.0499999999999998cm, 0.6cm) rectangle (18.55cm, -0.6cm);
   \draw[red!35, fill=red!12, rounded corners=4pt, line width=0.9pt] (12.25cm, 0.6cm) rectangle (18.55cm, -0.6cm);
@@ -68,7 +72,6 @@
 \end{tabular}
 \end{tabular}
 
-\end{adjustbox}
 \caption{Verbal Unit Comparison — τῇ βασιλέως θυγατρὶ ἐδήλου ὁ ποιητὴς τὰ ποιήματα τὰ περὶ τῆς φύσεως γεγραμμένα .}
 \end{figure}
 \end{document}
